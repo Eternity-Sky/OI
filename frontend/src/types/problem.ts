@@ -14,4 +14,5 @@ export interface Problem {
   tags: string[];
   createdAt: Date;
   updatedAt: Date;
+  acceptanceRate?: number;
 } 

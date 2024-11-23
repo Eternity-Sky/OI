@@ -3,16 +3,17 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "install:all": "npm install && cd backend && npm install && cd ../frontend && npm install",
-    "build:backend": "cd backend && npm run build",
+    "start": "node server.js",
+    "dev": "nodemon server.js",
+    "install:frontend": "cd frontend && npm install",
     "build:frontend": "cd frontend && npm run build",
-    "build": "npm run build:backend && npm run build:frontend",
-    "start": "cd backend && npm start",
-    "dev:backend": "cd backend && npm run dev",
-    "dev:frontend": "cd frontend && npm start",
-    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\""
+    "postinstall": "npm run install:frontend && npm run build:frontend"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.21.1"
   },
   "devDependencies": {
-    "concurrently": "^7.0.0"
+    "nodemon": "^2.0.15"
   }
 }

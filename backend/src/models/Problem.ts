@@ -1,4 +1,4 @@
-interface Problem {
+export interface Problem {
   id: number;
   title: string;
   description: string;
@@ -14,8 +14,4 @@ interface Problem {
   tags: string[];
   createdAt: Date;
   updatedAt: Date;
-}
-
-export const problemSchema = {
-  // PostgreSQL schema 定义
 } 
