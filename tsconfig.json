@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "target": "es2018",
+    "module": "commonjs",
+    "lib": ["es2018", "dom"],
+    "jsx": "react",
+    "rootDir": "./",
+    "outDir": "./dist",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "moduleResolution": "node"
+  },
+  "include": [
+    "backend/src/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "frontend"
+  ]
+} 
