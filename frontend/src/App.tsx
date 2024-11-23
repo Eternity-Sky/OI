@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Routes, Route, Link } from 'react-router-dom';
 import { Layout, Menu, Typography } from 'antd';
 import ProblemList from './pages/ProblemList';
@@ -9,7 +9,9 @@ const { Header, Content } = Layout;
 const { Title } = Typography;
 
 const App: React.FC = () => {
-  console.log('API URL:', process.env.REACT_APP_API_URL);
+  useEffect(() => {
+    console.log('API URL:', process.env.REACT_APP_API_URL);
+  }, []);
 
   return (
     <Layout className="layout">
