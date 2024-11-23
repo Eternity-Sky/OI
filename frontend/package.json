@@ -2,6 +2,7 @@
   "name": "oj-system-frontend",
   "version": "1.0.0",
   "private": true,
+  "homepage": ".",
   "dependencies": {
     "@ant-design/icons": "^4.7.0",
     "@monaco-editor/react": "^4.3.1",

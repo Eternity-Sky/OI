@@ -9,6 +9,8 @@ const { Header, Content } = Layout;
 const { Title } = Typography;
 
 const App: React.FC = () => {
+  console.log('API URL:', process.env.REACT_APP_API_URL);
+
   return (
     <Layout className="layout">
       <Header style={{ display: 'flex', alignItems: 'center' }}>
