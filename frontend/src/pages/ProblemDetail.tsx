@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Card, Divider, Button, message, Alert } from 'antd';
 import { CheckCircleFilled, CloseCircleFilled, WarningFilled, LoadingOutlined } from '@ant-design/icons';
 import { Editor } from '@monaco-editor/react';
@@ -13,19 +13,21 @@ const ProblemDetail: React.FC = () => {
   const [result, setResult] = useState<any>(null);
   const [submitting, setSubmitting] = useState(false);
 
-  useEffect(() => {
-    fetchProblemDetail();
-  }, [id]);
-
-  const fetchProblemDetail = async () => {
+  const fetchProblemDetail = useCallback(async (problemId: number) => {
     try {
-      const response = await fetch(`/api/problems/${id}`);
+      const response = await fetch(`/api/problems/${problemId}`);
       const data = await response.json();
       setProblem(data);
     } catch (error) {
       message.error('获取题目详情失败');
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    if (id) {
+      fetchProblemDetail(parseInt(id));
+    }
+  }, [id, fetchProblemDetail]);
 
   const handleSubmit = async () => {
     try {
