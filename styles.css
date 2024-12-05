@@ -1,16 +1,15 @@
-body { 
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-    background-color: #f8f9fa;
+body {
     margin: 0;
-    padding: 20px;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(to right, #ece9e6, #ffffff);
 }
 .container {
     max-width: 800px;
-    margin: auto;
-    background-color: #fff;
+    margin: 0 auto;
     padding: 20px;
+    background-color: rgba(255, 255, 255, 0.9);
     border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s;
 }
 .container:hover {
@@ -20,10 +19,8 @@ body {
     margin-top: 20px;
 }
 h1 {
-    color: #333;
     text-align: center;
-    margin-bottom: 20px;
-    font-weight: bold;
+    color: #333;
 }
 h5 {
     margin: 10px 0;
@@ -45,35 +42,16 @@ pre {
     overflow-x: auto;
 }
 button {
-    background-color: #28a745;
+    padding: 10px 20px;
+    background-color: #4CAF50;
     color: white;
     border: none;
-    padding: 8px 16px;
     border-radius: 4px;
     cursor: pointer;
-    transition: background-color 0.3s, transform 0.3s;
-    margin: 10px 0;
-    position: relative;
-    overflow: hidden;
-}
-button::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(255, 255, 255, 0.2);
-    opacity: 0;
-    transition: opacity 0.3s;
-    border-radius: 4px;
-}
-button:hover::after {
-    opacity: 1;
+    transition: background-color 0.3s;
 }
 button:hover {
-    background-color: #218838;
-    transform: translateY(-2px);
+    background-color: #45a049;
 }
 button.active {
     background-color: #218838;
@@ -120,32 +98,37 @@ small {
     border-bottom: 1px solid #ddd;
 }
 .about-button {
-    display: inline-block;
-    margin-top: 20px;
-    background-color: #28a745;
-    color: white;
-    padding: 10px 20px;
-    border-radius: 4px;
+    color: #4CAF50;
     text-decoration: none;
-    transition: background-color 0.3s;
-    position: relative;
-    overflow: hidden;
-}
-.about-button::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(255, 255, 255, 0.2);
-    opacity: 0;
-    transition: opacity 0.3s;
-    border-radius: 4px;
-}
-.about-button:hover::after {
-    opacity: 1;
+    transition: color 0.3s;
 }
 .about-button:hover {
-    background-color: #218838;
+    color: #45a049;
+}
+.footer {
+    text-align: center;
+    margin-top: 20px;
+}
+input[type="text"], select {
+    width: calc(100% - 22px);
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+#loading {
+    text-align: center;
+    font-size: 16px;
+    color: #666;
+    margin-top: 20px;
+}
+.github-link {
+    color: #333;
+    text-decoration: none;
+    margin-left: 10px;
+    transition: color 0.3s;
+}
+.github-link:hover {
+    color: #007bff;
 } 
