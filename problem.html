@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>题目详情</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="problems.js"></script>
+    <script src="solutions.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1 id="title"></h1>
+        <p id="description"></p>
+        <div class="details">
+            <small><strong>难度:</strong> <span id="difficulty"></span></small><br>
+            <small><strong>标签:</strong> <span id="tags"></span></small><br>
+            <small><strong>输入格式:</strong> <span id="input"></span></small><br>
+            <small><strong>输出格式:</strong> <span id="output"></span></small><br>
+            <small><strong>样例输入:</strong> <pre id="sample_input"></pre></small><br>
+            <small><strong>样例输出:</strong> <pre id="sample_output"></pre></small><br>
+            <button onclick="viewSolution()">查看题解</button>
+        </div>
+        <a href="index.html">返回题库</a>
+    </div>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const problemId = urlParams.get('id');
+        const problem = problems.find(p => p.id == problemId);
+
+        if (problem) {
+            document.getElementById('title').textContent = problem.title;
+            document.getElementById('description').textContent = problem.description;
+            document.getElementById('difficulty').textContent = problem.difficulty;
+            document.getElementById('tags').textContent = problem.tags.join(', ');
+            document.getElementById('input').textContent = problem.input;
+            document.getElementById('output').textContent = problem.output;
+            document.getElementById('sample_input').textContent = problem.sample_input;
+            document.getElementById('sample_output').textContent = problem.sample_output;
+        } else {
+            document.body.innerHTML = '<p>题目未找到。</p>';
+        }
+
+        function viewSolution() {
+            window.location.href = `solution.html?id=${problemId}`;
+        }
+    </script>
+</body>
+</html> 

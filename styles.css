@@ -1,0 +1,151 @@
+body { 
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+    background-color: #f8f9fa;
+    margin: 0;
+    padding: 20px;
+}
+.container {
+    max-width: 800px;
+    margin: auto;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s;
+}
+.container:hover {
+    transform: scale(1.02);
+}
+.details {
+    margin-top: 20px;
+}
+h1 {
+    color: #333;
+    text-align: center;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+h5 {
+    margin: 10px 0;
+    color: #007bff;
+    font-weight: bold;
+    transition: color 0.3s;
+}
+h5:hover {
+    color: #0056b3;
+}
+p, small, pre {
+    margin: 5px 0;
+    color: #555;
+}
+pre {
+    background-color: #f1f1f1;
+    padding: 10px;
+    border-radius: 4px;
+    overflow-x: auto;
+}
+button {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+    margin: 10px 0;
+    position: relative;
+    overflow: hidden;
+}
+button::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.2);
+    opacity: 0;
+    transition: opacity 0.3s;
+    border-radius: 4px;
+}
+button:hover::after {
+    opacity: 1;
+}
+button:hover {
+    background-color: #218838;
+    transform: translateY(-2px);
+}
+button.active {
+    background-color: #218838;
+}
+a {
+    display: inline-block;
+    margin-top: 20px;
+    color: #007bff;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+a:hover {
+    text-decoration: underline;
+    color: #0056b3;
+}
+small {
+    display: block;
+    margin: 5px 0;
+    color: #555;
+}
+.difficulty-easy {
+    color: green;
+}
+.difficulty-medium {
+    color: orange;
+}
+.difficulty-hard {
+    color: red;
+}
+.tag {
+    display: inline-block;
+    background-color: #e0e0e0;
+    border-radius: 4px;
+    padding: 2px 8px;
+    margin: 2px;
+    font-size: 0.9em;
+}
+#pagination {
+    margin-top: 20px;
+    text-align: center;
+}
+.problem {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+.about-button {
+    display: inline-block;
+    margin-top: 20px;
+    background-color: #28a745;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 4px;
+    text-decoration: none;
+    transition: background-color 0.3s;
+    position: relative;
+    overflow: hidden;
+}
+.about-button::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.2);
+    opacity: 0;
+    transition: opacity 0.3s;
+    border-radius: 4px;
+}
+.about-button:hover::after {
+    opacity: 1;
+}
+.about-button:hover {
+    background-color: #218838;
+} 

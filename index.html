@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>题库</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="problems.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>题库</h1>
+        <input type="text" id="searchInput" placeholder="输入题号或名称搜索">
+        <button onclick="searchProblem()">搜索</button>
+        <div id="problems"></div>
+        <div id="pagination"></div>
+        <div class="footer">
+            <a href="about.html" class="about-button">关于我们</a>
+        </div>
+    </div>
+
+    <script>
+        const problemsDiv = document.getElementById('problems');
+        const paginationDiv = document.getElementById('pagination');
+        const itemsPerPage = 5;
+        let currentPage = 1;
+
+        function displayProblems(problems, page = 1) {
+            problemsDiv.innerHTML = '';
+            const start = (page - 1) * itemsPerPage;
+            const end = start + itemsPerPage;
+            const paginatedProblems = problems.slice(start, end);
+
+            paginatedProblems.forEach(problem => {
+                const problemDiv = document.createElement('div');
+                problemDiv.className = 'problem';
+                problemDiv.innerHTML = `
+                    <h5>${problem.id}: ${problem.title}</h5>
+                    <small class="difficulty-${problem.difficulty.toLowerCase()}">难度: ${problem.difficulty}</small>
+                    <button onclick="viewDetails(${problem.id})">查看详情</button>
+                `;
+                problemsDiv.appendChild(problemDiv);
+            });
+
+            displayPagination(problems.length, page);
+        }
+
+        function displayPagination(totalItems, currentPage) {
+            paginationDiv.innerHTML = '';
+            const totalPages = Math.ceil(totalItems / itemsPerPage);
+
+            for (let i = 1; i <= totalPages; i++) {
+                const pageButton = document.createElement('button');
+                pageButton.textContent = i;
+                pageButton.className = i === currentPage ? 'active' : '';
+                pageButton.onclick = () => {
+                    displayProblems(problems, i);
+                };
+                paginationDiv.appendChild(pageButton);
+            }
+        }
+
+        function searchProblem() {
+            const searchValue = document.getElementById('searchInput').value.trim().toLowerCase();
+            const filteredProblems = problems.filter(problem => 
+                problem.id.toString() === searchValue || 
+                problem.title.toLowerCase().includes(searchValue) ||
+                problem.tags.some(tag => tag.toLowerCase().includes(searchValue))
+            );
+            if (filteredProblems.length > 0) {
+                displayProblems(filteredProblems);
+            } else {
+                problemsDiv.innerHTML = '<p>未找到匹配的题目。</p>';
+                paginationDiv.innerHTML = '';
+            }
+        }
+
+        displayProblems(problems);
+
+        function viewDetails(id) {
+            window.location.href = `problem.html?id=${id}`;
+        }
+    </script>
+</body>
+</html> 

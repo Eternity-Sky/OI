@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>题解详情</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="solutions.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1 id="solution-title">题解详情</h1>
+        <h2>分析</h2>
+        <p id="solution-analysis"></p>
+        <h2>答案</h2>
+        <pre id="solution-answer"></pre>
+        <a href="problem.html?id=" id="back-link">返回题目</a>
+    </div>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const problemId = urlParams.get('id');
+        const solution = solutions[problemId];
+
+        if (solution) {
+            document.getElementById('solution-analysis').textContent = solution.analysis;
+            document.getElementById('solution-answer').textContent = solution.answer;
+            document.getElementById('back-link').href = `problem.html?id=${problemId}`;
+        } else {
+            document.body.innerHTML = '<p>题解未找到。</p>';
+        }
+    </script>
+</body>
+</html> 
