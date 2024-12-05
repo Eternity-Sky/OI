@@ -10,12 +10,23 @@
     <div class="container">
         <h1>题库</h1>
         <input type="text" id="searchInput" placeholder="输入题号或名称搜索">
+        <select id="categorySelect">
+            <option value="">所有分类</option>
+            <!-- 动态加载的分类选项将插入在这里 -->
+        </select>
+        <select id="difficultySelect">
+            <option value="">所有难度</option>
+            <option value="简单">简单</option>
+            <option value="中等">中等</option>
+            <option value="困难">困难</option>
+        </select>
         <button onclick="searchProblem()">搜索</button>
         <div id="problems"></div>
         <div id="pagination"></div>
         <div class="footer">
             <a href="about.html" class="about-button">关于我们</a>
         </div>
+        <div id="loading" style="display: none;">加载中...</div>
     </div>
 
     <script>
@@ -61,11 +72,17 @@
 
         function searchProblem() {
             const searchValue = document.getElementById('searchInput').value.trim().toLowerCase();
+            const categoryValue = document.getElementById('categorySelect').value;
+            const difficultyValue = document.getElementById('difficultySelect').value;
+
             const filteredProblems = problems.filter(problem => 
-                problem.id.toString() === searchValue || 
+                (problem.id.toString() === searchValue || 
                 problem.title.toLowerCase().includes(searchValue) ||
-                problem.tags.some(tag => tag.toLowerCase().includes(searchValue))
+                problem.tags.some(tag => tag.toLowerCase().includes(searchValue))) &&
+                (categoryValue === '' || problem.category === categoryValue) &&
+                (difficultyValue === '' || problem.difficulty === difficultyValue)
             );
+
             if (filteredProblems.length > 0) {
                 displayProblems(filteredProblems);
             } else {
@@ -78,6 +95,31 @@
 
         function viewDetails(id) {
             window.location.href = `problem.html?id=${id}`;
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchCategories();
+        });
+
+        function fetchCategories() {
+            const loadingDiv = document.getElementById('loading');
+            loadingDiv.style.display = 'block';
+
+            fetch('/api/categories')
+                .then(response => response.json())
+                .then(categories => {
+                    const categorySelect = document.getElementById('categorySelect');
+                    categories.forEach(category => {
+                        const option = document.createElement('option');
+                        option.value = category.name;
+                        option.textContent = category.name;
+                        categorySelect.appendChild(option);
+                    });
+                })
+                .catch(error => console.error('Error fetching categories:', error))
+                .finally(() => {
+                    loadingDiv.style.display = 'none';
+                });
         }
     </script>
 </body>
