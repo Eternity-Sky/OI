@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>排行榜</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>排行榜</h1>
+        <table id="leaderboard">
+            <thead>
+                <tr>
+                    <th>用户名</th>
+                    <th>完成题目数</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- 用户数据将插入在这里 -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const leaderboard = document.getElementById('leaderboard').getElementsByTagName('tbody')[0];
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                if (key !== 'currentUser') {
+                    const userData = JSON.parse(localStorage.getItem(key));
+                    if (userData && userData.completedProblems) {
+                        const completedCount = userData.completedProblems.length;
+                        const row = leaderboard.insertRow();
+                        row.insertCell(0).textContent = key;
+                        row.insertCell(1).textContent = completedCount;
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html> 

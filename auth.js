@@ -23,7 +23,8 @@ function register() {
         reader.onload = function(event) {
             const userData = {
                 password: password,
-                avatar: event.target.result // 将头像的 base64 数据存储
+                avatar: event.target.result,
+                completedProblems: []
             };
             localStorage.setItem(username, JSON.stringify(userData));
             alert('注册成功！');
@@ -90,5 +91,26 @@ function changePassword() {
         closeUserCenter();
     } else {
         alert('请输入新密码。');
+    }
+}
+
+function markAsDone(problemId) {
+    const username = localStorage.getItem('currentUser');
+    if (!username) {
+        alert('请先登录！');
+        return;
+    }
+
+    const userData = JSON.parse(localStorage.getItem(username));
+    if (!userData.completedProblems) {
+        userData.completedProblems = [];
+    }
+
+    if (!userData.completedProblems.includes(problemId)) {
+        userData.completedProblems.push(problemId);
+        localStorage.setItem(username, JSON.stringify(userData));
+        alert('题目已标记为完成！');
+    } else {
+        alert('您已经完成了这个题目！');
     }
 } 
