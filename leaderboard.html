@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>排行榜</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
     <div class="container">
@@ -13,12 +14,14 @@
                 <tr>
                     <th>用户名</th>
                     <th>完成题目数</th>
+                    <th>操作</th>
                 </tr>
             </thead>
             <tbody>
                 <!-- 用户数据将插入在这里 -->
             </tbody>
         </table>
+        <a href="index.html" class="about-button">返回首页</a>
     </div>
 
     <script>
@@ -33,10 +36,27 @@
                         const row = leaderboard.insertRow();
                         row.insertCell(0).textContent = key;
                         row.insertCell(1).textContent = completedCount;
+                        const actionsCell = row.insertCell(2);
+                        actionsCell.innerHTML = `
+                            <button onclick="likeUser('${key}')" class="action-button">
+                                <i class="fas fa-thumbs-up"></i> 点赞
+                            </button>
+                            <button onclick="encourageUser('${key}')" class="action-button">
+                                <i class="fas fa-heart"></i> 鼓励
+                            </button>
+                        `;
                     }
                 }
             }
         });
+
+        function likeUser(username) {
+            alert(`您为 ${username} 点了赞！`);
+        }
+
+        function encourageUser(username) {
+            alert(`您为 ${username} 送上了鼓励！`);
+        }
     </script>
 </body>
 </html> 
