@@ -63,6 +63,7 @@
                 <span class="close" onclick="closeUserCenter()">&times;</span>
                 <h3>用户中心</h3>
                 <p>用户名: <span id="userCenterUsername"></span></p>
+                <p id="completedCount">已完成题目数: 0</p>
                 <h4>修改密码</h4>
                 <input type="password" id="newPassword" placeholder="新密码">
                 <button onclick="changePassword()">修改密码</button>
@@ -161,6 +162,27 @@
                 .finally(() => {
                     loadingDiv.style.display = 'none';
                 });
+        }
+
+        function markAsDone(problemId) {
+            const username = localStorage.getItem('currentUser');
+            if (!username) {
+                alert('请先登录！');
+                return;
+            }
+
+            const userData = JSON.parse(localStorage.getItem(username));
+            if (!userData.completedProblems) {
+                userData.completedProblems = [];
+            }
+
+            if (!userData.completedProblems.includes(problemId)) {
+                userData.completedProblems.push(problemId);
+                localStorage.setItem(username, JSON.stringify(userData));
+                alert('题目已标记为完成！');
+            } else {
+                alert('您已经完成了这个题目！');
+            }
         }
     </script>
     <script src="auth.js"></script>

@@ -66,8 +66,12 @@ function login() {
 
 function openUserCenter() {
     const username = localStorage.getItem('currentUser');
+    const userData = JSON.parse(localStorage.getItem(username));
     document.getElementById('userCenterUsername').textContent = username;
     document.getElementById('userCenter').style.display = 'block';
+
+    const completedCount = userData.completedProblems ? userData.completedProblems.length : 0;
+    document.getElementById('completedCount').textContent = `已完成题目数: ${completedCount}`;
 }
 
 function closeUserCenter() {

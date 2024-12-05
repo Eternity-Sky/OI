@@ -4,45 +4,73 @@
     <meta charset="UTF-8">
     <title>题目详情</title>
     <link rel="stylesheet" href="styles.css">
-    <script src="problems.js"></script>
-    <script src="solutions.js"></script>
+    <script src="problem.js"></script>
+    <script src="auth.js"></script>
 </head>
 <body>
     <div class="container">
-        <h1 id="title"></h1>
-        <p id="description"></p>
-        <div class="details">
-            <small><strong>难度:</strong> <span id="difficulty"></span></small><br>
-            <small><strong>标签:</strong> <span id="tags"></span></small><br>
-            <small><strong>输入格式:</strong> <span id="input"></span></small><br>
-            <small><strong>输出格式:</strong> <span id="output"></span></small><br>
-            <small><strong>样例输入:</strong> <pre id="sample_input"></pre></small><br>
-            <small><strong>样例输出:</strong> <pre id="sample_output"></pre></small><br>
-            <button onclick="viewSolution()">查看题解</button>
+        <h1>题目详情</h1>
+        <div id="problemDetails">
+            <!-- 题目详情内容 -->
         </div>
-        <a href="index.html">返回题库</a>
+        <button id="markDoneButton" onclick="markAsDone()">做完了！</button>
+        <p id="timerMessage" style="display:none;">请等待10分钟后再尝试。</p>
     </div>
 
     <script>
-        const urlParams = new URLSearchParams(window.location.search);
-        const problemId = urlParams.get('id');
-        const problem = problems.find(p => p.id == problemId);
+        document.addEventListener('DOMContentLoaded', () => {
+            const problemId = new URLSearchParams(window.location.search).get('id');
+            const problem = problems.find(p => p.id == problemId);
 
-        if (problem) {
-            document.getElementById('title').textContent = problem.title;
-            document.getElementById('description').textContent = problem.description;
-            document.getElementById('difficulty').textContent = problem.difficulty;
-            document.getElementById('tags').textContent = problem.tags.join(', ');
-            document.getElementById('input').textContent = problem.input;
-            document.getElementById('output').textContent = problem.output;
-            document.getElementById('sample_input').textContent = problem.sample_input;
-            document.getElementById('sample_output').textContent = problem.sample_output;
-        } else {
-            document.body.innerHTML = '<p>题目未找到。</p>';
-        }
+            if (problem) {
+                document.getElementById('problemDetails').innerHTML = `
+                    <h2>${problem.title}</h2>
+                    <p>${problem.description}</p>
+                    <small><strong>难度:</strong> ${problem.difficulty}</small><br>
+                    <small><strong>标签:</strong> ${problem.tags.join(', ')}</small><br>
+                    <small><strong>输入格式:</strong> ${problem.input}</small><br>
+                    <small><strong>输出格式:</strong> ${problem.output}</small><br>
+                    <small><strong>样例输入:</strong> <pre>${problem.sample_input}</pre></small><br>
+                    <small><strong>样例输出:</strong> <pre>${problem.sample_output}</pre></small><br>
+                `;
+            } else {
+                document.getElementById('problemDetails').innerHTML = '<p>题目未找到。</p>';
+                document.getElementById('markDoneButton').style.display = 'none';
+            }
+        });
 
-        function viewSolution() {
-            window.location.href = `solution.html?id=${problemId}`;
+        function markAsDone() {
+            const username = localStorage.getItem('currentUser');
+            if (!username) {
+                alert('请先登录！');
+                return;
+            }
+
+            const lastClickTime = localStorage.getItem(`lastClickTime_${username}`);
+            const currentTime = new Date().getTime();
+            const tenMinutes = 10 * 60 * 1000;
+
+            if (lastClickTime && (currentTime - lastClickTime < tenMinutes)) {
+                document.getElementById('timerMessage').style.display = 'block';
+                return;
+            }
+
+            const userData = JSON.parse(localStorage.getItem(username));
+            if (!userData.completedProblems) {
+                userData.completedProblems = [];
+            }
+
+            const problemId = new URLSearchParams(window.location.search).get('id');
+            if (!userData.completedProblems.includes(problemId)) {
+                userData.completedProblems.push(problemId);
+                localStorage.setItem(username, JSON.stringify(userData));
+                alert('题目已标记为完成！');
+            } else {
+                alert('您已经完成了这个题目！');
+            }
+
+            localStorage.setItem(`lastClickTime_${username}`, currentTime);
+            document.getElementById('timerMessage').style.display = 'none';
         }
     </script>
 </body>
