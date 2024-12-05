@@ -30,21 +30,25 @@
             for (let i = 0; i < localStorage.length; i++) {
                 const key = localStorage.key(i);
                 if (key !== 'currentUser') {
-                    const userData = JSON.parse(localStorage.getItem(key));
-                    if (userData && userData.completedProblems) {
-                        const completedCount = userData.completedProblems.length;
-                        const row = leaderboard.insertRow();
-                        row.insertCell(0).textContent = key;
-                        row.insertCell(1).textContent = completedCount;
-                        const actionsCell = row.insertCell(2);
-                        actionsCell.innerHTML = `
-                            <button onclick="likeUser('${key}')" class="action-button">
-                                <i class="fas fa-thumbs-up"></i> 点赞
-                            </button>
-                            <button onclick="encourageUser('${key}')" class="action-button">
-                                <i class="fas fa-heart"></i> 鼓励
-                            </button>
-                        `;
+                    try {
+                        const userData = JSON.parse(localStorage.getItem(key));
+                        if (userData && userData.completedProblems) {
+                            const completedCount = userData.completedProblems.length;
+                            const row = leaderboard.insertRow();
+                            row.insertCell(0).textContent = key;
+                            row.insertCell(1).textContent = completedCount;
+                            const actionsCell = row.insertCell(2);
+                            actionsCell.innerHTML = `
+                                <button onclick="likeUser('${key}')" class="action-button">
+                                    <i class="fas fa-thumbs-up"></i> 点赞
+                                </button>
+                                <button onclick="encourageUser('${key}')" class="action-button">
+                                    <i class="fas fa-heart"></i> 鼓励
+                                </button>
+                            `;
+                        }
+                    } catch (error) {
+                        console.error(`Error parsing data for key ${key}:`, error);
                     }
                 }
             }
