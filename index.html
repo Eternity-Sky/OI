@@ -10,6 +10,24 @@
 <body>
     <div class="container">
         <h1>题库</h1>
+        <div id="auth">
+            <button onclick="showLogin()">登录</button>
+            <button onclick="showRegister()">注册</button>
+        </div>
+        <div id="loginForm" style="display:none;">
+            <h3>登录</h3>
+            <input type="text" id="loginUsername" placeholder="用户名">
+            <input type="password" id="loginPassword" placeholder="密码">
+            <button onclick="login()">登录</button>
+        </div>
+        <div id="registerForm" style="display:none;">
+            <h3>注册</h3>
+            <input type="text" id="registerUsername" placeholder="用户名">
+            <input type="password" id="registerPassword" placeholder="密码">
+            <input type="file" id="registerAvatar" accept="image/*">
+            <button onclick="register()">注册</button>
+        </div>
+        <div id="avatarContainer" class="avatar-container"></div>
         <input type="text" id="searchInput" placeholder="输入题号或名称搜索">
         <select id="categorySelect">
             <option value="">所有分类</option>
@@ -31,6 +49,16 @@
             </a>
         </div>
         <div id="loading" style="display: none;">加载中...</div>
+        <div id="userCenter" class="modal" style="display:none;">
+            <div class="modal-content">
+                <span class="close" onclick="closeUserCenter()">&times;</span>
+                <h3>用户中心</h3>
+                <p>用户名: <span id="userCenterUsername"></span></p>
+                <h4>修改密码</h4>
+                <input type="password" id="newPassword" placeholder="新密码">
+                <button onclick="changePassword()">修改密码</button>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -126,5 +154,6 @@
                 });
         }
     </script>
+    <script src="auth.js"></script>
 </body>
 </html> 
