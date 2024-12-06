@@ -2,6 +2,8 @@
 
 一个现代化的在线编程题库系统，提供算法、数据结构等多个领域的编程练习题目。
 
+> 注意：本地开发版本可能与 GitHub 版本存在差异，请以本地版本为准。
+
 ## 功能特点
 
 ### 用户系统
@@ -25,16 +27,57 @@
 - 循序渐进的学习路径
 - 一键开始练习
 
-### 社交功能
-- 用户排行榜
-- 用户间消息系统
-- 点赞与鼓励机制
+## 版本说明
 
-### 界面特点
-- 响应式设计
-- 现代化UI界面
-- 清新明快的配色
-- 流畅的动画效果
+### 本地开发版本
+- 包含最新功能和改进
+- 实时更新的用户界面
+- 完整的本地存储功能
+
+### GitHub 版本
+- 稳定的基础功能
+- 定期同步更新
+- 开源参考实现
+
+## 分支管理
+
+- `main`: 主分支，保持稳定
+- `dev`: 开发分支，包含最新特性
+- `feature/*`: 新功能开发分支
+- `fix/*`: 问题修复分支
+
+## 本地运行
+
+1. 克隆项目到本地
+```bash
+git clone https://github.com/your-username/online-judge.git
+```
+
+2. 使用浏览器打开 index.html 即可运行
+
+## 开发指南
+
+1. 从 dev 分支创建新的功能分支
+```bash
+git checkout -b feature/new-feature dev
+```
+
+2. 开发完成后提交更改
+```bash
+git add .
+git commit -m "feat: add new feature"
+```
+
+3. 合并到开发分支
+```bash
+git checkout dev
+git merge feature/new-feature
+```
+
+4. 定期同步到 GitHub
+```bash
+git push origin dev
+```
 
 ## 技术栈
 
