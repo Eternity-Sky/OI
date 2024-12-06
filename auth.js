@@ -71,8 +71,38 @@ function openUserCenter() {
     document.getElementById('userCenterUsername').textContent = username;
     document.getElementById('userCenter').style.display = 'block';
 
+    // 计算成就
     const completedCount = userData.completedProblems ? userData.completedProblems.length : 0;
-    document.getElementById('completedCount').textContent = `已完成题目数: ${completedCount}`;
+    const achievements = [];
+    if (completedCount >= 10) achievements.push('题目大师');
+    if (completedCount >= 5) achievements.push('勤奋学习');
+    if (completedCount >= 1) achievements.push('开始征程');
+
+    // 更新用户中心内容
+    document.querySelector('.modal-content').innerHTML = `
+        <span class="close" onclick="closeUserCenter()">&times;</span>
+        <div class="user-center-profile">
+            <img src="${userData.avatar}" alt="头像" class="user-avatar">
+            <h3>${username}</h3>
+            <div class="user-stats">
+                <p>完成题目数: ${completedCount}</p>
+                <div class="achievements-section">
+                    <h4>成就</h4>
+                    <div class="achievements-list">
+                        ${achievements.length > 0 ? 
+                            achievements.map(a => `<span class="achievement-badge">${a}</span>`).join('') :
+                            '<p class="no-achievements">继续努力获取成就吧！</p>'
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="password-section">
+                <h4>修改密码</h4>
+                <input type="password" id="newPassword" placeholder="新密码">
+                <button onclick="changePassword()">修改密码</button>
+            </div>
+        </div>
+    `;
 }
 
 function closeUserCenter() {
