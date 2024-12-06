@@ -90,7 +90,16 @@
                         <input type="file" id="newAvatar" accept="image/*" style="display: none;" onchange="updateAvatar()">
                     </div>
                 </div>
-                <p>用户名: <span id="userCenterUsername"></span></p>
+                <div class="username-section">
+                    <p>用户名: <span id="userCenterUsername"></span></p>
+                    <div class="username-edit">
+                        <input type="text" id="newUsername" placeholder="新用户名">
+                        <button onclick="updateUsername()">修改用户名</button>
+                        <p class="limit-hint" id="usernameLimit" style="display: none;">
+                            今日已修改过用户名，请明天再试
+                        </p>
+                    </div>
+                </div>
                 <p id="completedCount">已完成题目数: 0</p>
                 <h4>修改密码</h4>
                 <input type="password" id="newPassword" placeholder="新密码">

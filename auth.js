@@ -256,4 +256,54 @@ function updateAvatar() {
         alert('头像更新成功！');
     };
     reader.readAsDataURL(file);
+}
+
+function updateUsername() {
+    const currentUser = localStorage.getItem('currentUser');
+    const newUsername = document.getElementById('newUsername').value.trim();
+    
+    if (!currentUser || !newUsername) {
+        alert('请输入新用户名');
+        return;
+    }
+    
+    // 检查新用户名是否已存在
+    if (localStorage.getItem(newUsername)) {
+        alert('用户名已存在，请选择其他用户名');
+        return;
+    }
+    
+    // 检查上次修改时间
+    const lastChangeTime = localStorage.getItem(`usernameChangeTime_${currentUser}`);
+    if (lastChangeTime) {
+        const now = new Date();
+        const last = new Date(parseInt(lastChangeTime));
+        
+        // 检查是否是同一天
+        if (now.toDateString() === last.toDateString()) {
+            document.getElementById('usernameLimit').style.display = 'block';
+            return;
+        }
+    }
+    
+    // 获取当前用户数据
+    const userData = JSON.parse(localStorage.getItem(currentUser));
+    
+    // 保存新用户数据
+    localStorage.setItem(newUsername, JSON.stringify(userData));
+    
+    // 删除旧用户数据
+    localStorage.removeItem(currentUser);
+    
+    // 更新当前用户
+    localStorage.setItem('currentUser', newUsername);
+    
+    // 记录修改时间
+    localStorage.setItem(`usernameChangeTime_${newUsername}`, Date.now());
+    
+    // 更新显示
+    document.getElementById('userCenterUsername').textContent = newUsername;
+    document.getElementById('newUsername').value = '';
+    
+    alert('用户名修改成功！');
 } 
