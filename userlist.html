@@ -20,6 +20,14 @@
     </div>
 
     <script>
+        function checkLogin() {
+            const currentUser = localStorage.getItem('currentUser');
+            if (!currentUser) {
+                alert('请先登录！');
+                window.location.href = 'index.html';
+            }
+        }
+
         function displayUserList() {
             const userList = document.getElementById('userList');
             userList.innerHTML = '';
@@ -68,6 +76,7 @@
         }
 
         document.addEventListener('DOMContentLoaded', () => {
+            checkLogin();
             displayUserList();
             displayInbox();
         });

@@ -293,6 +293,30 @@ th {
     vertical-align: middle;
 }
 
+#userList li, #inboxList li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 10px 0;
+    padding: 10px;
+    background-color: #f1f1f1;
+    border-radius: 4px;
+}
+
+#userList button {
+    margin-left: 10px;
+    padding: 5px 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#userList button:hover {
+    background-color: #45a049;
+}
 .header {
     position: absolute;
     top: 10px;
