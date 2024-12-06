@@ -65,18 +65,32 @@ function login() {
     }
 }
 
+// 添加等级计算函数
+function calculateLevel(completedCount) {
+    if (completedCount >= 50) return { level: "大师", color: "#ff4757", progress: 100 };
+    if (completedCount >= 30) return { level: "专家", color: "#ffa502", progress: 80 };
+    if (completedCount >= 20) return { level: "高手", color: "#2ed573", progress: 60 };
+    if (completedCount >= 10) return { level: "进阶", color: "#1e90ff", progress: 40 };
+    if (completedCount >= 5) return { level: "新手", color: "#a4b0be", progress: 20 };
+    return { level: "初学者", color: "#747d8c", progress: 0 };
+}
+
+// 修改 openUserCenter 函数
 function openUserCenter() {
     const username = localStorage.getItem('currentUser');
     const userData = JSON.parse(localStorage.getItem(username));
     document.getElementById('userCenterUsername').textContent = username;
     document.getElementById('userCenter').style.display = 'block';
 
-    // 计算成就
+    // 计算成就和等级
     const completedCount = userData.completedProblems ? userData.completedProblems.length : 0;
     const achievements = [];
     if (completedCount >= 10) achievements.push('题目大师');
     if (completedCount >= 5) achievements.push('勤奋学习');
     if (completedCount >= 1) achievements.push('开始征程');
+
+    const levelInfo = calculateLevel(completedCount);
+    const nextLevel = getNextLevel(completedCount);
 
     // 更新用户中心内容
     document.querySelector('.modal-content').innerHTML = `
@@ -86,6 +100,14 @@ function openUserCenter() {
             <h3>${username}</h3>
             <div class="user-stats">
                 <p>完成题目数: ${completedCount}</p>
+                <div class="level-section">
+                    <h4>当前等级: <span style="color: ${levelInfo.color}">${levelInfo.level}</span></h4>
+                    <div class="level-progress">
+                        <div class="progress-bar" style="width: ${levelInfo.progress}%; background-color: ${levelInfo.color}"></div>
+                    </div>
+                    ${nextLevel ? `<p class="next-level">距离 ${nextLevel.level} 还需完成 ${nextLevel.required - completedCount} 题</p>` : 
+                                '<p class="max-level">已达到最高等级！</p>'}
+                </div>
                 <div class="achievements-section">
                     <h4>成就</h4>
                     <div class="achievements-list">
@@ -143,4 +165,14 @@ function markAsDone(problemId) {
     } else {
         alert('您已经完成了这个题目！');
     }
+}
+
+// 获取下一个等级信息
+function getNextLevel(completedCount) {
+    if (completedCount >= 50) return null;
+    if (completedCount >= 30) return { level: "大师", required: 50 };
+    if (completedCount >= 20) return { level: "专家", required: 30 };
+    if (completedCount >= 10) return { level: "高手", required: 20 };
+    if (completedCount >= 5) return { level: "进阶", required: 10 };
+    return { level: "新手", required: 5 };
 } 
