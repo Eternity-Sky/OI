@@ -9,13 +9,21 @@
 <body>
     <div class="container">
         <h1>用户列表</h1>
-        <ul id="userList">
-            <!-- 用户数据将插入在这里 -->
-        </ul>
-        <h2>收件箱</h2>
-        <ul id="inboxList">
-            <!-- 收件箱消息将插入在这里 -->
-        </ul>
+        <div id="currentUser">
+            <!-- 当前用户信息 -->
+        </div>
+        <div class="all-users">
+            <h2>所有用户</h2>
+            <ul id="userList">
+                <!-- 所有用户列表 -->
+            </ul>
+        </div>
+        <div class="inbox-section">
+            <h2>我的收件箱</h2>
+            <ul id="inboxList">
+                <!-- 收件箱消息将插入在这里 -->
+            </ul>
+        </div>
         <a href="index.html" class="about-button">返回首页</a>
     </div>
 
@@ -25,24 +33,51 @@
             if (!currentUser) {
                 alert('请先登录！');
                 window.location.href = 'index.html';
+                return;
             }
+            return currentUser;
         }
 
-        function displayUserList() {
+        function displayCurrentUser() {
+            const currentUser = checkLogin();
+            if (!currentUser) return;
+
+            const userData = JSON.parse(localStorage.getItem(currentUser));
+            const currentUserDiv = document.getElementById('currentUser');
+            currentUserDiv.innerHTML = `
+                <div class="user-profile">
+                    <img src="${userData.avatar}" alt="头像" class="user-avatar">
+                    <div class="user-info">
+                        <h3>${currentUser}</h3>
+                        <p>完成题目数: ${userData.completedProblems ? userData.completedProblems.length : 0}</p>
+                    </div>
+                </div>
+            `;
+        }
+
+        function displayAllUsers() {
             const userList = document.getElementById('userList');
             userList.innerHTML = '';
+            const currentUser = localStorage.getItem('currentUser');
 
             for (let i = 0; i < localStorage.length; i++) {
                 const key = localStorage.key(i);
                 if (key !== 'currentUser' && key !== 'inbox') {
-                    const userData = JSON.parse(localStorage.getItem(key));
-                    const listItem = document.createElement('li');
-                    listItem.innerHTML = `
-                        <img src="${userData.avatar}" alt="头像" class="user-avatar-small">
-                        ${key}
-                        <button onclick="sendMessage('${key}')">私信</button>
-                    `;
-                    userList.appendChild(listItem);
+                    try {
+                        const userData = JSON.parse(localStorage.getItem(key));
+                        const listItem = document.createElement('li');
+                        listItem.innerHTML = `
+                            <div class="user-item">
+                                <img src="${userData.avatar}" alt="头像" class="user-avatar-small">
+                                <span class="username">${key}</span>
+                                <span class="completed-count">完成题目: ${userData.completedProblems ? userData.completedProblems.length : 0}</span>
+                                ${key !== currentUser ? `<button onclick="sendMessage('${key}')" class="message-btn">发送消息</button>` : '<span class="current-user-tag">当前用户</span>'}
+                            </div>
+                        `;
+                        userList.appendChild(listItem);
+                    } catch (error) {
+                        console.error(`Error parsing user data for ${key}:`, error);
+                    }
                 }
             }
         }
@@ -61,10 +96,12 @@
         }
 
         function displayInbox() {
+            const currentUser = checkLogin();
+            if (!currentUser) return;
+
             const inboxList = document.getElementById('inboxList');
             inboxList.innerHTML = '';
 
-            const currentUser = localStorage.getItem('currentUser');
             const inbox = JSON.parse(localStorage.getItem('inbox') || '{}');
             const messages = inbox[currentUser] || [];
 
@@ -76,8 +113,8 @@
         }
 
         document.addEventListener('DOMContentLoaded', () => {
-            checkLogin();
-            displayUserList();
+            displayCurrentUser();
+            displayAllUsers();
             displayInbox();
         });
     </script>
