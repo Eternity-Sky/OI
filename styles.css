@@ -1093,20 +1093,14 @@ th {
 }
 
 .calendar-welcome {
-    text-align: left;
     margin: 20px 0;
     padding: 15px;
     background-color: #E3F2FD;
     border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(33, 150, 243, 0.1);
     width: 200px;
-    position: absolute;
-    right: 20px;
-    top: 70px;
 }
 
 .welcome-text {
-    font-size: 1.2em;
     color: #333;
     margin-bottom: 10px;
 }
@@ -1114,68 +1108,63 @@ th {
 .calendar-display {
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
-    gap: 10px;
+    gap: 5px;
 }
 
 .date-info {
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
     gap: 5px;
 }
 
-.date-info .month,
-.date-info .weekday {
+.date-info .month {
     color: #666;
     font-size: 1em;
 }
 
 .date-info .day {
     color: #2196F3;
-    font-size: 2.5em;
+    font-size: 3em;
     font-weight: bold;
     line-height: 1;
+}
+
+.date-info .weekday {
+    color: #666;
+    font-size: 1em;
 }
 
 .countdown-info {
     display: flex;
     flex-direction: column;
-    gap: 5px;
-    text-align: left;
-    width: 100%;
-    margin: 10px 0;
+    gap: 8px;
+    margin: 15px 0;
 }
 
 .countdown-item {
-    color: #666;
-    font-size: 0.9em;
     display: flex;
-    flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    gap: 10px;
-    width: 100%;
+    color: #666;
+    font-size: 0.9em;
 }
 
 .countdown-item span {
     color: #2196F3;
     font-weight: bold;
-    font-size: 1em;
 }
 
 .checkin-btn {
     background-color: #FF9800;
     color: white;
     border: none;
-    padding: 8px 16px;
+    padding: 10px;
     border-radius: 4px;
     cursor: pointer;
     transition: all 0.3s ease;
     width: 100%;
     margin-top: 10px;
-    text-align: center;
-    justify-content: center;
+    font-size: 1em;
 }
 
 .checkin-btn:hover {
