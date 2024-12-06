@@ -40,7 +40,9 @@
         <input type="text" id="searchInput" placeholder="输入题号或名称搜索">
         <select id="categorySelect">
             <option value="">所有分类</option>
-            <!-- 动态加载的分类选项将插入在这里 -->
+            <option value="算法">算法</option>
+            <option value="数据结构">数据结构</option>
+            <option value="数学">数学</option>
         </select>
         <select id="difficultySelect">
             <option value="">所有难度</option>
@@ -138,52 +140,6 @@
 
         function viewDetails(id) {
             window.location.href = `problem.html?id=${id}`;
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            fetchCategories();
-        });
-
-        function fetchCategories() {
-            const loadingDiv = document.getElementById('loading');
-            loadingDiv.style.display = 'block';
-
-            fetch('/api/categories')
-                .then(response => response.json())
-                .then(categories => {
-                    const categorySelect = document.getElementById('categorySelect');
-                    categories.forEach(category => {
-                        const option = document.createElement('option');
-                        option.value = category.name;
-                        option.textContent = category.name;
-                        categorySelect.appendChild(option);
-                    });
-                })
-                .catch(error => console.error('Error fetching categories:', error))
-                .finally(() => {
-                    loadingDiv.style.display = 'none';
-                });
-        }
-
-        function markAsDone(problemId) {
-            const username = localStorage.getItem('currentUser');
-            if (!username) {
-                alert('请先登录！');
-                return;
-            }
-
-            const userData = JSON.parse(localStorage.getItem(username));
-            if (!userData.completedProblems) {
-                userData.completedProblems = [];
-            }
-
-            if (!userData.completedProblems.includes(problemId)) {
-                userData.completedProblems.push(problemId);
-                localStorage.setItem(username, JSON.stringify(userData));
-                alert('题目已标记为完成！');
-            } else {
-                alert('您已经完成了这个题目！');
-            }
         }
     </script>
     <script src="auth.js"></script>
