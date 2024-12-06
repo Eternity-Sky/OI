@@ -310,11 +310,11 @@ const problems = [
     {
         id: 29,
         title: "过河卒(Noip2002)",
-        description: "卒从A点到B点，中间有马的攻击范围，求可行路径数。",
-        input: "棋盘大小和马的位置。",
+        description: "棋盘上A点(0,0)有一个过河卒，需要走到目标B点(n,m)。卒只能向下或向右走。棋盘上某一点有一个对方的马，该马所在的点和所有跳跃一步可达的点都称为马的控制点，卒不能通过这些控制点。已知B点坐标(n,m)（n,m不超过20）和马的位置坐标(x,y)（不与起点终点重合），求卒从A点到B点的可行路径数。",
+        input: "一行四个整数n、m、x、y，分别表示B点坐标(n,m)和马的位置(x,y)。",
         output: "可行路径数。",
-        sample_input: "6 6 3 3",
-        sample_output: "6",
+        sample_input: "8 6 0 4",
+        sample_output: "1617",
         difficulty: "中等",
         tags: ["动态规划", "递推"]
     },
