@@ -178,6 +178,8 @@ img {
     position: absolute;
     top: 10px;
     right: 10px;
+    display: flex;
+    align-items: center;
 }
 
 .user-avatar {
@@ -593,4 +595,21 @@ th {
     font-size: 0.9em;
     font-weight: bold;
     margin-left: 5px;
+}
+
+.logout-btn {
+    position: absolute;
+    top: 0;
+    right: -30px;
+    background: none;
+    border: none;
+    color: #ff4757;
+    cursor: pointer;
+    padding: 5px;
+    font-size: 16px;
+    transition: color 0.3s;
+}
+
+.logout-btn:hover {
+    color: #ff6b81;
 }
