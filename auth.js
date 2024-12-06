@@ -386,7 +386,7 @@ function updateCalendar() {
     const months = ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'];
     const weekdays = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'];
     
-    // 设置当前日期
+    // 设置当前日���
     document.querySelector('.month').textContent = months[now.getMonth()];
     document.querySelector('.day').textContent = now.getDate().toString().padStart(2, '0');
     document.querySelector('.weekday').textContent = weekdays[now.getDay()];
@@ -402,8 +402,63 @@ function updateCalendar() {
     document.getElementById('countdown2').textContent = days2;
 }
 
+const quotes = [
+    { text: "编程不仅是代码，更是一种思维方式。", author: "Linus Torvalds" },
+    { text: "简单是可靠的前提。", author: "Edsger Dijkstra" },
+    { text: "程序写出来是给人看的，附带能在机器上运行。", author: "Harold Abelson" },
+    { text: "软件就像做园艺一样，不仅要写代码，还要修剪和维护。", author: "Donald Knuth" },
+    { text: "任何傻瓜都能写出计算机能理解的代码，优秀的程序员写出人能理解的代码。", author: "Martin Fowler" }
+];
+
+function updateDailyQuote() {
+    const today = new Date().toDateString();
+    const quoteIndex = Math.floor(((new Date(today)).getTime() / 86400000) % quotes.length);
+    const quote = quotes[quoteIndex];
+    
+    document.getElementById('dailyQuote').textContent = quote.text;
+    document.querySelector('.quote-author').textContent = `——${quote.author}`;
+}
+
+function updateDailyStats() {
+    const currentUser = localStorage.getItem('currentUser');
+    if (!currentUser) return;
+    
+    const userData = JSON.parse(localStorage.getItem(currentUser));
+    const today = new Date().toDateString();
+    
+    // 计算今日完成题目数
+    const todayCompleted = (userData.completedProblems || [])
+        .filter(id => userData.completionDates[id]?.startsWith(today))
+        .length;
+    
+    // 计算连续打卡天数
+    let streakDays = 0;
+    if (userData.checkins) {
+        const sortedDates = userData.checkins.sort();
+        const lastDate = new Date(sortedDates[sortedDates.length - 1]);
+        let currentStreak = 1;
+        
+        for (let i = sortedDates.length - 2; i >= 0; i--) {
+            const currentDate = new Date(sortedDates[i]);
+            const diffDays = Math.floor((lastDate - currentDate) / (1000 * 60 * 60 * 24));
+            
+            if (diffDays === currentStreak) {
+                currentStreak++;
+            } else {
+                break;
+            }
+        }
+        streakDays = currentStreak;
+    }
+    
+    document.getElementById('todayCompleted').textContent = todayCompleted;
+    document.getElementById('streakDays').textContent = streakDays;
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     checkLoginStatus();
     updateWelcomeInfo();
     updateCalendar();
+    updateDailyQuote();
+    updateDailyStats();
 }); 
