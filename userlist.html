@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>用户列表</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1>用户列表</h1>
+        <ul id="userList">
+            <!-- 用户数据将插入在这里 -->
+        </ul>
+        <h2>收件箱</h2>
+        <ul id="inboxList">
+            <!-- 收件箱消息将插入在这里 -->
+        </ul>
+        <a href="index.html" class="about-button">返回首页</a>
+    </div>
+
+    <script>
+        function displayUserList() {
+            const userList = document.getElementById('userList');
+            userList.innerHTML = '';
+
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                if (key !== 'currentUser' && key !== 'inbox') {
+                    const userData = JSON.parse(localStorage.getItem(key));
+                    const listItem = document.createElement('li');
+                    listItem.innerHTML = `
+                        <img src="${userData.avatar}" alt="头像" class="user-avatar-small">
+                        ${key}
+                        <button onclick="sendMessage('${key}')">私信</button>
+                    `;
+                    userList.appendChild(listItem);
+                }
+            }
+        }
+
+        function sendMessage(toUser) {
+            const message = prompt(`发送给 ${toUser} 的消息:`);
+            if (message) {
+                const inbox = JSON.parse(localStorage.getItem('inbox') || '{}');
+                if (!inbox[toUser]) {
+                    inbox[toUser] = [];
+                }
+                inbox[toUser].push({ from: localStorage.getItem('currentUser'), message });
+                localStorage.setItem('inbox', JSON.stringify(inbox));
+                alert('消息已发送！');
+            }
+        }
+
+        function displayInbox() {
+            const inboxList = document.getElementById('inboxList');
+            inboxList.innerHTML = '';
+
+            const currentUser = localStorage.getItem('currentUser');
+            const inbox = JSON.parse(localStorage.getItem('inbox') || '{}');
+            const messages = inbox[currentUser] || [];
+
+            messages.forEach(msg => {
+                const listItem = document.createElement('li');
+                listItem.textContent = `来自 ${msg.from}: ${msg.message}`;
+                inboxList.appendChild(listItem);
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            displayUserList();
+            displayInbox();
+        });
+    </script>
+</body>
+</html> 

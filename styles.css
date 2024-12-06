@@ -281,3 +281,31 @@ th {
 .action-button i {
     margin-right: 5px;
 } 
+.user-list, .inbox {
+    margin-top: 20px;
+}
+
+.user-avatar-small {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin-right: 10px;
+    vertical-align: middle;
+}
+
+.header {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+}
+
+.mail-icon {
+    color: #333;
+    text-decoration: none;
+    font-size: 24px;
+    transition: color 0.3s;
+}
+
+.mail-icon:hover {
+    color: #007bff;
+}

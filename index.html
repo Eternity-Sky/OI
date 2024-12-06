@@ -18,6 +18,11 @@
 </head>
 <body>
     <div class="container">
+        <div class="header">
+            <a href="userlist.html" class="mail-icon">
+                <i class="fas fa-envelope"></i>
+            </a>
+        </div>
         <h1>题库</h1>
         <div id="auth">
             <button onclick="showLogin()">登录</button>
@@ -53,6 +58,7 @@
         <button onclick="searchProblem()">搜索</button>
         <div id="problems"></div>
         <div id="pagination"></div>
+
         <div class="footer">
             <a href="about.html" class="about-button">关于我们</a>
             <a href="leaderboard.html" class="about-button">排行榜</a>
@@ -136,12 +142,14 @@
             }
         }
 
-        displayProblems(problems);
-
         function viewDetails(id) {
             window.location.href = `problem.html?id=${id}`;
         }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            displayProblems(problems);
+        });
     </script>
     <script src="auth.js"></script>
 </body>
-</html> 
+</html>
