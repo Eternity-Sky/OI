@@ -119,5 +119,115 @@ const problems = [
         sample_output: "3",
         difficulty: "困难",
         tags: ["递推", "动态规划"]
+    },
+    {
+        id: 12,
+        title: "快速排序",
+        description: "实现快速排序算法。",
+        input: "一个整数数组。",
+        output: "排序后的数组。",
+        sample_input: "5 2 9 1 7 6 3",
+        sample_output: "1 2 3 5 6 7 9",
+        difficulty: "中等",
+        tags: ["算法", "排序"]
+    },
+    {
+        id: 13,
+        title: "二叉树遍历",
+        description: "实现二叉树的前序、中序和后序遍历。",
+        input: "一个二叉树。",
+        output: "三种遍历序列。",
+        sample_input: "1 2 3 4 5 null 6",
+        sample_output: "前序：1 2 4 5 3 6\n中序：4 2 5 1 3 6\n后序：4 5 2 6 3 1",
+        difficulty: "中等",
+        tags: ["数据结构", "树"]
+    },
+    {
+        id: 14,
+        title: "最短路径",
+        description: "使用Dijkstra算法求解最短路径问题。",
+        input: "图的邻接矩阵和起点。",
+        output: "从起点到所有点的最短距离。",
+        sample_input: "4\n0 2 4 ∞\n2 0 1 3\n4 1 0 1\n∞ 3 1 0\n0",
+        sample_output: "0 2 3 4",
+        difficulty: "困难",
+        tags: ["算法", "图论"]
+    },
+    {
+        id: 15,
+        title: "背包问题",
+        description: "解决0-1背包问题。",
+        input: "物品的重量和价值，背包容量。",
+        output: "最大价值。",
+        sample_input: "N=3, W=4\n2 3\n1 2\n3 4",
+        sample_output: "6",
+        difficulty: "中等",
+        tags: ["动态规划", "算法"]
+    },
+    {
+        id: 16,
+        title: "平衡二叉树",
+        description: "实现AVL树的插入和删除操作。",
+        input: "一系列操作指令。",
+        output: "操作后的树结构。",
+        sample_input: "insert 3\ninsert 1\ninsert 4\ndelete 1",
+        sample_output: "3\n  4",
+        difficulty: "困难",
+        tags: ["数据结构", "树"]
+    },
+    {
+        id: 17,
+        title: "矩阵快速幂",
+        description: "计算矩阵的n次幂。",
+        input: "一个矩阵和幂次n。",
+        output: "结果矩阵。",
+        sample_input: "2 2\n1 1\n1 0\n2",
+        sample_output: "2 1\n1 1",
+        difficulty: "中等",
+        tags: ["数学", "矩阵"]
+    },
+    {
+        id: 18,
+        title: "线段树",
+        description: "实现线段树的区间查询和修改。",
+        input: "数组和操作序列。",
+        output: "查询结果。",
+        sample_input: "1 3 5 7 9 11\nquery 1 3\nupdate 2 4\nquery 1 3",
+        sample_output: "15\n12",
+        difficulty: "困难",
+        tags: ["数据结构", "树"]
+    },
+    {
+        id: 19,
+        title: "最长回文子串",
+        description: "找出字符串中最长的回文子串。",
+        input: "一个字符串。",
+        output: "最长回文子串。",
+        sample_input: "babad",
+        sample_output: "bab",
+        difficulty: "中等",
+        tags: ["字符串", "动态规划"]
+    },
+    {
+        id: 20,
+        title: "并查集",
+        description: "实现并查集的合并和查找操作。",
+        input: "元素集合和操作序列。",
+        output: "操作结果。",
+        sample_input: "5\nunion 1 2\nunion 3 4\nfind 1 4",
+        sample_output: "false",
+        difficulty: "中等",
+        tags: ["数据结构", "图论"]
+    },
+    {
+        id: 21,
+        title: "红黑树",
+        description: "实现红黑树的插入和删除操作。",
+        input: "操作序列。",
+        output: "树的状态。",
+        sample_input: "insert 5\ninsert 3\ninsert 7\ndelete 3",
+        sample_output: "5(B)\n  7(R)",
+        difficulty: "困难",
+        tags: ["数据结构", "树"]
     }
 ]; 

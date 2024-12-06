@@ -56,6 +56,10 @@
             <option value="困难">困难</option>
         </select>
         <button onclick="searchProblem()">搜索</button>
+        <div class="recommendations">
+            <h3>今日推荐</h3>
+            <div id="recommendedProblems"></div>
+        </div>
         <div id="problems"></div>
         <div id="pagination"></div>
         <div class="footer">
@@ -75,6 +79,42 @@
                 <h4>修改密码</h4>
                 <input type="password" id="newPassword" placeholder="新密码">
                 <button onclick="changePassword()">修改密码</button>
+                <div class="progress-tracking">
+                    <h3>学习进度</h3>
+                    <div class="progress-categories">
+                        <div class="category">
+                            <h4>算法</h4>
+                            <div class="progress-bar">
+                                <div class="progress" id="algorithmProgress"></div>
+                            </div>
+                        </div>
+                        <div class="category">
+                            <h4>数据结构</h4>
+                            <div class="progress-bar">
+                                <div class="progress" id="dataStructureProgress"></div>
+                            </div>
+                        </div>
+                        <div class="category">
+                            <h4>数学</h4>
+                            <div class="progress-bar">
+                                <div class="progress" id="mathProgress"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="learning-goals">
+                    <h3>学习目标</h3>
+                    <div class="goal-setting">
+                        <input type="number" id="weeklyGoal" placeholder="设置每周目标题数">
+                        <button onclick="setWeeklyGoal()">设置目标</button>
+                    </div>
+                    <div class="goal-progress">
+                        <p>本周已完成: <span id="weeklyCompleted">0</span>/<span id="weeklyTarget">0</span></p>
+                        <div class="progress-bar">
+                            <div class="progress" id="weeklyProgress"></div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -163,9 +203,107 @@
             }
         }
 
+        function getRecommendations() {
+            const currentUser = localStorage.getItem('currentUser');
+            if (!currentUser) return [];
+            
+            const userData = JSON.parse(localStorage.getItem(currentUser));
+            const completedProblems = userData.completedProblems || [];
+            
+            return problems.filter(problem => {
+                return !completedProblems.includes(problem.id) &&
+                       isAppropriateLevel(problem, completedProblems);
+            }).slice(0, 3);
+        }
+
+        function isAppropriateLevel(problem, completedProblems) {
+            const completedCount = completedProblems.length;
+            if (completedCount < 5) return problem.difficulty === "简单";
+            if (completedCount < 15) return problem.difficulty === "中等";
+            return true;
+        }
+
+        function displayRecommendations() {
+            const recommendedProblems = getRecommendations();
+            const container = document.getElementById('recommendedProblems');
+            
+            container.innerHTML = recommendedProblems.map(problem => `
+                <div class="recommended-problem">
+                    <h4>${problem.title}</h4>
+                    <span class="difficulty-${problem.difficulty.toLowerCase()}">${problem.difficulty}</span>
+                    <p>推荐原因：适合您当前的学习进度</p>
+                    <button onclick="viewDetails(${problem.id})">开始挑战</button>
+                </div>
+            `).join('');
+        }
+
+        function updateProgress() {
+            const currentUser = localStorage.getItem('currentUser');
+            if (!currentUser) return;
+            
+            const userData = JSON.parse(localStorage.getItem(currentUser));
+            const completedProblems = userData.completedProblems || [];
+            
+            // 计算各类别的完成进度
+            const categories = {
+                algorithm: problems.filter(p => p.tags.includes('算法')),
+                dataStructure: problems.filter(p => p.tags.includes('数据结构')),
+                math: problems.filter(p => p.tags.includes('数学'))
+            };
+            
+            // 更新进度条
+            Object.entries(categories).forEach(([category, problems]) => {
+                const completed = problems.filter(p => completedProblems.includes(p.id)).length;
+                const percentage = (completed / problems.length) * 100;
+                document.getElementById(`${category}Progress`).style.width = `${percentage}%`;
+            });
+        }
+
+        function setWeeklyGoal() {
+            const goal = document.getElementById('weeklyGoal').value;
+            const currentUser = localStorage.getItem('currentUser');
+            if (!currentUser || !goal) return;
+            
+            const userData = JSON.parse(localStorage.getItem(currentUser));
+            userData.weeklyGoal = parseInt(goal);
+            userData.weeklyGoalStartDate = new Date().toISOString();
+            localStorage.setItem(currentUser, JSON.stringify(userData));
+            
+            updateWeeklyProgress();
+        }
+
+        function updateWeeklyProgress() {
+            const currentUser = localStorage.getItem('currentUser');
+            if (!currentUser) return;
+            
+            const userData = JSON.parse(localStorage.getItem(currentUser));
+            const weeklyGoal = userData.weeklyGoal || 0;
+            const startDate = new Date(userData.weeklyGoalStartDate || new Date());
+            const completedThisWeek = getCompletedProblemsThisWeek(userData);
+            
+            document.getElementById('weeklyTarget').textContent = weeklyGoal;
+            document.getElementById('weeklyCompleted').textContent = completedThisWeek;
+            document.getElementById('weeklyProgress').style.width = 
+                `${(completedThisWeek / weeklyGoal) * 100}%`;
+        }
+
+        function getCompletedProblemsThisWeek(userData) {
+            // 计算本周完成的题目数
+            const startOfWeek = new Date();
+            startOfWeek.setHours(0, 0, 0, 0);
+            startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay());
+            
+            return (userData.completedProblems || []).filter(id => {
+                const completionDate = new Date(userData.completionDates[id]);
+                return completionDate >= startOfWeek;
+            }).length;
+        }
+
         document.addEventListener('DOMContentLoaded', () => {
             displayProblems(problems);
-            displayProblemSets(); 
+            displayProblemSets();
+            displayRecommendations();
+            updateProgress();
         });
     </script>
     <script src="auth.js"></script>

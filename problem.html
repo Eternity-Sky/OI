@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>题目详情</title>
     <link rel="stylesheet" href="styles.css">
-    <script src="problem.js"></script>
+    <script src="problems.js"></script>
     <script src="auth.js"></script>
 </head>
 <body>
@@ -15,11 +15,20 @@
         </div>
         <button id="markDoneButton" onclick="markAsDone()">做完了！</button>
         <p id="timerMessage" style="display:none;">请等待10分钟后再尝试。</p>
+        <div class="footer">
+            <a href="index.html" class="about-button">返回首页</a>
+        </div>
     </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const problemId = new URLSearchParams(window.location.search).get('id');
+            if (!problemId) {
+                document.getElementById('problemDetails').innerHTML = '<p>未找到题目ID。</p>';
+                document.getElementById('markDoneButton').style.display = 'none';
+                return;
+            }
+
             const problem = problems.find(p => p.id == problemId);
 
             if (problem) {

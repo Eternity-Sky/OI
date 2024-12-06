@@ -1,7 +1,7 @@
 body {
     margin: 0;
     font-family: Arial, sans-serif;
-    background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+    background: linear-gradient(135deg, #E3F2FD, #BBDEFB);
     background-size: 200% 200%;
     animation: gradientAnimation 5s ease infinite;
 }
@@ -15,9 +15,9 @@ body {
     max-width: 800px;
     margin: 0 auto;
     padding: 20px;
-    background-color: rgba(255, 255, 255, 0.9);
+    background-color: rgba(255, 255, 255, 0.95);
     border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 12px rgba(33, 150, 243, 0.15);
     transition: transform 0.3s;
 }
 .container:hover {
@@ -51,7 +51,7 @@ pre {
 }
 button {
     padding: 10px 20px;
-    background-color: #4CAF50;
+    background-color: #2196F3;
     color: white;
     border: none;
     border-radius: 4px;
@@ -59,10 +59,10 @@ button {
     transition: background-color 0.3s;
 }
 button:hover {
-    background-color: #45a049;
+    background-color: #1976D2;
 }
 button.active {
-    background-color: #218838;
+    background-color: #1565C0;
 }
 a {
     display: inline-block;
@@ -81,13 +81,13 @@ small {
     color: #555;
 }
 .difficulty-easy {
-    color: green;
+    color: #4CAF50;
 }
 .difficulty-medium {
-    color: orange;
+    color: #FF9800;
 }
 .difficulty-hard {
-    color: red;
+    color: #F44336;
 }
 .tag {
     display: inline-block;
@@ -106,13 +106,13 @@ small {
     border-bottom: 1px solid #ddd;
 }
 .about-button {
-    color: #4CAF50;
+    color: #2196F3;
     text-decoration: none;
     transition: color 0.3s;
     margin-left: 10px;
 }
 .about-button:hover {
-    color: #45a049;
+    color: #1976D2;
 }
 .footer {
     text-align: center;
@@ -392,7 +392,7 @@ th {
 }
 
 .achievement-badge {
-    background-color: #ffd700;
+    background-color: #90CAF9;
     color: #333;
     padding: 2px 8px;
     border-radius: 12px;
@@ -493,7 +493,7 @@ th {
     height: 100px;
     border-radius: 50%;
     margin: 0 auto 20px;
-    border: 3px solid #4CAF50;
+    border: 3px solid #2196F3;
 }
 
 .user-stats {
@@ -503,7 +503,7 @@ th {
 .achievements-section {
     margin: 20px 0;
     padding: 15px;
-    background-color: #f8f9fa;
+    background-color: #E3F2FD;
     border-radius: 8px;
 }
 
@@ -557,7 +557,7 @@ th {
 .level-section {
     margin: 20px 0;
     padding: 15px;
-    background-color: #f8f9fa;
+    background-color: #E3F2FD;
     border-radius: 8px;
 }
 
@@ -612,4 +612,25 @@ th {
 
 .logout-btn:hover {
     color: #ff6b81;
+}
+
+#pagination button {
+    margin: 0 5px;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    background-color: #2196F3;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+#pagination button:hover {
+    background-color: #1976D2;
+    transform: scale(1.05);
+}
+
+#pagination button.active {
+    background-color: #1565C0;
+    font-weight: bold;
 }

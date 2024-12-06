@@ -55,11 +55,15 @@ function login() {
         avatarImg.src = userData.avatar;
         avatarImg.alt = '用户头像';
         avatarImg.className = 'user-avatar';
-        avatarImg.onclick = openUserCenter; // 点击头像打开用户中心
+        avatarImg.onclick = openUserCenter;
         avatarContainer.appendChild(avatarImg);
 
         // 存储当前登录的用户名
         localStorage.setItem('currentUser', username);
+        // 设置登录状态
+        localStorage.setItem('isLoggedIn', 'true');
+        // 设置登录时间戳
+        localStorage.setItem('loginTimestamp', Date.now());
     } else {
         alert('用户名或密码错误。');
     }
@@ -175,4 +179,56 @@ function getNextLevel(completedCount) {
     if (completedCount >= 10) return { level: "高手", required: 20 };
     if (completedCount >= 5) return { level: "进阶", required: 10 };
     return { level: "新手", required: 5 };
-} 
+}
+
+// 添加检查登录状态的函数
+function checkLoginStatus() {
+    const isLoggedIn = localStorage.getItem('isLoggedIn');
+    const loginTimestamp = localStorage.getItem('loginTimestamp');
+    const currentUser = localStorage.getItem('currentUser');
+    
+    // 如果登录状态存在且未过期（这里设置7天过期）
+    if (isLoggedIn === 'true' && loginTimestamp && currentUser) {
+        const now = Date.now();
+        const sevenDays = 7 * 24 * 60 * 60 * 1000;
+        
+        if (now - parseInt(loginTimestamp) < sevenDays) {
+            // 恢复登录状态
+            const userData = JSON.parse(localStorage.getItem(currentUser));
+            if (userData) {
+                document.getElementById('loginForm').style.display = 'none';
+                document.getElementById('auth').style.display = 'none';
+                
+                const avatarContainer = document.getElementById('avatarContainer');
+                avatarContainer.innerHTML = '';
+                const avatarImg = document.createElement('img');
+                avatarImg.src = userData.avatar;
+                avatarImg.alt = '用户头像';
+                avatarImg.className = 'user-avatar';
+                avatarImg.onclick = openUserCenter;
+                avatarContainer.appendChild(avatarImg);
+                
+                return true;
+            }
+        }
+    }
+    
+    // 如果登录已过期，清除登录状态
+    localStorage.removeItem('isLoggedIn');
+    localStorage.removeItem('loginTimestamp');
+    localStorage.removeItem('currentUser');
+    return false;
+}
+
+// 修改登出函数
+function logout() {
+    localStorage.removeItem('isLoggedIn');
+    localStorage.removeItem('loginTimestamp');
+    localStorage.removeItem('currentUser');
+    window.location.reload();
+}
+
+// 在页面加载时检查登录状态
+document.addEventListener('DOMContentLoaded', () => {
+    checkLoginStatus();
+}); 
