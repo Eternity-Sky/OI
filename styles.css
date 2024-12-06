@@ -1000,96 +1000,94 @@ th {
 }
 
 .user-welcome {
-    background: linear-gradient(135deg, #2196F3, #1976D2);
-    color: white;
-    padding: 20px;
-    border-radius: 8px;
-    margin: 20px 0;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    box-shadow: 0 4px 12px rgba(33, 150, 243, 0.2);
+    justify-content: flex-end;
+    align-items: flex-start;
+    margin: 20px 0;
+    padding: 0;
 }
 
 .welcome-text {
-    flex: 1;
+    text-align: right;
+    color: #333;
 }
 
 .welcome-text h2 {
     margin: 0;
-    color: white;
+    color: #333;
     font-size: 1.5em;
-    text-align: left;
+    text-align: right;
 }
 
 .calendar-info {
     display: flex;
-    align-items: center;
+    flex-direction: column;
     margin-top: 15px;
-    gap: 30px;
+    gap: 5px;
 }
 
 .date-info {
     display: flex;
-    align-items: center;
-    gap: 10px;
+    flex-direction: column;
+    align-items: flex-end;
 }
 
 .date-info .month {
     font-size: 1.1em;
+    color: #666;
 }
 
 .date-info .day {
     font-size: 1.8em;
     font-weight: bold;
+    color: #333;
 }
 
 .date-info .weekday {
     font-size: 1.1em;
+    color: #666;
 }
 
 .countdown-info {
     display: flex;
     flex-direction: column;
     gap: 5px;
+    text-align: right;
 }
 
 .countdown-item {
     display: flex;
+    justify-content: flex-end;
     align-items: center;
     gap: 10px;
 }
 
 .countdown-item .label {
-    color: rgba(255, 255, 255, 0.9);
+    color: #666;
     font-size: 0.9em;
 }
 
 .countdown-item .days {
-    background: rgba(255, 255, 255, 0.2);
+    color: #2196F3;
     padding: 2px 8px;
-    border-radius: 12px;
     font-size: 0.9em;
 }
 
 .checkin-btn {
-    background: rgba(255, 255, 255, 0.2);
+    background: #2196F3;
     color: white;
     border: none;
-    padding: 10px 20px;
+    padding: 8px 16px;
     border-radius: 4px;
     cursor: pointer;
     transition: all 0.3s ease;
+    margin-left: 20px;
     display: flex;
     align-items: center;
     gap: 8px;
 }
 
 .checkin-btn:hover {
-    background: rgba(255, 255, 255, 0.3);
+    background: #1976D2;
     transform: translateY(-2px);
-}
-
-.checkin-btn i {
-    font-size: 1.2em;
 }
