@@ -101,6 +101,16 @@ function openUserCenter() {
     document.querySelector('.modal-content').innerHTML = `
         <span class="close" onclick="closeUserCenter()">&times;</span>
         <div class="user-center-profile">
+            <div class="user-title">
+                ${(() => {
+                    const title = calculateTitle(userData);
+                    return `
+                        <span class="title-badge" style="color: ${title.color}">
+                            ${title.icon} ${title.name}
+                        </span>
+                    `;
+                })()}
+            </div>
             <div class="avatar-section">
                 <img id="currentAvatar" src="${userData.avatar}" alt="当前头像" class="user-avatar">
                 <div class="avatar-upload">
@@ -321,4 +331,19 @@ function updateUsername() {
     document.getElementById('newUsername').value = '';
     
     alert('用户名修改成功！');
+}
+
+// 添加头衔计算函数
+function calculateTitle(userData) {
+    const completedCount = userData.completedProblems ? userData.completedProblems.length : 0;
+    const titles = [
+        { count: 50, name: "算法大师", color: "#FF4757", icon: "👑" },
+        { count: 30, name: "代码专家", color: "#FFA502", icon: "🎯" },
+        { count: 20, name: "进阶高手", color: "#2ED573", icon: "💫" },
+        { count: 10, name: "勤奋学者", color: "#1E90FF", icon: "📚" },
+        { count: 5, name: "初学者", color: "#A4B0BE", icon: "🌟" },
+        { count: 0, name: "新手", color: "#747D8C", icon: "🔰" }
+    ];
+    
+    return titles.find(title => completedCount >= title.count) || titles[titles.length - 1];
 } 

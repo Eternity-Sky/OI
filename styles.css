@@ -826,3 +826,31 @@ th {
     font-size: 12px;
     margin-top: 5px;
 }
+
+.user-title {
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.title-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px 12px;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    font-weight: bold;
+    font-size: 14px;
+    transition: transform 0.2s;
+}
+
+.title-badge:hover {
+    transform: scale(1.05);
+}
+
+.user-info-section .title-badge {
+    margin-left: 10px;
+    font-size: 12px;
+    padding: 3px 8px;
+}

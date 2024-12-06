@@ -101,14 +101,16 @@
             const users = [];
             for (let i = 0; i < localStorage.length; i++) {
                 const key = localStorage.key(i);
-                if (key !== 'currentUser' && key !== 'inbox' && !key.startsWith('lastClickTime_') && !key.includes('GT_')) {
+                if (key !== 'currentUser' && !key.startsWith('lastClickTime_')) {
                     try {
                         const userData = JSON.parse(localStorage.getItem(key));
                         if (userData && userData.avatar) {
+                            const title = calculateTitle(userData);
                             users.push({
                                 username: key,
                                 completedCount: userData.completedProblems ? userData.completedProblems.length : 0,
-                                avatar: userData.avatar
+                                avatar: userData.avatar,
+                                title: title
                             });
                         }
                     } catch (error) {
@@ -126,19 +128,20 @@
 
             users.forEach((user, index) => {
                 const listItem = document.createElement('li');
-                const achievements = checkAchievements(user.completedCount);
-                
                 listItem.innerHTML = `
                     <div class="user-item">
                         <div class="rank-badge">#${index + 1}</div>
                         <div class="user-info-section" onclick="showUserProfile('${user.username}')">
                             <img src="${user.avatar}" alt="头像" class="user-avatar-small">
                             <span class="username">${user.username}</span>
+                            <span class="title-badge" style="color: ${user.title.color}">
+                                ${user.title.icon} ${user.title.name}
+                            </span>
                         </div>
                         <div class="user-stats">
                             <span class="completed-count">完成题目: ${user.completedCount}</span>
                             <div class="achievements">
-                                ${achievements.map(a => `<span class="achievement-badge">${a}</span>`).join('')}
+                                ${checkAchievements(user.completedCount).map(a => `<span class="achievement-badge">${a}</span>`).join('')}
                             </div>
                             ${user.username !== currentUser ? 
                                 `<button onclick="sendMessage('${user.username}')" class="message-btn">
