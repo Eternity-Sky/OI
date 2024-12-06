@@ -381,7 +381,29 @@ function updateWelcomeInfo() {
     }
 }
 
+function updateCalendar() {
+    const now = new Date();
+    const months = ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'];
+    const weekdays = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'];
+    
+    // 设置当前日期
+    document.querySelector('.month').textContent = months[now.getMonth()];
+    document.querySelector('.day').textContent = now.getDate().toString().padStart(2, '0');
+    document.querySelector('.weekday').textContent = weekdays[now.getDay()];
+    
+    // 计算倒计时
+    const csp2025_1 = new Date('2025-07-01');  // 第一轮日期
+    const csp2025_2 = new Date('2025-08-05');  // 第二轮日期
+    
+    const days1 = Math.ceil((csp2025_1 - now) / (1000 * 60 * 60 * 24));
+    const days2 = Math.ceil((csp2025_2 - now) / (1000 * 60 * 60 * 24));
+    
+    document.getElementById('countdown1').textContent = days1;
+    document.getElementById('countdown2').textContent = days2;
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     checkLoginStatus();
     updateWelcomeInfo();
+    updateCalendar();
 }); 

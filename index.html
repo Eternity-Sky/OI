@@ -31,31 +31,20 @@
                 </a>
             </div>
         </div>
-        <div class="user-welcome">
-            <div class="welcome-text">
-                <h2>欢迎回来，<span id="welcomeUsername">游客</span></h2>
-                <div class="calendar-info">
-                    <div class="date-info">
-                        <span class="month">十二月</span>
-                        <span class="day">06</span>
-                        <span class="weekday">星期五</span>
-                    </div>
-                    <div class="countdown-info">
-                        <div class="countdown-item">
-                            <span class="label">CSP-J/S 2025 第一轮</span>
-                            <span class="days">还剩 287 天</span>
-                        </div>
-                        <div class="countdown-item">
-                            <span class="label">CSP-J/S 2025 第二轮</span>
-                            <span class="days">还剩 322 天</span>
-                        </div>
-                    </div>
+        <div class="calendar-welcome">
+            <div class="welcome-text">欢迎回来，<span id="welcomeUsername">游客</span></div>
+            <div class="calendar-display">
+                <div class="date-info">
+                    <span class="month">十二月</span>
+                    <span class="day">06</span>
+                    <span class="weekday">星期五</span>
                 </div>
+                <div class="countdown-info">
+                    <div class="countdown-item">距 CSP-J/S 2025 第一轮 还剩 <span id="countdown1">287</span> 天</div>
+                    <div class="countdown-item">距 CSP-J/S 2025 第二轮 还剩 <span id="countdown2">322</span> 天</div>
+                </div>
+                <button class="checkin-btn" onclick="checkIn()">点击打卡</button>
             </div>
-            <button class="checkin-btn" onclick="checkIn()">
-                <i class="fas fa-calendar-check"></i>
-                打卡
-            </button>
         </div>
         <h1>题库</h1>
         <div id="auth">
@@ -238,10 +227,8 @@
 
         function displayProblemSets() {
             const problemSetsDiv = document.getElementById('problemSets');
-            if (!problemSetsDiv) return;
-            
             problemSetsDiv.innerHTML = '';
-            
+
             for (const [setName, setInfo] of Object.entries(problemSets)) {
                 const setDiv = document.createElement('div');
                 setDiv.className = 'problem-set';
@@ -354,6 +341,7 @@
 
         document.addEventListener('DOMContentLoaded', () => {
             displayProblems(problems);
+            displayProblemSets();
             displayRecommendations();
             updateProgress();
         });

@@ -1091,3 +1091,71 @@ th {
     background: #1976D2;
     transform: translateY(-2px);
 }
+
+.calendar-welcome {
+    text-align: right;
+    margin: 20px 0;
+    padding: 10px;
+}
+
+.welcome-text {
+    font-size: 1.2em;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.calendar-display {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 10px;
+}
+
+.date-info {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+}
+
+.date-info .month,
+.date-info .weekday {
+    color: #666;
+    font-size: 1em;
+}
+
+.date-info .day {
+    color: #2E7D32;
+    font-size: 2em;
+    font-weight: bold;
+}
+
+.countdown-info {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.countdown-item {
+    color: #666;
+    font-size: 0.9em;
+}
+
+.countdown-item span {
+    color: #2196F3;
+    font-weight: bold;
+}
+
+.checkin-btn {
+    background-color: #FF9800;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.checkin-btn:hover {
+    background-color: #F57C00;
+    transform: translateY(-2px);
+}
