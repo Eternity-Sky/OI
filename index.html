@@ -65,20 +65,22 @@
             <button onclick="register()">注册</button>
         </div>
         <div id="avatarContainer" class="avatar-container"></div>
-        <input type="text" id="searchInput" placeholder="输入题号或名称搜索">
-        <select id="categorySelect">
-            <option value="">所有分类</option>
-            <option value="算法">算法</option>
-            <option value="数据结构">数据结构</option>
-            <option value="数学">数学</option>
-        </select>
-        <select id="difficultySelect">
-            <option value="">所有难度</option>
-            <option value="简单">简单</option>
-            <option value="中等">中等</option>
-            <option value="困难">困难</option>
-        </select>
-        <button onclick="searchProblem()">搜索</button>
+        <div class="search-section">
+            <input type="text" id="searchInput" placeholder="输入题号或名称搜索">
+            <select id="categorySelect">
+                <option value="">所有分类</option>
+                <option value="算法">算法</option>
+                <option value="数据结构">数据结构</option>
+                <option value="数学">数学</option>
+            </select>
+            <select id="difficultySelect">
+                <option value="">所有难度</option>
+                <option value="简单">简单</option>
+                <option value="中等">中等</option>
+                <option value="困难">困难</option>
+            </select>
+            <button onclick="searchProblem()">搜索</button>
+        </div>
         <div class="recommendations">
             <h3>今日推荐</h3>
             <div id="recommendedProblems"></div>
