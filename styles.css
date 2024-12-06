@@ -59,7 +59,7 @@ body::after {
     position: relative;
     overflow: hidden;
     position: relative;
-    padding-top: 200px;
+    padding-top: 260px;
 }
 
 .container::before,
@@ -97,13 +97,6 @@ body::after {
 
 .details {
     margin-top: 20px;
-}
-h1 {
-    text-align: center;
-    color: #333;
-    margin-top: 30px;
-    position: relative;
-    z-index: 2;
 }
 h5 {
     margin: 10px 0;
@@ -1110,7 +1103,7 @@ th {
     width: 250px;
     position: absolute;
     left: 20px;
-    top: 50px;
+    top: 70px;
     box-shadow: 0 2px 4px rgba(33, 150, 243, 0.1);
 }
 
@@ -1182,7 +1175,7 @@ th {
     width: 300px;
     position: absolute;
     left: 290px;
-    top: 50px;
+    top: 70px;
     color: white;
     box-shadow: 0 4px 12px rgba(33, 150, 243, 0.2);
 }
@@ -1244,7 +1237,7 @@ th {
 }
 
 .search-section {
-    margin-top: 100px;
+    margin-top: 160px;
     position: relative;
     z-index: 1;
 }
