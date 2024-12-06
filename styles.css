@@ -58,6 +58,8 @@ body::after {
     transition: transform 0.3s;
     position: relative;
     overflow: hidden;
+    position: relative;
+    padding-top: 240px;
 }
 
 .container::before,
@@ -186,7 +188,8 @@ small {
 }
 .footer {
     text-align: center;
-    margin-top: 20px;
+    margin-top: 40px;
+    padding-bottom: 20px;
 }
 input[type="text"], select {
     width: calc(100% - 22px);
@@ -1097,24 +1100,32 @@ th {
     padding: 15px;
     background-color: #E3F2FD;
     border-radius: 8px;
-    width: 200px;
+    width: 250px;
+    position: absolute;
+    right: 330px;
+    top: 70px;
+    box-shadow: 0 2px 4px rgba(33, 150, 243, 0.1);
 }
 
 .welcome-text {
     color: #333;
     margin-bottom: 10px;
+    text-align: center;
 }
 
 .calendar-display {
     display: flex;
     flex-direction: column;
     gap: 5px;
+    align-items: center;
 }
 
 .date-info {
     display: flex;
     flex-direction: column;
     gap: 5px;
+    align-items: center;
+    margin-bottom: 10px;
 }
 
 .date-info .month {
@@ -1139,6 +1150,7 @@ th {
     flex-direction: column;
     gap: 8px;
     margin: 15px 0;
+    width: 100%;
 }
 
 .countdown-item {
@@ -1147,6 +1159,7 @@ th {
     align-items: center;
     color: #666;
     font-size: 0.9em;
+    padding: 5px 0;
 }
 
 .countdown-item span {
@@ -1154,29 +1167,15 @@ th {
     font-weight: bold;
 }
 
-.checkin-btn {
-    background-color: #FF9800;
-    color: white;
-    border: none;
-    padding: 10px;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    width: 100%;
-    margin-top: 10px;
-    font-size: 1em;
-}
-
-.checkin-btn:hover {
-    background-color: #F57C00;
-    transform: translateY(-2px);
-}
-
 .daily-content {
     background: linear-gradient(135deg, #2196F3, #1976D2);
     border-radius: 8px;
     padding: 20px;
     margin: 20px 0;
+    width: 300px;
+    position: absolute;
+    right: 20px;
+    top: 70px;
     color: white;
     box-shadow: 0 4px 12px rgba(33, 150, 243, 0.2);
 }
@@ -1193,6 +1192,7 @@ th {
     line-height: 1.6;
     margin-bottom: 10px;
     font-style: italic;
+    padding: 0 10px;
 }
 
 .quote-text i {
@@ -1211,6 +1211,7 @@ th {
     display: flex;
     justify-content: space-around;
     text-align: center;
+    padding: 0 20px;
 }
 
 .stats-item {
