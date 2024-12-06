@@ -12,14 +12,3 @@ const solutions = {
         answer: "示例代码：\nint fib(int n) {\n    if (n <= 1) return n;\n    return fib(n - 1) + fib(n - 2);\n}"
     }
 }; 
-
-// 假设您有一个函数来获取排行榜数据
-function getLeaderboardData() {
-    // ... existing code ...
-
-    // 过滤数据，只保留当前用户的信息
-    const currentUserId = getCurrentUserId(); // 获取当前用户的 ID
-    const filteredData = leaderboardData.filter(user => user.id === currentUserId);
-
-    // ... 继续处理 filteredData ...
-} 
