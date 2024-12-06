@@ -212,8 +212,10 @@
 
         function displayProblemSets() {
             const problemSetsDiv = document.getElementById('problemSets');
+            if (!problemSetsDiv) return;
+            
             problemSetsDiv.innerHTML = '';
-
+            
             for (const [setName, setInfo] of Object.entries(problemSets)) {
                 const setDiv = document.createElement('div');
                 setDiv.className = 'problem-set';
@@ -326,7 +328,6 @@
 
         document.addEventListener('DOMContentLoaded', () => {
             displayProblems(problems);
-            displayProblemSets();
             displayRecommendations();
             updateProgress();
         });
