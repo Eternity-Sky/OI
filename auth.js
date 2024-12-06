@@ -195,8 +195,12 @@ function markAsDone(problemId) {
         localStorage.setItem(username, JSON.stringify(userData));
         alert('题目已标记为完成！');
     } else {
-        alert('您已经完成了这个题目！');
+        const problemTitle = problems.find(p => p.id === problemId)?.title || problemId;
+        alert(`您已经完成过 "${problemTitle}" 这道题目了！`);
     }
+
+    updateProgress();
+    updateDailyStats();
 }
 
 // 获取下一个等级信息
@@ -386,7 +390,7 @@ function updateCalendar() {
     const months = ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'];
     const weekdays = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'];
     
-    // 设置当前日���
+    // 设置当前日
     document.querySelector('.month').textContent = months[now.getMonth()];
     document.querySelector('.day').textContent = now.getDate().toString().padStart(2, '0');
     document.querySelector('.weekday').textContent = weekdays[now.getDay()];
