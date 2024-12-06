@@ -284,5 +284,60 @@ const problems = [
         sample_output: "3",
         difficulty: "中等",
         tags: ["动态规划", "字符串"]
+    },
+    {
+        id: 27,
+        title: "昆虫繁殖",
+        description: "计算昆虫在n天后的数量。每只昆虫每天可以繁殖出一只新的昆虫，新昆虫第二天开始也能繁殖。",
+        input: "一个整数n，表示天数。",
+        output: "第n天时昆虫的总数。",
+        sample_input: "3",
+        sample_output: "4",
+        difficulty: "简单",
+        tags: ["递推", "数学"]
+    },
+    {
+        id: 28,
+        title: "位数问题",
+        description: "给定一个整数n，求1到n中所有整数的位数之和。",
+        input: "一个整数n。",
+        output: "1到n中所有整数的位数之和。",
+        sample_input: "13",
+        sample_output: "17",
+        difficulty: "中等",
+        tags: ["数学", "递推"]
+    },
+    {
+        id: 29,
+        title: "过河卒(Noip2002)",
+        description: "卒从A点到B点，中间有马的攻击范围，求可行路径数。",
+        input: "棋盘大小和马的位置。",
+        output: "可行路径数。",
+        sample_input: "6 6 3 3",
+        sample_output: "6",
+        difficulty: "中等",
+        tags: ["动态规划", "递推"]
+    },
+    {
+        id: 30,
+        title: "斐波那契数列(2)",
+        description: "计算斐波那契数列的第n项对m取模的结果。",
+        input: "两个整数n和m。",
+        output: "第n项对m取模的结果。",
+        sample_input: "10 7",
+        sample_output: "4",
+        difficulty: "中等",
+        tags: ["数学", "递推"]
+    },
+    {
+        id: 31,
+        title: "Pell数列",
+        description: "Pell数列满足P(n)=2*P(n-1)+P(n-2)，初始值P(1)=1, P(2)=2。",
+        input: "一个整数n。",
+        output: "Pell数列的第n项。",
+        sample_input: "5",
+        sample_output: "29",
+        difficulty: "中等",
+        tags: ["数学", "递推"]
     }
 ]; 

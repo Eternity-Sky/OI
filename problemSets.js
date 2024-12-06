@@ -58,7 +58,7 @@ const problemSets = [
         title: "递推入门",
         description: "通过经典递推问题学习递推算法的应用",
         difficulty: "简单",
-        problems: [24, 3, 4],
+        problems: [24, 27, 28, 30],
         tags: ["递推", "基础算法"],
         author: "系统"
     },
@@ -67,8 +67,17 @@ const problemSets = [
         title: "动态规划进阶",
         description: "各类经典动态规划问题的解法与技巧",
         difficulty: "中等",
-        problems: [25, 26, 9, 15],
+        problems: [25, 26, 29, 9, 15],
         tags: ["动态规划", "算法"],
+        author: "系统"
+    },
+    {
+        id: 9,
+        title: "数学专题",
+        description: "数学相关的算法问题集合",
+        difficulty: "中等",
+        problems: [30, 31],
+        tags: ["数学", "递推"],
         author: "系统"
     }
 ]; 
