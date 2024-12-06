@@ -85,8 +85,6 @@ function openUserCenter() {
     if (!username) return;
     
     const userData = JSON.parse(localStorage.getItem(username));
-    document.getElementById('userCenterUsername').textContent = username;
-    document.getElementById('currentAvatar').src = userData.avatar;
     document.getElementById('userCenter').style.display = 'block';
 
     // 计算成就和等级
@@ -103,8 +101,25 @@ function openUserCenter() {
     document.querySelector('.modal-content').innerHTML = `
         <span class="close" onclick="closeUserCenter()">&times;</span>
         <div class="user-center-profile">
-            <img src="${userData.avatar}" alt="头像" class="user-avatar">
-            <h3>${username}</h3>
+            <div class="avatar-section">
+                <img id="currentAvatar" src="${userData.avatar}" alt="当前头像" class="user-avatar">
+                <div class="avatar-upload">
+                    <label for="newAvatar" class="upload-btn">
+                        <i class="fas fa-camera"></i> 更换头像
+                    </label>
+                    <input type="file" id="newAvatar" accept="image/*" style="display: none;" onchange="updateAvatar()">
+                </div>
+            </div>
+            <div class="username-section">
+                <p>用户名: <span id="userCenterUsername">${username}</span></p>
+                <div class="username-edit">
+                    <input type="text" id="newUsername" placeholder="新用户名">
+                    <button onclick="updateUsername()">修改用户名</button>
+                    <p class="limit-hint" id="usernameLimit" style="display: none;">
+                        今日已修改过用户名，请明天再试
+                    </p>
+                </div>
+            </div>
             <div class="user-stats">
                 <p>完成题目数: ${completedCount}</p>
                 <div class="level-section">
