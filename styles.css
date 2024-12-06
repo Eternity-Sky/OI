@@ -738,3 +738,54 @@ th {
 .filter-section select {
     flex: 1;
 }
+
+.avatar-section {
+    text-align: center;
+    margin-bottom: 20px;
+    position: relative;
+    display: inline-block;
+}
+
+.avatar-section .user-avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    border: 3px solid #2196F3;
+    transition: filter 0.3s;
+}
+
+.avatar-upload {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0;
+    transition: opacity 0.3s;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    padding: 8px 0;
+    border-bottom-left-radius: 50px;
+    border-bottom-right-radius: 50px;
+}
+
+.avatar-section:hover .avatar-upload {
+    opacity: 1;
+}
+
+.avatar-section:hover .user-avatar {
+    filter: brightness(0.8);
+}
+
+.upload-btn {
+    color: white;
+    cursor: pointer;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+}
+
+.upload-btn:hover {
+    color: #2196F3;
+}

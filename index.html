@@ -81,6 +81,15 @@
             <div class="modal-content">
                 <span class="close" onclick="closeUserCenter()">&times;</span>
                 <h3>用户中心</h3>
+                <div class="avatar-section">
+                    <img id="currentAvatar" class="user-avatar" alt="当前头像">
+                    <div class="avatar-upload">
+                        <label for="newAvatar" class="upload-btn">
+                            <i class="fas fa-camera"></i> 更换头像
+                        </label>
+                        <input type="file" id="newAvatar" accept="image/*" style="display: none;" onchange="updateAvatar()">
+                    </div>
+                </div>
                 <p>用户名: <span id="userCenterUsername"></span></p>
                 <p id="completedCount">已完成题目数: 0</p>
                 <h4>修改密码</h4>

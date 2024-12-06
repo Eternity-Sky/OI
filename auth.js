@@ -82,8 +82,11 @@ function calculateLevel(completedCount) {
 // 修改 openUserCenter 函数
 function openUserCenter() {
     const username = localStorage.getItem('currentUser');
+    if (!username) return;
+    
     const userData = JSON.parse(localStorage.getItem(username));
     document.getElementById('userCenterUsername').textContent = username;
+    document.getElementById('currentAvatar').src = userData.avatar;
     document.getElementById('userCenter').style.display = 'block';
 
     // 计算成就和等级
@@ -231,4 +234,26 @@ function logout() {
 // 在页面加载时检查登录状态
 document.addEventListener('DOMContentLoaded', () => {
     checkLoginStatus();
-}); 
+});
+
+function updateAvatar() {
+    const fileInput = document.getElementById('newAvatar');
+    const file = fileInput.files[0];
+    const currentUser = localStorage.getItem('currentUser');
+    
+    if (!file || !currentUser) return;
+    
+    const reader = new FileReader();
+    reader.onload = function(event) {
+        const userData = JSON.parse(localStorage.getItem(currentUser));
+        userData.avatar = event.target.result;
+        localStorage.setItem(currentUser, JSON.stringify(userData));
+        
+        // 更新显示
+        document.getElementById('currentAvatar').src = event.target.result;
+        document.querySelector('.avatar-container img').src = event.target.result;
+        
+        alert('头像更新成功！');
+    };
+    reader.readAsDataURL(file);
+} 
