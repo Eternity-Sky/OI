@@ -323,6 +323,41 @@ th {
     position: absolute;
     top: 10px;
     left: 10px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    box-sizing: border-box;
+}
+
+.nav-links {
+    display: flex;
+    gap: 20px;
+    margin-right: 40px;
+}
+
+.nav-button {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 8px 16px;
+    background-color: #2196F3;
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    margin: 0;
+}
+
+.nav-button:hover {
+    background-color: #1976D2;
+    transform: translateY(-2px);
+    text-decoration: none;
+}
+
+.nav-button i {
+    font-size: 16px;
 }
 
 .mail-icon {
@@ -633,4 +668,73 @@ th {
 #pagination button.active {
     background-color: #1565C0;
     font-weight: bold;
+}
+
+.problem-sets {
+    margin-top: 20px;
+}
+
+.problem-set {
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
+}
+
+.problem-set:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.problem-set-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.problem-set h2 {
+    margin: 0;
+    color: #333;
+}
+
+.description {
+    color: #666;
+    margin: 10px 0;
+}
+
+.problems-list {
+    margin: 15px 0;
+}
+
+.problems-list ul {
+    list-style: none;
+    padding: 0;
+}
+
+.problems-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px;
+    border-bottom: 1px solid #eee;
+}
+
+.practice-button {
+    width: 100%;
+    margin-top: 15px;
+    background-color: #2196F3;
+}
+
+.filter-section {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.filter-section input,
+.filter-section select {
+    flex: 1;
 }

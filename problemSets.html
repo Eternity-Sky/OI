@@ -6,57 +6,102 @@
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script src="problems.js"></script>
+    <script src="problemSets.js"></script>
+    <script src="auth.js"></script>
 </head>
 <body>
     <div class="container">
-        <div class="header">
-            <h1>题单</h1>
-            <a href="userlist.html" class="mail-icon">
-                <i class="fas fa-envelope"></i>
-            </a>
+        <h1>题单</h1>
+        <div class="filter-section">
+            <input type="text" id="searchInput" placeholder="搜索题单">
+            <select id="difficultySelect">
+                <option value="">所有难度</option>
+                <option value="简单">简单</option>
+                <option value="中等">中等</option>
+                <option value="困难">困难</option>
+            </select>
+            <button onclick="filterProblemSets()">搜索</button>
         </div>
-        <div id="problemSets" class="problem-sets"></div> <!-- 题单显示区域 -->
+
+        <div id="problemSets" class="problem-sets"></div>
 
         <div class="footer">
-            <a href="about.html" class="about-button">关于我们</a>
-            <a href="leaderboard.html" class="about-button">排行榜</a>
             <a href="index.html" class="about-button">返回首页</a>
-            <a href="https://github.com/Eternity-Sky/OI" target="_blank" class="github-link">
-                <i class="fab fa-github"></i> GitHub
-            </a>
         </div>
     </div>
 
     <script>
-        // 题单数据
-        const problemSets = {
-            "入门1": {
-                description: "顺序结构题目集",
-                problems: [1, 2, 3] // 题目的 ID 列表
-            },
-            // 可以添加更多题单
-        };
+        function displayProblemSet(problemSet) {
+            const problemSetDiv = document.createElement('div');
+            problemSetDiv.className = 'problem-set';
+            
+            const problemsList = problemSet.problems.map(id => {
+                const problem = problems.find(p => p.id === id);
+                return problem ? `
+                    <li>
+                        <span class="problem-title">${problem.title}</span>
+                        <span class="difficulty-${problem.difficulty.toLowerCase()}">${problem.difficulty}</span>
+                    </li>` : '';
+            }).join('');
 
-        function displayProblemSets() {
-            const problemSetsDiv = document.getElementById('problemSets');
-            problemSetsDiv.innerHTML = '';
+            problemSetDiv.innerHTML = `
+                <div class="problem-set-header">
+                    <h2>${problemSet.title}</h2>
+                    <span class="difficulty-${problemSet.difficulty.toLowerCase()}">${problemSet.difficulty}</span>
+                </div>
+                <p class="description">${problemSet.description}</p>
+                <div class="tags">
+                    ${problemSet.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                </div>
+                <div class="author">作者: ${problemSet.author}</div>
+                <div class="problems-list">
+                    <h3>题目列表</h3>
+                    <ul>${problemsList}</ul>
+                </div>
+                <button onclick="startPractice(${problemSet.id})" class="practice-button">
+                    开始练习
+                </button>
+            `;
+            
+            return problemSetDiv;
+        }
 
-            for (const [setName, setInfo] of Object.entries(problemSets)) {
-                const setDiv = document.createElement('div');
-                setDiv.className = 'problem-set';
-                setDiv.innerHTML = `
-                    <h3>${setName}</h3>
-                    <p>${setInfo.description}</p>
-                    <ul>
-                        ${setInfo.problems.map(id => `<li>题目 ${id}</li>`).join('')}
-                    </ul>
-                `;
-                problemSetsDiv.appendChild(setDiv);
+        function filterProblemSets() {
+            const searchValue = document.getElementById('searchInput').value.toLowerCase();
+            const difficultyValue = document.getElementById('difficultySelect').value;
+            
+            const filteredSets = problemSets.filter(set => 
+                (set.title.toLowerCase().includes(searchValue) ||
+                 set.description.toLowerCase().includes(searchValue) ||
+                 set.tags.some(tag => tag.toLowerCase().includes(searchValue))) &&
+                (difficultyValue === '' || set.difficulty === difficultyValue)
+            );
+            
+            displayAllProblemSets(filteredSets);
+        }
+
+        function displayAllProblemSets(sets = problemSets) {
+            const container = document.getElementById('problemSets');
+            container.innerHTML = '';
+            sets.forEach(set => {
+                container.appendChild(displayProblemSet(set));
+            });
+        }
+
+        function startPractice(setId) {
+            const problemSet = problemSets.find(set => set.id === setId);
+            if (!problemSet) return;
+            
+            // 存储当前练习的题单
+            localStorage.setItem('currentProblemSet', JSON.stringify(problemSet));
+            // 跳转到第一个题目
+            if (problemSet.problems.length > 0) {
+                window.location.href = `problem.html?id=${problemSet.problems[0]}`;
             }
         }
 
         document.addEventListener('DOMContentLoaded', () => {
-            displayProblemSets(); // 显示题单
+            displayAllProblemSets();
         });
     </script>
 </body>
