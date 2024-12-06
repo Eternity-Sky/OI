@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>题单</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="problems.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>题单</h1>
+            <a href="userlist.html" class="mail-icon">
+                <i class="fas fa-envelope"></i>
+            </a>
+        </div>
+        <div id="problemSets" class="problem-sets"></div> <!-- 题单显示区域 -->
+
+        <div class="footer">
+            <a href="about.html" class="about-button">关于我们</a>
+            <a href="leaderboard.html" class="about-button">排行榜</a>
+            <a href="index.html" class="about-button">返回首页</a>
+            <a href="https://github.com/Eternity-Sky/OI" target="_blank" class="github-link">
+                <i class="fab fa-github"></i> GitHub
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // 题单数据
+        const problemSets = {
+            "入门1": {
+                description: "顺序结构题目集",
+                problems: [1, 2, 3] // 题目的 ID 列表
+            },
+            // 可以添加更多题单
+        };
+
+        function displayProblemSets() {
+            const problemSetsDiv = document.getElementById('problemSets');
+            problemSetsDiv.innerHTML = '';
+
+            for (const [setName, setInfo] of Object.entries(problemSets)) {
+                const setDiv = document.createElement('div');
+                setDiv.className = 'problem-set';
+                setDiv.innerHTML = `
+                    <h3>${setName}</h3>
+                    <p>${setInfo.description}</p>
+                    <ul>
+                        ${setInfo.problems.map(id => `<li>题目 ${id}</li>`).join('')}
+                    </ul>
+                `;
+                problemSetsDiv.appendChild(setDiv);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            displayProblemSets(); // 显示题单
+        });
+    </script>
+</body>
+</html> 

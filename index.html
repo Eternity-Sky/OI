@@ -58,7 +58,6 @@
         <button onclick="searchProblem()">搜索</button>
         <div id="problems"></div>
         <div id="pagination"></div>
-
         <div class="footer">
             <a href="about.html" class="about-button">关于我们</a>
             <a href="leaderboard.html" class="about-button">排行榜</a>
@@ -146,8 +145,27 @@
             window.location.href = `problem.html?id=${id}`;
         }
 
+        function displayProblemSets() {
+            const problemSetsDiv = document.getElementById('problemSets');
+            problemSetsDiv.innerHTML = '';
+
+            for (const [setName, setInfo] of Object.entries(problemSets)) {
+                const setDiv = document.createElement('div');
+                setDiv.className = 'problem-set';
+                setDiv.innerHTML = `
+                    <h3>${setName}</h3>
+                    <p>${setInfo.description}</p>
+                    <ul>
+                        ${setInfo.problems.map(id => `<li>题目 ${id}</li>`).join('')}
+                    </ul>
+                `;
+                problemSetsDiv.appendChild(setDiv);
+            }
+        }
+
         document.addEventListener('DOMContentLoaded', () => {
             displayProblems(problems);
+            displayProblemSets(); 
         });
     </script>
     <script src="auth.js"></script>
