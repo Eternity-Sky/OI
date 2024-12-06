@@ -3,7 +3,31 @@ body {
     font-family: Arial, sans-serif;
     background: linear-gradient(135deg, #E3F2FD, #BBDEFB);
     background-size: 200% 200%;
-    animation: gradientAnimation 5s ease infinite;
+    animation: gradientAnimation 10s ease infinite;
+    position: relative;
+    overflow-x: hidden;
+}
+
+body::before,
+body::after {
+    content: "🌟";
+    position: fixed;
+    font-size: 24px;
+    transition: all 0.5s ease;
+    opacity: 0.7;
+    z-index: -1;
+}
+
+body::before {
+    top: 20px;
+    left: 20px;
+    animation: floatTopLeft 3s ease-in-out infinite;
+}
+
+body::after {
+    bottom: 20px;
+    right: 20px;
+    animation: floatBottomRight 3s ease-in-out infinite;
 }
 
 @keyframes gradientAnimation {
@@ -11,6 +35,19 @@ body {
     50% { background-position: 100% 50%; }
     100% { background-position: 0% 50%; }
 }
+
+@keyframes floatTopLeft {
+    0% { transform: translate(0, 0) rotate(0deg); }
+    50% { transform: translate(10px, 10px) rotate(180deg); }
+    100% { transform: translate(0, 0) rotate(360deg); }
+}
+
+@keyframes floatBottomRight {
+    0% { transform: translate(0, 0) rotate(0deg); }
+    50% { transform: translate(-10px, -10px) rotate(-180deg); }
+    100% { transform: translate(0, 0) rotate(-360deg); }
+}
+
 .container {
     max-width: 800px;
     margin: 0 auto;
@@ -19,10 +56,43 @@ body {
     border-radius: 8px;
     box-shadow: 0 4px 12px rgba(33, 150, 243, 0.15);
     transition: transform 0.3s;
+    position: relative;
+    overflow: hidden;
 }
+
+.container::before,
+.container::after {
+    content: "✨";
+    position: absolute;
+    font-size: 20px;
+    opacity: 0;
+    transition: all 0.3s ease;
+}
+
+.container::before {
+    top: 10px;
+    left: 10px;
+}
+
+.container::after {
+    bottom: 10px;
+    right: 10px;
+}
+
 .container:hover {
     transform: scale(1.02);
 }
+
+.container:hover::before {
+    opacity: 1;
+    transform: translate(5px, 5px) rotate(45deg);
+}
+
+.container:hover::after {
+    opacity: 1;
+    transform: translate(-5px, -5px) rotate(-45deg);
+}
+
 .details {
     margin-top: 20px;
 }
