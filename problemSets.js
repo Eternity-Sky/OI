@@ -43,5 +43,32 @@ const problemSets = [
         problems: [12],
         tags: ["排序", "算法"],
         author: "系统"
+    },
+    {
+        id: 6,
+        title: "数组专题训练",
+        description: "从基础到进阶的数组题目集合，包含前缀和、子数组等经典问题",
+        difficulty: "中等",
+        problems: [22, 23],
+        tags: ["数组", "算法"],
+        author: "系统"
+    },
+    {
+        id: 7,
+        title: "递推入门",
+        description: "通过经典递推问题学习递推算法的应用",
+        difficulty: "简单",
+        problems: [24, 3, 4],
+        tags: ["递推", "基础算法"],
+        author: "系统"
+    },
+    {
+        id: 8,
+        title: "动态规划进阶",
+        description: "各类经典动态规划问题的解法与技巧",
+        difficulty: "中等",
+        problems: [25, 26, 9, 15],
+        tags: ["动态规划", "算法"],
+        author: "系统"
     }
 ]; 

@@ -229,5 +229,60 @@ const problems = [
         sample_output: "5(B)\n  7(R)",
         difficulty: "困难",
         tags: ["数据结构", "树"]
+    },
+    {
+        id: 22,
+        title: "数组区间和",
+        description: "给定一个整数数组和多个查询区间，求每个区间内的元素和。",
+        input: "第一行输入数组长度n和查询次数q，第二行输入n个整数，接下来q行每行输入两个整数l,r表示查询区间。",
+        output: "输出q行，每行一个整数表示对应区间的元素和。",
+        sample_input: "5 2\n1 2 3 4 5\n1 3\n2 4",
+        sample_output: "6\n9",
+        difficulty: "简单",
+        tags: ["数组", "前缀和"]
+    },
+    {
+        id: 23,
+        title: "最大子数组和",
+        description: "给定一个整数数组，找到一个具有最大和的连续子数组。",
+        input: "第一行输入数组长度n，第二行输入n个整数。",
+        output: "输出最大子数组和。",
+        sample_input: "9\n-2 1 -3 4 -1 2 1 -5 4",
+        sample_output: "6",
+        difficulty: "中等",
+        tags: ["数组", "动态规划"]
+    },
+    {
+        id: 24,
+        title: "杨辉三角",
+        description: "生成杨辉三角的前n行。",
+        input: "一个整数n。",
+        output: "杨辉三角的前n行。",
+        sample_input: "5",
+        sample_output: "1\n1 1\n1 2 1\n1 3 3 1\n1 4 6 4 1",
+        difficulty: "简单",
+        tags: ["递推", "数组"]
+    },
+    {
+        id: 25,
+        title: "不同路径",
+        description: "一个机器人位于m×n网格的左上角，每次只能向下或向右移动一步，求达到右下角的不同路径数。",
+        input: "两个整数m和n。",
+        output: "不同路径的数量。",
+        sample_input: "3 7",
+        sample_output: "28",
+        difficulty: "中等",
+        tags: ["动态规划", "递推"]
+    },
+    {
+        id: 26,
+        title: "最长公共子序列",
+        description: "给定两个字符串，求它们的最长公共子序列的长度。",
+        input: "两行，每行一个字符串。",
+        output: "最长公共子序列的长度。",
+        sample_input: "abcde\nace",
+        sample_output: "3",
+        difficulty: "中等",
+        tags: ["动态规划", "字符串"]
     }
 ]; 
