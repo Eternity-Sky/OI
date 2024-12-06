@@ -65,7 +65,7 @@ body::after {
     content: "✨";
     position: absolute;
     font-size: 20px;
-    opacity: 0;
+    opacity: 0.3;
     transition: all 0.3s ease;
 }
 
@@ -997,4 +997,99 @@ th {
 .problem:hover {
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(33, 150, 243, 0.1);
+}
+
+.user-welcome {
+    background: linear-gradient(135deg, #2196F3, #1976D2);
+    color: white;
+    padding: 20px;
+    border-radius: 8px;
+    margin: 20px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 12px rgba(33, 150, 243, 0.2);
+}
+
+.welcome-text {
+    flex: 1;
+}
+
+.welcome-text h2 {
+    margin: 0;
+    color: white;
+    font-size: 1.5em;
+    text-align: left;
+}
+
+.calendar-info {
+    display: flex;
+    align-items: center;
+    margin-top: 15px;
+    gap: 30px;
+}
+
+.date-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.date-info .month {
+    font-size: 1.1em;
+}
+
+.date-info .day {
+    font-size: 1.8em;
+    font-weight: bold;
+}
+
+.date-info .weekday {
+    font-size: 1.1em;
+}
+
+.countdown-info {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.countdown-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.countdown-item .label {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 0.9em;
+}
+
+.countdown-item .days {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 0.9em;
+}
+
+.checkin-btn {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.checkin-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: translateY(-2px);
+}
+
+.checkin-btn i {
+    font-size: 1.2em;
 }

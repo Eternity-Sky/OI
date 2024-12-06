@@ -346,4 +346,42 @@ function calculateTitle(userData) {
     ];
     
     return titles.find(title => completedCount >= title.count) || titles[titles.length - 1];
-} 
+}
+
+function checkIn() {
+    const currentUser = localStorage.getItem('currentUser');
+    if (!currentUser) {
+        alert('请先登录！');
+        return;
+    }
+    
+    const today = new Date().toDateString();
+    const userData = JSON.parse(localStorage.getItem(currentUser));
+    
+    if (!userData.checkins) {
+        userData.checkins = [];
+    }
+    
+    if (userData.checkins.includes(today)) {
+        alert('今天已经打过卡了！');
+        return;
+    }
+    
+    userData.checkins.push(today);
+    localStorage.setItem(currentUser, JSON.stringify(userData));
+    alert('打卡成功！');
+}
+
+// 更新欢迎信息
+function updateWelcomeInfo() {
+    const currentUser = localStorage.getItem('currentUser');
+    const welcomeUsername = document.getElementById('welcomeUsername');
+    if (currentUser) {
+        welcomeUsername.textContent = currentUser;
+    }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    checkLoginStatus();
+    updateWelcomeInfo();
+}); 
