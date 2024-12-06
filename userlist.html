@@ -19,7 +19,7 @@
             </ul>
         </div>
         <div class="inbox-section">
-            <h2>我的收件箱</h2>
+            <h2>我的收件箱 <span id="unreadCount" class="notification-badge" style="display: none;"></span></h2>
             <ul id="inboxList">
                 <!-- 收件箱消息将插入在这里 -->
             </ul>
@@ -38,18 +38,56 @@
             return currentUser;
         }
 
+        function checkAchievements(completedCount) {
+            const achievements = [];
+            if (completedCount >= 10) {
+                achievements.push('题目大师');
+            }
+            if (completedCount >= 5) {
+                achievements.push('勤奋学习');
+            }
+            if (completedCount >= 1) {
+                achievements.push('开始征程');
+            }
+            return achievements;
+        }
+
+        function showUserProfile(username) {
+            const userData = JSON.parse(localStorage.getItem(username));
+            const modal = document.createElement('div');
+            modal.className = 'profile-modal';
+            modal.innerHTML = `
+                <div class="profile-content">
+                    <img src="${userData.avatar}" alt="头像" class="profile-avatar">
+                    <h3>${username}</h3>
+                    <p>完成题目: ${userData.completedProblems ? userData.completedProblems.length : 0}</p>
+                    <div class="achievements">
+                        ${checkAchievements(userData.completedProblems ? userData.completedProblems.length : 0)
+                            .map(a => `<span class="achievement-badge">${a}</span>`).join('')}
+                    </div>
+                    <button onclick="this.parentElement.parentElement.remove()" class="close-button">关闭</button>
+                </div>
+            `;
+            document.body.appendChild(modal);
+        }
+
         function displayCurrentUser() {
             const currentUser = checkLogin();
             if (!currentUser) return;
 
             const userData = JSON.parse(localStorage.getItem(currentUser));
             const currentUserDiv = document.getElementById('currentUser');
+            const achievements = checkAchievements(userData.completedProblems ? userData.completedProblems.length : 0);
+            
             currentUserDiv.innerHTML = `
                 <div class="user-profile">
-                    <img src="${userData.avatar}" alt="头像" class="user-avatar">
+                    <img src="${userData.avatar}" alt="头像" class="user-avatar" onclick="showUserProfile('${currentUser}')">
                     <div class="user-info">
                         <h3>${currentUser}</h3>
                         <p>完成题目数: ${userData.completedProblems ? userData.completedProblems.length : 0}</p>
+                        <div class="achievements">
+                            ${achievements.map(a => `<span class="achievement-badge">${a}</span>`).join('')}
+                        </div>
                     </div>
                 </div>
             `;
@@ -60,26 +98,59 @@
             userList.innerHTML = '';
             const currentUser = localStorage.getItem('currentUser');
 
+            const users = [];
             for (let i = 0; i < localStorage.length; i++) {
                 const key = localStorage.key(i);
-                if (key !== 'currentUser' && key !== 'inbox') {
+                if (key !== 'currentUser' && key !== 'inbox' && !key.startsWith('lastClickTime_') && !key.includes('GT_')) {
                     try {
                         const userData = JSON.parse(localStorage.getItem(key));
-                        const listItem = document.createElement('li');
-                        listItem.innerHTML = `
-                            <div class="user-item">
-                                <img src="${userData.avatar}" alt="头像" class="user-avatar-small">
-                                <span class="username">${key}</span>
-                                <span class="completed-count">完成题目: ${userData.completedProblems ? userData.completedProblems.length : 0}</span>
-                                ${key !== currentUser ? `<button onclick="sendMessage('${key}')" class="message-btn">发送消息</button>` : '<span class="current-user-tag">当前用户</span>'}
-                            </div>
-                        `;
-                        userList.appendChild(listItem);
+                        if (userData && userData.avatar) {
+                            users.push({
+                                username: key,
+                                completedCount: userData.completedProblems ? userData.completedProblems.length : 0,
+                                avatar: userData.avatar
+                            });
+                        }
                     } catch (error) {
                         console.error(`Error parsing user data for ${key}:`, error);
                     }
                 }
             }
+
+            users.sort((a, b) => b.completedCount - a.completedCount);
+
+            if (users.length === 0) {
+                userList.innerHTML = '<li class="no-users">暂无用户</li>';
+                return;
+            }
+
+            users.forEach((user, index) => {
+                const listItem = document.createElement('li');
+                const achievements = checkAchievements(user.completedCount);
+                
+                listItem.innerHTML = `
+                    <div class="user-item">
+                        <div class="rank-badge">#${index + 1}</div>
+                        <div class="user-info-section" onclick="showUserProfile('${user.username}')">
+                            <img src="${user.avatar}" alt="头像" class="user-avatar-small">
+                            <span class="username">${user.username}</span>
+                        </div>
+                        <div class="user-stats">
+                            <span class="completed-count">完成题目: ${user.completedCount}</span>
+                            <div class="achievements">
+                                ${achievements.map(a => `<span class="achievement-badge">${a}</span>`).join('')}
+                            </div>
+                            ${user.username !== currentUser ? 
+                                `<button onclick="sendMessage('${user.username}')" class="message-btn">
+                                    <i class="fas fa-envelope"></i> 发送消息
+                                </button>` : 
+                                '<span class="current-user-tag">当前用户</span>'
+                            }
+                        </div>
+                    </div>
+                `;
+                userList.appendChild(listItem);
+            });
         }
 
         function sendMessage(toUser) {
@@ -89,7 +160,12 @@
                 if (!inbox[toUser]) {
                     inbox[toUser] = [];
                 }
-                inbox[toUser].push({ from: localStorage.getItem('currentUser'), message });
+                inbox[toUser].push({
+                    from: localStorage.getItem('currentUser'),
+                    message,
+                    time: new Date().toISOString(),
+                    read: false
+                });
                 localStorage.setItem('inbox', JSON.stringify(inbox));
                 alert('消息已发送！');
             }
@@ -104,10 +180,38 @@
 
             const inbox = JSON.parse(localStorage.getItem('inbox') || '{}');
             const messages = inbox[currentUser] || [];
+            
+            // 显示未读消息数
+            const unreadCount = messages.filter(msg => !msg.read).length;
+            const unreadCountElement = document.getElementById('unreadCount');
+            if (unreadCount > 0) {
+                unreadCountElement.textContent = unreadCount;
+                unreadCountElement.style.display = 'inline';
+            } else {
+                unreadCountElement.style.display = 'none';
+            }
 
-            messages.forEach(msg => {
+            messages.forEach((msg, index) => {
                 const listItem = document.createElement('li');
-                listItem.textContent = `来自 ${msg.from}: ${msg.message}`;
+                const time = new Date(msg.time).toLocaleString();
+                listItem.innerHTML = `
+                    <div class="message ${msg.read ? '' : 'unread'}">
+                        <div class="message-header">
+                            <span class="message-from">来自: ${msg.from}</span>
+                            <span class="message-time">${time}</span>
+                        </div>
+                        <div class="message-content">${msg.message}</div>
+                    </div>
+                `;
+                listItem.onclick = () => {
+                    if (!msg.read) {
+                        msg.read = true;
+                        inbox[currentUser][index] = msg;
+                        localStorage.setItem('inbox', JSON.stringify(inbox));
+                        listItem.querySelector('.message').classList.remove('unread');
+                        displayInbox(); // 更新未读消息数
+                    }
+                };
                 inboxList.appendChild(listItem);
             });
         }
