@@ -1508,9 +1508,6 @@ th {
 /* 管理员面板样式 */
 #adminPanel {
     margin: 20px 0;
-    padding: 20px;
-    background: #f8f9fa;
-    border-radius: 8px;
     text-align: right;
 }
 
@@ -1518,140 +1515,28 @@ th {
     background-color: #28a745;
     color: white;
     padding: 10px 20px;
+    margin-left: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.admin-btn:hover {
+    background-color: #218838;
+    transform: translateY(-2px);
+}
+
+.delete-btn {
+    background-color: #dc3545;
+    color: white;
+    padding: 8px 16px;
     border: none;
     border-radius: 4px;
     cursor: pointer;
     transition: background-color 0.3s;
 }
 
-.admin-btn:hover {
-    background-color: #218838;
-}
-
-/* 表单样式 */
-.form-group {
-    margin-bottom: 15px;
-}
-
-.form-group label {
-    display: block;
-    margin-bottom: 5px;
-    color: #333;
-}
-
-.form-group input,
-.form-group textarea {
-    width: 100%;
-    padding: 8px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-}
-
-.form-group textarea {
-    height: 100px;
-    resize: vertical;
-}
-
-.submit-btn {
-    background-color: #007bff;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    width: 100%;
-    margin-top: 10px;
-}
-
-.submit-btn:hover {
-    background-color: #0056b3;
-}
-
-/* 欢迎区域样式 */
-.welcome-section {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 30px;
-}
-
-.welcome-text {
-    flex: 1;
-}
-
-.welcome-text h2 {
-    margin: 0;
-    color: #333;
-    font-size: 24px;
-}
-
-.date-info {
-    text-align: right;
-    margin-left: 20px;
-}
-
-.quote-box {
-    flex: 2;
-    text-align: center;
-    padding: 0 20px;
-}
-
-.quote-box blockquote {
-    margin: 0;
-    font-style: italic;
-    color: #666;
-}
-
-/* 搜索区域样式 */
-.search-section {
-    display: flex;
-    gap: 10px;
-    margin-top: 400px;
-    align-items: center;
-    position: relative;
-    z-index: 1;
-}
-
-.search-input {
-    flex: 2;
-}
-
-.filter-group {
-    flex: 1;
-    display: flex;
-    gap: 10px;
-}
-
-.button-group {
-    flex: 1;
-    display: flex;
-    gap: 10px;
-    justify-content: flex-end;
-}
-
-/* 日历欢迎区域 */
-.calendar-welcome {
-    margin: 20px 0;
-    padding: 15px;
-    background-color: #E3F2FD;
-    border-radius: 8px;
-    width: 250px;
-    position: absolute;
-    left: 20px;
-    top: 70px;
-    box-shadow: 0 2px 4px rgba(33, 150, 243, 0.1);
-}
-
-/* 每日内容区域 */
-.daily-content {
-    background: linear-gradient(135deg, #2196F3, #1976D2);
-    border-radius: 8px;
-    padding: 20px;
-    margin: 20px 0;
-    width: 300px;
-    position: absolute;
-    left: 400px;
-    top: 70px;
-    color: white;
-    box-shadow: 0 4px 12px rgba(33, 150, 243, 0.2);
+.delete-btn:hover {
+    background-color: #c82333;
 }
