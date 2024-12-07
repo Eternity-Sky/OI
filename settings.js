@@ -33,8 +33,8 @@ function handleGitHubBinding() {
         // 使用 GitHub 的登录按钮
         window.open('https://github.com/login/oauth/authorize?' + 
             'client_id=Ov23lizlCDOmy2QtkeCZ' +
-            '&scope=user:email' +
-            '&redirect_uri=' + encodeURIComponent('https://eternity-sky.github.io/github-callback.html'),
+            '&scope=user' +
+            '&redirect_uri=' + encodeURIComponent('https://eternity-sky.github.io/OI/github-callback.html'),
             'github-login',
             'width=600,height=600'
         );
