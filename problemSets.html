@@ -4,50 +4,57 @@
     <meta charset="UTF-8">
     <title>题单</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script src="problems.js"></script>
-    <script src="auth.js"></script>
 </head>
 <body>
     <div class="container">
-        <div id="problemSets">
-            <!-- 题单内容 -->
-        </div>
+        <!-- 管理员面板 -->
         <div id="adminPanel" style="display: none;">
-            <button id="addProblemSetBtn" class="admin-btn">发布新题单</button>
+            <button onclick="showAddProblemSetModal()" class="admin-btn">
+                <i class="fas fa-plus"></i> 添加题单
+            </button>
+            <button onclick="window.location.href='addProblem.html'" class="admin-btn">
+                <i class="fas fa-plus"></i> 添加新题
+            </button>
         </div>
+
+        <!-- 题单列表 -->
+        <div id="problemSetsList"></div>
+
+        <!-- 添加题单的模态框 -->
+        <div id="addProblemSetModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2>添加新题单</h2>
+                <form id="addProblemSetForm">
+                    <div class="form-group">
+                        <label>题单名称：</label>
+                        <input type="text" id="setName" required>
+                    </div>
+                    <div class="form-group">
+                        <label>描述：</label>
+                        <textarea id="setDescription" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>比赛日期：</label>
+                        <input type="date" id="setDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label>比赛时间：</label>
+                        <input type="text" id="setTime" placeholder="HH:MM ~ HH:MM" required>
+                    </div>
+                    <div class="form-group">
+                        <label>题目ID（用逗号分隔）：</label>
+                        <input type="text" id="problemIds" placeholder="例如：32,33,34,35" required>
+                    </div>
+                    <button type="submit" class="submit-btn">添加题单</button>
+                </form>
+            </div>
+        </div>
+
         <div class="footer">
             <a href="index.html" class="about-button">返回首页</a>
-        </div>
-    </div>
-
-    <!-- 添加题单的模态框 -->
-    <div id="addProblemSetModal" class="modal">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <h2>发布新题单</h2>
-            <form id="addProblemSetForm">
-                <div class="form-group">
-                    <label for="setName">题单名称：</label>
-                    <input type="text" id="setName" required>
-                </div>
-                <div class="form-group">
-                    <label for="setDescription">描述：</label>
-                    <textarea id="setDescription" required></textarea>
-                </div>
-                <div class="form-group">
-                    <label for="setDate">比赛日期：</label>
-                    <input type="date" id="setDate" required>
-                </div>
-                <div class="form-group">
-                    <label for="setTime">比赛时间：</label>
-                    <input type="text" id="setTime" placeholder="HH:MM ~ HH:MM" required>
-                </div>
-                <div class="form-group">
-                    <label for="problemIds">题目ID（用逗号分隔）：</label>
-                    <input type="text" id="problemIds" placeholder="例如：32,33,34,35" required>
-                </div>
-                <button type="submit" class="submit-btn">发布题单</button>
-            </form>
         </div>
     </div>
 
@@ -60,126 +67,115 @@
             }
 
             // 显示题单列表
-            const problemSetsDiv = document.getElementById('problemSets');
-            for (const [setName, setInfo] of Object.entries(problemSets)) {
+            const problemSets = JSON.parse(localStorage.getItem('problemSets') || '{}');
+            const listDiv = document.getElementById('problemSetsList');
+
+            Object.entries(problemSets).forEach(([name, info]) => {
                 const setDiv = document.createElement('div');
                 setDiv.className = 'problem-set';
                 
-                // 创建题单标题和描述
-                setDiv.innerHTML = `
-                    <h2>${setName}</h2>
-                    <p class="set-description">${setInfo.description}</p>
-                    <p class="set-time">比赛时间：${setInfo.date} ${setInfo.time}</p>
-                `;
-
-                // 创建题目列表
-                const problemList = document.createElement('div');
-                problemList.className = 'problem-list';
-                
-                setInfo.problems.forEach(problemId => {
-                    const problem = problems.find(p => p.id === problemId);
-                    if (problem) {
-                        const problemDiv = document.createElement('div');
-                        problemDiv.className = 'problem-item';
-                        problemDiv.innerHTML = `
-                            <a href="problem.html?id=${problem.id}">${problem.title}</a>
-                            <span class="difficulty-${problem.difficulty.toLowerCase()}">${problem.difficulty}</span>
-                        `;
-                        problemList.appendChild(problemDiv);
-                    }
-                });
-
-                setDiv.appendChild(problemList);
-
-                // 添加详细信息
-                if (setInfo.details) {
-                    const detailsDiv = document.createElement('div');
-                    detailsDiv.className = 'set-details';
-                    detailsDiv.innerHTML = `
-                        <h3>比赛详情</h3>
-                        <p><strong>时间限制：</strong></p>
-                        <ul>
-                            ${Object.entries(setInfo.details.timeLimit).map(([name, limit]) => 
-                                `<li>${name}: ${limit}</li>`
-                            ).join('')}
-                        </ul>
-                        <p><strong>内存限制：</strong>${setInfo.details.memoryLimit}</p>
-                        <p><strong>编译选项：</strong>${Object.entries(setInfo.details.compiler).map(([lang, opts]) => 
-                            `${lang}: ${opts}`
-                        ).join(', ')}</p>
-                        <h4>注意事项：</h4>
-                        <ul>
-                            ${setInfo.details.notes.map(note => 
-                                `<li>${note}</li>`
-                            ).join('')}
-                        </ul>
+                let deleteButton = '';
+                if (currentUser === 'kkks403') {
+                    deleteButton = `
+                        <button onclick="deleteProblemSet('${name}')" class="delete-btn">
+                            <i class="fas fa-trash"></i> 删除题单
+                        </button>
                     `;
-                    setDiv.appendChild(detailsDiv);
                 }
 
-                problemSetsDiv.appendChild(setDiv);
-            }
-
-            // 添加题单的模态框功能
-            const modal = document.getElementById('addProblemSetModal');
-            const btn = document.getElementById('addProblemSetBtn');
-            const span = document.getElementsByClassName('close')[0];
-
-            btn.onclick = () => modal.style.display = 'block';
-            span.onclick = () => modal.style.display = 'none';
-            window.onclick = (event) => {
-                if (event.target == modal) {
-                    modal.style.display = 'none';
-                }
-            }
-
-            // 处理表单提交
-            document.getElementById('addProblemSetForm').onsubmit = (e) => {
-                e.preventDefault();
-                
-                const setName = document.getElementById('setName').value;
-                const description = document.getElementById('setDescription').value;
-                const date = document.getElementById('setDate').value;
-                const time = document.getElementById('setTime').value;
-                const problemIds = document.getElementById('problemIds').value
-                    .split(',')
-                    .map(id => parseInt(id.trim()));
-
-                // 添加新题单
-                problemSets[setName] = {
-                    description: description,
-                    problems: problemIds,
-                    date: date,
-                    time: time,
-                    details: {
-                        timeLimit: {
-                            poker: "1.0秒",
-                            explore: "1.0秒",
-                            sticks: "1.0秒",
-                            chain: "2.0秒"
-                        },
-                        memoryLimit: "512 MiB",
-                        compiler: {
-                            "C++": "-O2 -std=c++14 -static"
-                        },
-                        notes: [
-                            "文件名（程序名和输入输出文件名）必须使用英文小写",
-                            "main 函数的返回值类型必须是 int，程序正常结束时的返回值必须是 0",
-                            "提交的程序代码文件的放置位置请参考各省的具体要求",
-                            "若无特殊说明，结果的比较方式为全文比较（过滤行末空格及文末回车）",
-                            "选手提交的程序源文件必须不大于 100KB",
-                            "程序可使用的栈空间内存限制与题目的内存限制一致"
-                        ]
-                    }
-                };
-
-                // 保存到 localStorage
-                localStorage.setItem('problemSets', JSON.stringify(problemSets));
-
-                // 刷新页面
-                location.reload();
-            };
+                setDiv.innerHTML = `
+                    <h2>${name}</h2>
+                    <p class="set-description">${info.description}</p>
+                    <p class="set-time">比赛时间：${info.date} ${info.time}</p>
+                    <div class="problem-list">
+                        ${info.problems.map(problemId => {
+                            const problem = problems.find(p => p.id === problemId);
+                            return problem ? `
+                                <div class="problem-item">
+                                    <a href="problem.html?id=${problem.id}">${problem.title}</a>
+                                    <span class="difficulty-${problem.difficulty.toLowerCase()}">${problem.difficulty}</span>
+                                </div>
+                            ` : '';
+                        }).join('')}
+                    </div>
+                    ${deleteButton}
+                `;
+                listDiv.appendChild(setDiv);
+            });
         });
+
+        // 显示添加题单模态框
+        function showAddProblemSetModal() {
+            document.getElementById('addProblemSetModal').style.display = 'block';
+        }
+
+        // 关闭模态框
+        document.querySelector('.close').onclick = function() {
+            document.getElementById('addProblemSetModal').style.display = 'none';
+        }
+
+        // 点击模态框外部关闭
+        window.onclick = function(event) {
+            if (event.target == document.getElementById('addProblemSetModal')) {
+                document.getElementById('addProblemSetModal').style.display = 'none';
+            }
+        }
+
+        // 删除题单
+        function deleteProblemSet(name) {
+            if (confirm(`确定要删除题单"${name}"吗？`)) {
+                const problemSets = JSON.parse(localStorage.getItem('problemSets') || '{}');
+                delete problemSets[name];
+                localStorage.setItem('problemSets', JSON.stringify(problemSets));
+                location.reload();
+            }
+        }
+
+        // 添加题单表单提交
+        document.getElementById('addProblemSetForm').onsubmit = (e) => {
+            e.preventDefault();
+            
+            const setName = document.getElementById('setName').value;
+            const description = document.getElementById('setDescription').value;
+            const date = document.getElementById('setDate').value;
+            const time = document.getElementById('setTime').value;
+            const problemIds = document.getElementById('problemIds').value
+                .split(',')
+                .map(id => parseInt(id.trim()));
+
+            const problemSets = JSON.parse(localStorage.getItem('problemSets') || '{}');
+            
+            problemSets[setName] = {
+                description: description,
+                problems: problemIds,
+                date: date,
+                time: time,
+                details: {
+                    timeLimit: {
+                        poker: "1.0秒",
+                        explore: "1.0秒",
+                        sticks: "1.0秒",
+                        chain: "2.0秒"
+                    },
+                    memoryLimit: "512 MiB",
+                    compiler: {
+                        "C++": "-O2 -std=c++14 -static"
+                    },
+                    notes: [
+                        "文件名（程序名和输入输出文件名）必须使用英文小写",
+                        "main 函数的返回值类型必须是 int，程序正常结束时的返回值必须是 0",
+                        "提交的程序代码文件的放置位置请参考各省的具体要求",
+                        "若无特殊说明，结果的比较方式为全文比较（过滤行末空格及文末回车）",
+                        "选手提交的程序源文件必须不大于 100KB",
+                        "程序可使用的栈空间内存限制与题目的内存限制一致"
+                    ]
+                }
+            };
+
+            localStorage.setItem('problemSets', JSON.stringify(problemSets));
+            alert('题单添加成功！');
+            location.reload();
+        };
     </script>
 </body>
 </html> 
