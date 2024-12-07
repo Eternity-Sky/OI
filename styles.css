@@ -55,7 +55,6 @@ body::after {
     background-color: rgba(255, 255, 255, 0.95);
     border-radius: 8px;
     box-shadow: 0 4px 12px rgba(33, 150, 243, 0.15);
-    transition: transform 0.3s;
     position: relative;
     overflow: hidden;
     position: relative;
@@ -64,35 +63,7 @@ body::after {
 
 .container::before,
 .container::after {
-    content: "✨";
-    position: absolute;
-    font-size: 20px;
-    opacity: 0.3;
-    transition: all 0.3s ease;
-}
-
-.container::before {
-    top: 10px;
-    left: 10px;
-}
-
-.container::after {
-    bottom: 10px;
-    right: 10px;
-}
-
-.container:hover {
-    transform: scale(1.02);
-}
-
-.container:hover::before {
-    opacity: 1;
-    transform: translate(5px, 5px) rotate(45deg);
-}
-
-.container:hover::after {
-    opacity: 1;
-    transform: translate(-5px, -5px) rotate(-45deg);
+    display: none;
 }
 
 .details {
@@ -257,6 +228,30 @@ img {
     height: 50px;
     border-radius: 50%;
     border: 2px solid #ccc;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.user-avatar:hover {
+    transform: scale(1.1);
+    border-color: #2196F3;
+    box-shadow: 0 0 10px rgba(33, 150, 243, 0.3);
+}
+
+.avatar-container::after {
+    content: "点击进入用户中心";
+    position: absolute;
+    bottom: -20px;
+    right: 0;
+    font-size: 12px;
+    color: #666;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    white-space: nowrap;
+}
+
+.avatar-container:hover::after {
+    opacity: 1;
 }
 
 .modal {
@@ -445,36 +440,51 @@ th {
 }
 
 .user-profile {
-    display: flex;
-    align-items: center;
+    max-width: 600px;
+    margin: 40px auto;
     padding: 20px;
-    background-color: #f5f5f5;
+    background: white;
     border-radius: 8px;
-    margin: 20px 0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.back-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: #333;
+    text-decoration: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
+.back-button:hover {
+    background-color: #f0f0f0;
 }
 
 .user-info {
-    margin-left: 20px;
+    margin-top: 30px;
 }
 
-.user-info h3 {
-    margin: 0;
+.username-section, .completed-count, .password-section {
+    margin-bottom: 30px;
+}
+
+.username-section h3, .completed-count h3, .password-section h3 {
     color: #333;
+    margin-bottom: 15px;
 }
 
-.user-info p {
-    margin: 5px 0;
-    color: #666;
-}
-
-#inboxList li {
+.username-edit {
     display: flex;
-    align-items: center;
-    padding: 10px;
-    background-color: #fff;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    margin: 5px 0;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.username-edit input {
+    flex: 1;
+    max-width: 200px;
 }
 
 .rank-badge {
@@ -1240,4 +1250,60 @@ th {
     margin-top: 160px;
     position: relative;
     z-index: 1;
+}
+
+.nav-auth {
+    display: inline-flex;
+    gap: 10px;
+}
+
+.nav-auth button {
+    background: none;
+    border: none;
+    color: #333;
+    cursor: pointer;
+    padding: 8px 15px;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.nav-auth button:hover {
+    color: #007bff;
+}
+
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.logout-section {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+    text-align: center;
+}
+
+.logout-btn {
+    background-color: #ff4757;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0 auto;
+    transition: background-color 0.3s;
+}
+
+.logout-btn:hover {
+    background-color: #ff6b81;
+}
+
+.logout-btn i {
+    font-size: 16px;
 }
