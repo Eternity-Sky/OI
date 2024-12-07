@@ -15,34 +15,34 @@
         const code = urlParams.get('code');
         
         if (code) {
-            // 这里需要发送到你的后端服务器进行处理
-            // 因为 GitHub OAuth 需要在服务器端完成
-            fetch('你的后端API地址/github/callback', {
-                method: 'POST',
+            // 使用 GitHub API 获取用户信息
+            fetch(`https://api.github.com/user`, {
                 headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ code })
+                    'Authorization': `Bearer ${code}`,
+                    'Accept': 'application/json'
+                }
             })
             .then(response => response.json())
             .then(data => {
                 const currentUser = localStorage.getItem('currentUser');
                 const userData = JSON.parse(localStorage.getItem(currentUser));
                 
-                // 保存 GitHub ID
-                userData.githubId = data.githubId;
+                // 保存 GitHub 用户信息
+                userData.githubId = data.id;
+                userData.githubUsername = data.login;
                 localStorage.setItem(currentUser, JSON.stringify(userData));
                 
-                // 跳转回设置页面
-                window.location.href = 'userCenter.html';
+                // 关闭窗口并刷新父窗口
+                window.opener.location.reload();
+                window.close();
             })
             .catch(error => {
                 alert('GitHub 绑定失败，请重试');
-                window.location.href = 'userCenter.html';
+                window.close();
             });
         } else {
             alert('授权失败，请重试');
-            window.location.href = 'userCenter.html';
+            window.close();
         }
     </script>
 </body>

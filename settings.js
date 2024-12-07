@@ -30,12 +30,14 @@ function handleGitHubBinding() {
             updateGitHubButtonStatus();
         }
     } else {
-        // 如果未绑定，则进行 GitHub OAuth 授权
-        const clientId = '你的GitHub客户端ID';  // 替换为你的 GitHub OAuth App 客户端 ID
-        const redirectUri = encodeURIComponent(`${window.location.origin}/github-callback.html`);
-        const scope = 'read:user';
-        
-        window.location.href = `https://github.com/login/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scope}`;
+        // 使用 GitHub 的登录按钮
+        window.open('https://github.com/login/oauth/authorize?' + 
+            'client_id=你获得的Client_ID' +
+            '&scope=user:email' +
+            '&redirect_uri=' + encodeURIComponent(window.location.origin + '/github-callback.html'),
+            'github-login',
+            'width=600,height=600'
+        );
     }
 }
 
@@ -48,7 +50,10 @@ function updateGitHubButtonStatus() {
         btn.innerHTML = '<i class="fab fa-github"></i> 解除绑定';
         btn.classList.add('bound');
     } else {
-        btn.innerHTML = '<i class="fab fa-github"></i> 绑定 GitHub';
+        btn.innerHTML = `
+            <i class="fab fa-github"></i>
+            <span>Sign in with GitHub</span>
+        `;
         btn.classList.remove('bound');
     }
 } 
