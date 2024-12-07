@@ -10,6 +10,10 @@
         <h2>添加新题目</h2>
         <form id="addProblemForm">
             <div class="form-group">
+                <label>题号：</label>
+                <input type="number" id="problemId" required>
+            </div>
+            <div class="form-group">
                 <label>标题：</label>
                 <input type="text" id="title" required>
             </div>
@@ -63,13 +67,19 @@
                 return;
             }
 
-            // 获取最新的题目ID
+            // 使用用户输入的题号
+            const problemId = parseInt(document.getElementById('problemId').value);
+
+            // 检查题号是否已存在
             const problems = JSON.parse(localStorage.getItem('problems') || '[]');
-            const newId = problems.length > 0 ? Math.max(...problems.map(p => p.id)) + 1 : 1;
+            if (problems.some(p => p.id === problemId)) {
+                alert('该题号已存在！');
+                return;
+            }
 
             // 创建新题目
             const newProblem = {
-                id: newId,
+                id: problemId,
                 title: document.getElementById('title').value,
                 description: document.getElementById('description').value,
                 difficulty: document.getElementById('difficulty').value,
@@ -77,11 +87,15 @@
                 input: document.getElementById('input').value,
                 output: document.getElementById('output').value,
                 sample_input: document.getElementById('sampleInput').value,
-                sample_output: document.getElementById('sampleOutput').value
+                sample_output: document.getElementById('sampleOutput').value,
+                timeLimit: "1.0秒",
+                memoryLimit: "512 MiB"
             };
 
             // 添加到题目列表
             problems.push(newProblem);
+            // 按题号排序
+            problems.sort((a, b) => a.id - b.id);
             localStorage.setItem('problems', JSON.stringify(problems));
 
             alert('题目添加成功！');
