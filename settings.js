@@ -34,7 +34,7 @@ function handleGitHubBinding() {
         window.open('https://github.com/login/oauth/authorize?' + 
             'client_id=Ov23lizlCDOmy2QtkeCZ' +
             '&scope=user:email' +
-            '&redirect_uri=' + encodeURIComponent(window.location.origin + '/github-callback.html'),
+            '&redirect_uri=' + encodeURIComponent('https://eternity-sky.github.io/github-callback.html'),
             'github-login',
             'width=600,height=600'
         );

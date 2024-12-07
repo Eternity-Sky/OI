@@ -15,24 +15,39 @@
         const code = urlParams.get('code');
         
         if (code) {
-            // 使用 GitHub API 获取用户信息
-            fetch(`https://api.github.com/user`, {
+            // 使用授权码获取访问令牌
+            fetch('https://github.com/login/oauth/access_token', {
+                method: 'POST',
                 headers: {
-                    'Authorization': `Bearer ${code}`,
-                    'Accept': 'application/json'
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    client_id: 'Ov23lizlCDOmy2QtkeCZ',
+                    code: code
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.access_token) {
+                    // 使用访问令牌获取用户信息
+                    return fetch('https://api.github.com/user', {
+                        headers: {
+                            'Authorization': `Bearer ${data.access_token}`
+                        }
+                    });
                 }
+                throw new Error('获取访问令牌失败');
             })
             .then(response => response.json())
             .then(data => {
                 const currentUser = localStorage.getItem('currentUser');
                 const userData = JSON.parse(localStorage.getItem(currentUser));
                 
-                // 保存 GitHub 用户信息
                 userData.githubId = data.id;
                 userData.githubUsername = data.login;
                 localStorage.setItem(currentUser, JSON.stringify(userData));
                 
-                // 关闭窗口并刷新父窗口
                 window.opener.location.reload();
                 window.close();
             })
