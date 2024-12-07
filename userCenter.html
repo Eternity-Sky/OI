@@ -2,71 +2,67 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <title>用户中心</title>
+    <title>个人设置</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <a href="index.html" class="back-button">
-                <i class="fas fa-arrow-left"></i> 返回主页
-            </a>
+    <div class="container settings-container">
+        <div class="settings-header">
+            <div class="settings-nav">
+                <a href="#" class="settings-nav-item active">个人信息</a>
+                <a href="#" class="settings-nav-item">使用偏好</a>
+                <a href="#" class="settings-nav-item">安全设置</a>
+            </div>
         </div>
-        <div class="user-profile">
-            <div class="avatar-section">
-                <img id="currentAvatar" src="" alt="用户头像" class="user-avatar">
-                <div class="avatar-upload">
-                    <label for="newAvatar" class="upload-btn">
-                        <i class="fas fa-camera"></i> 更换头像
-                    </label>
-                    <input type="file" id="newAvatar" accept="image/*" style="display: none;">
+        
+        <div class="settings-content">
+            <div class="settings-section">
+                <h3>头像设置</h3>
+                <div class="avatar-section">
+                    <img id="currentAvatar" src="" alt="用户头像" class="settings-avatar">
+                    <button class="change-avatar-btn">
+                        <i class="fas fa-camera"></i> 选择图片
+                        <input type="file" id="newAvatar" accept="image/*" style="display: none;">
+                    </button>
                 </div>
             </div>
-            <div class="user-info">
+
+            <div class="settings-section">
+                <h3>用户名</h3>
                 <div class="username-section">
-                    <h3>用户名: <span id="username"></span></h3>
+                    <p id="username"></p>
                     <div class="username-edit">
                         <input type="text" id="newUsername" placeholder="新用户名">
                         <button onclick="updateUsername()">修改用户名</button>
                     </div>
                 </div>
-                <div class="completed-count">
-                    <h3>完成题目数: <span id="problemCount">0</span></h3>
-                </div>
+            </div>
+
+            <div class="settings-section">
+                <h3>修改密码</h3>
                 <div class="password-section">
-                    <h3>修改密码</h3>
                     <input type="password" id="newPassword" placeholder="新密码">
                     <button onclick="changePassword()">修改密码</button>
                 </div>
-                <div class="logout-section">
-                    <button class="logout-btn" onclick="logout()">
-                        <i class="fas fa-sign-out-alt"></i> 退出登录
-                    </button>
+            </div>
+
+            <div class="settings-section">
+                <h3>GitHub 绑定</h3>
+                <div class="github-section">
+                    <div class="platform-item">
+                        <span>GitHub</span>
+                        <button id="githubBindBtn" class="bind-btn" onclick="handleGitHubBinding()">
+                            <i class="fab fa-github"></i> 
+                            <span>绑定 GitHub</span>
+                        </button>
+                    </div>
+                    <p class="bind-desc">绑定 GitHub 账号后可以使用 GitHub 账号登录</p>
                 </div>
             </div>
         </div>
     </div>
     <script src="auth.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const currentUser = localStorage.getItem('currentUser');
-            if (!currentUser) {
-                window.location.href = 'index.html';
-                return;
-            }
-
-            const userData = JSON.parse(localStorage.getItem(currentUser));
-            
-            // 设置用户信息
-            document.getElementById('currentAvatar').src = userData.avatar;
-            document.getElementById('username').textContent = currentUser;
-            document.getElementById('problemCount').textContent = 
-                userData.completedProblems ? userData.completedProblems.length : 0;
-
-            // 设置头像上传事件
-            document.getElementById('newAvatar').addEventListener('change', updateAvatar);
-        });
-    </script>
+    <script src="settings.js"></script>
 </body>
 </html> 
