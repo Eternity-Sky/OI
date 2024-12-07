@@ -29,18 +29,10 @@
                 <a href="leaderboard.html" class="nav-button">
                     <i class="fas fa-trophy"></i> 排行榜
                 </a>
-                <div id="auth" class="nav-auth">
-                    <button class="nav-button" onclick="showLogin()">
-                        <i class="fas fa-sign-in-alt"></i> 登录
-                    </button>
-                    <button class="nav-button" onclick="showRegister()">
-                        <i class="fas fa-user-plus"></i> 注册
-                    </button>
-                </div>
             </div>
         </div>
         <div class="calendar-welcome">
-            <div class="welcome-text">欢迎回来，<span id="welcomeUsername">游客</span></div>
+            <div class="welcome-text">欢迎回来，<span id="username">游客</span></div>
             <div class="calendar-display">
                 <div class="date-info">
                     <span class="month">十二月</span>
@@ -53,6 +45,10 @@
                 </div>
                 <button class="checkin-btn" onclick="checkIn()">点击打卡</button>
             </div>
+        </div>
+        <div id="auth">
+            <button onclick="showLogin()">登录</button>
+            <button onclick="showRegister()">注册</button>
         </div>
         <div id="loginForm" style="display:none;">
             <h3>登录</h3>
@@ -160,11 +156,6 @@
                         </div>
                     </div>
                 </div>
-                <div class="logout-section">
-                    <button class="logout-btn" onclick="logout()">
-                        <i class="fas fa-sign-out-alt"></i> 退出登录
-                    </button>
-                </div>
             </div>
         </div>
         <div class="daily-content">
@@ -192,6 +183,19 @@
     </div>
 
     <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // 获取当前用户
+            const currentUser = localStorage.getItem('currentUser');
+            const usernameSpan = document.getElementById('username');
+            
+            // 如果已登录，显示用户名；否则显示"游客"
+            if (currentUser) {
+                usernameSpan.textContent = currentUser;
+            } else {
+                usernameSpan.textContent = '游客';
+            }
+        });
+
         const problemsDiv = document.getElementById('problems');
         const paginationDiv = document.getElementById('pagination');
         const itemsPerPage = 5;

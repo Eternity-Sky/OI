@@ -1105,9 +1105,9 @@ th {
 }
 
 .welcome-text {
+    font-size: 24px;
     color: #333;
     margin-bottom: 10px;
-    text-align: center;
 }
 
 .calendar-display {
@@ -1171,7 +1171,7 @@ th {
     margin: 20px 0;
     width: 300px;
     position: absolute;
-    left: 290px;
+    left: 400px;
     top: 70px;
     color: white;
     box-shadow: 0 4px 12px rgba(33, 150, 243, 0.2);
@@ -1234,9 +1234,71 @@ th {
 }
 
 .search-section {
-    margin-top: 160px;
+    display: flex;
+    gap: 10px;
+    margin-top: 400px;
+    align-items: center;
     position: relative;
     z-index: 1;
+}
+
+.search-section input[type="text"] {
+    flex: 2;
+    padding: 10px;
+}
+
+.search-section select {
+    flex: 1;
+    padding: 10px;
+}
+
+/* 主要内容区域 */
+.main-content {
+    display: flex;
+    gap: 20px;
+}
+
+/* 左侧区域 */
+.left-section {
+    flex: 1;
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.welcome-text {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.date-info {
+    text-align: center;
+}
+
+.date-info .day {
+    font-size: 48px;
+    color: #2196F3;
+    font-weight: bold;
+}
+
+/* 右侧区域 */
+.right-section {
+    flex: 2;
+    background: #2196F3;
+    color: white;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.quote-text {
+    text-align: center;
+    font-style: italic;
+    margin-bottom: 20px;
+}
+
+.daily-stats {
+    display: flex;
+    justify-content: space-around;
 }
 
 .nav-auth {
@@ -1503,4 +1565,93 @@ th {
 
 .submit-btn:hover {
     background-color: #0056b3;
+}
+
+/* 欢迎区域样式 */
+.welcome-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 30px;
+}
+
+.welcome-text {
+    flex: 1;
+}
+
+.welcome-text h2 {
+    margin: 0;
+    color: #333;
+    font-size: 24px;
+}
+
+.date-info {
+    text-align: right;
+    margin-left: 20px;
+}
+
+.quote-box {
+    flex: 2;
+    text-align: center;
+    padding: 0 20px;
+}
+
+.quote-box blockquote {
+    margin: 0;
+    font-style: italic;
+    color: #666;
+}
+
+/* 搜索区域样式 */
+.search-section {
+    display: flex;
+    gap: 10px;
+    margin-top: 400px;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+}
+
+.search-input {
+    flex: 2;
+}
+
+.filter-group {
+    flex: 1;
+    display: flex;
+    gap: 10px;
+}
+
+.button-group {
+    flex: 1;
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+}
+
+/* 日历欢迎区域 */
+.calendar-welcome {
+    margin: 20px 0;
+    padding: 15px;
+    background-color: #E3F2FD;
+    border-radius: 8px;
+    width: 250px;
+    position: absolute;
+    left: 20px;
+    top: 70px;
+    box-shadow: 0 2px 4px rgba(33, 150, 243, 0.1);
+}
+
+/* 每日内容区域 */
+.daily-content {
+    background: linear-gradient(135deg, #2196F3, #1976D2);
+    border-radius: 8px;
+    padding: 20px;
+    margin: 20px 0;
+    width: 300px;
+    position: absolute;
+    left: 400px;
+    top: 70px;
+    color: white;
+    box-shadow: 0 4px 12px rgba(33, 150, 243, 0.2);
 }
