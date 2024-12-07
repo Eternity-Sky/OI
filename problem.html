@@ -33,13 +33,32 @@
             if (problem) {
                 document.getElementById('problemDetails').innerHTML = `
                     <h2>${problem.title}</h2>
-                    <p>${problem.description}</p>
-                    <small><strong>难度:</strong> ${problem.difficulty}</small><br>
-                    <small><strong>标签:</strong> ${problem.tags.join(', ')}</small><br>
-                    <small><strong>输入格式:</strong> ${problem.input}</small><br>
-                    <small><strong>输出格式:</strong> ${problem.output}</small><br>
-                    <small><strong>样例输入:</strong> <pre>${problem.sample_input}</pre></small><br>
-                    <small><strong>样例输出:</strong> <pre>${problem.sample_output}</pre></small><br>
+                    <div class="problem-section">
+                        <h3>【题目描述】</h3>
+                        <p>${problem.description}</p>
+                    </div>
+                    <div class="problem-section">
+                        <h3>【输入格式】</h3>
+                        <p>${problem.input}</p>
+                    </div>
+                    <div class="problem-section">
+                        <h3>【输出格式】</h3>
+                        <p>${problem.output}</p>
+                    </div>
+                    <div class="problem-section">
+                        <h3>【样例输入】</h3>
+                        <pre>${problem.sample_input}</pre>
+                    </div>
+                    <div class="problem-section">
+                        <h3>【样例输出】</h3>
+                        <pre>${problem.sample_output}</pre>
+                    </div>
+                    <div class="problem-info">
+                        <p><strong>时间限制：</strong>${problem.timeLimit}</p>
+                        <p><strong>内存限制：</strong>${problem.memoryLimit}</p>
+                        <p><strong>难度：</strong>${problem.difficulty}</p>
+                        <p><strong>标签：</strong>${problem.tags.join(', ')}</p>
+                    </div>
                 `;
             } else {
                 document.getElementById('problemDetails').innerHTML = '<p>题目未找到。</p>';

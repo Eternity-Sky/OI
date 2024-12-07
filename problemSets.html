@@ -4,104 +4,81 @@
     <meta charset="UTF-8">
     <title>题单</title>
     <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script src="problems.js"></script>
-    <script src="problemSets.js"></script>
     <script src="auth.js"></script>
 </head>
 <body>
     <div class="container">
-        <h1>题单</h1>
-        <div class="filter-section">
-            <input type="text" id="searchInput" placeholder="搜索题单">
-            <select id="difficultySelect">
-                <option value="">所有难度</option>
-                <option value="简单">简单</option>
-                <option value="中等">中等</option>
-                <option value="困难">困难</option>
-            </select>
-            <button onclick="filterProblemSets()">搜索</button>
+        <div id="problemSets">
+            <!-- 题单内容 -->
         </div>
-
-        <div id="problemSets" class="problem-sets"></div>
-
         <div class="footer">
             <a href="index.html" class="about-button">返回首页</a>
         </div>
     </div>
 
     <script>
-        function displayProblemSet(problemSet) {
-            const problemSetDiv = document.createElement('div');
-            problemSetDiv.className = 'problem-set';
-            
-            const problemsList = problemSet.problems.map(id => {
-                const problem = problems.find(p => p.id === id);
-                return problem ? `
-                    <li>
-                        <span class="problem-title">${problem.title}</span>
-                        <span class="difficulty-${problem.difficulty.toLowerCase()}">${problem.difficulty}</span>
-                    </li>` : '';
-            }).join('');
-
-            problemSetDiv.innerHTML = `
-                <div class="problem-set-header">
-                    <h2>${problemSet.title}</h2>
-                    <span class="difficulty-${problemSet.difficulty.toLowerCase()}">${problemSet.difficulty}</span>
-                </div>
-                <p class="description">${problemSet.description}</p>
-                <div class="tags">
-                    ${problemSet.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
-                </div>
-                <div class="author">作者: ${problemSet.author}</div>
-                <div class="problems-list">
-                    <h3>题目列表</h3>
-                    <ul>${problemsList}</ul>
-                </div>
-                <button onclick="startPractice(${problemSet.id})" class="practice-button">
-                    开始练习
-                </button>
-            `;
-            
-            return problemSetDiv;
-        }
-
-        function filterProblemSets() {
-            const searchValue = document.getElementById('searchInput').value.toLowerCase();
-            const difficultyValue = document.getElementById('difficultySelect').value;
-            
-            const filteredSets = problemSets.filter(set => 
-                (set.title.toLowerCase().includes(searchValue) ||
-                 set.description.toLowerCase().includes(searchValue) ||
-                 set.tags.some(tag => tag.toLowerCase().includes(searchValue))) &&
-                (difficultyValue === '' || set.difficulty === difficultyValue)
-            );
-            
-            displayAllProblemSets(filteredSets);
-        }
-
-        function displayAllProblemSets(sets = problemSets) {
-            const container = document.getElementById('problemSets');
-            container.innerHTML = '';
-            sets.forEach(set => {
-                container.appendChild(displayProblemSet(set));
-            });
-        }
-
-        function startPractice(setId) {
-            const problemSet = problemSets.find(set => set.id === setId);
-            if (!problemSet) return;
-            
-            // 存储当前练习的题单
-            localStorage.setItem('currentProblemSet', JSON.stringify(problemSet));
-            // 跳转到第一个题目
-            if (problemSet.problems.length > 0) {
-                window.location.href = `problem.html?id=${problemSet.problems[0]}`;
-            }
-        }
-
         document.addEventListener('DOMContentLoaded', () => {
-            displayAllProblemSets();
+            const problemSetsDiv = document.getElementById('problemSets');
+            
+            for (const [setName, setInfo] of Object.entries(problemSets)) {
+                const setDiv = document.createElement('div');
+                setDiv.className = 'problem-set';
+                
+                // 创建题单标题和描述
+                setDiv.innerHTML = `
+                    <h2>${setName}</h2>
+                    <p class="set-description">${setInfo.description}</p>
+                    <p class="set-time">比赛时间：${setInfo.date} ${setInfo.time}</p>
+                `;
+
+                // 创建题目列表
+                const problemList = document.createElement('div');
+                problemList.className = 'problem-list';
+                
+                setInfo.problems.forEach(problemId => {
+                    const problem = problems.find(p => p.id === problemId);
+                    if (problem) {
+                        const problemDiv = document.createElement('div');
+                        problemDiv.className = 'problem-item';
+                        problemDiv.innerHTML = `
+                            <a href="problem.html?id=${problem.id}">${problem.title}</a>
+                            <span class="difficulty-${problem.difficulty.toLowerCase()}">${problem.difficulty}</span>
+                        `;
+                        problemList.appendChild(problemDiv);
+                    }
+                });
+
+                setDiv.appendChild(problemList);
+
+                // 添加详细信息
+                if (setInfo.details) {
+                    const detailsDiv = document.createElement('div');
+                    detailsDiv.className = 'set-details';
+                    detailsDiv.innerHTML = `
+                        <h3>比赛详情</h3>
+                        <p><strong>时间限制：</strong></p>
+                        <ul>
+                            ${Object.entries(setInfo.details.timeLimit).map(([name, limit]) => 
+                                `<li>${name}: ${limit}</li>`
+                            ).join('')}
+                        </ul>
+                        <p><strong>内存限制：</strong>${setInfo.details.memoryLimit}</p>
+                        <p><strong>编译选项：</strong>${Object.entries(setInfo.details.compiler).map(([lang, opts]) => 
+                            `${lang}: ${opts}`
+                        ).join(', ')}</p>
+                        <h4>注意事项：</h4>
+                        <ul>
+                            ${setInfo.details.notes.map(note => 
+                                `<li>${note}</li>`
+                            ).join('')}
+                        </ul>
+                    `;
+                    setDiv.appendChild(detailsDiv);
+                }
+
+                problemSetsDiv.appendChild(setDiv);
+            }
         });
     </script>
 </body>
