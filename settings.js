@@ -30,10 +30,11 @@ function handleGitHubBinding() {
             updateGitHubButtonStatus();
         }
     } else {
-        // 使用 GitHub 的登录按钮
+        // 使用隐式授权流程
         window.open('https://github.com/login/oauth/authorize?' + 
             'client_id=Ov23lizlCDOmy2QtkeCZ' +
             '&scope=user' +
+            '&response_type=token' +
             '&redirect_uri=' + encodeURIComponent('https://eternity-sky.github.io/OI/github-callback.html'),
             'github-login',
             'width=600,height=600'
