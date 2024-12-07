@@ -30,11 +30,14 @@ function handleGitHubBinding() {
             updateGitHubButtonStatus();
         }
     } else {
-        // 使用隐式授权流程
+        // 使用标准的 OAuth 流程
+        const state = Math.random().toString(36).substring(7);
+        localStorage.setItem('github_oauth_state', state);
+        
         window.open('https://github.com/login/oauth/authorize?' + 
             'client_id=Ov23lizlCDOmy2QtkeCZ' +
-            '&scope=user' +
-            '&response_type=token' +
+            '&scope=read:user' +
+            '&state=' + state +
             '&redirect_uri=' + encodeURIComponent('https://eternity-sky.github.io/OI/github-callback.html'),
             'github-login',
             'width=600,height=600'

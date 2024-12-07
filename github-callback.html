@@ -38,21 +38,61 @@
         }
 
         debug('开始处理 GitHub 绑定...');
+        const urlParams = new URLSearchParams(window.location.search);
+        const code = urlParams.get('code');
+        const state = urlParams.get('state');
+        const savedState = localStorage.getItem('github_oauth_state');
         
-        // 从 URL hash 中获取访问令牌
-        const hash = window.location.hash.substring(1);
-        const params = new URLSearchParams(hash);
-        const accessToken = params.get('access_token');
-        
-        debug(`访问令牌: ${accessToken ? '已获取' : '未获取'}`);
-        
-        if (accessToken) {
-            debug('开始获取用户信息...');
-            fetch('https://api.github.com/user', {
+        debug(`授权码: ${code}`);
+        debug(`状态值: ${state}`);
+
+        if (code && state === savedState) {
+            localStorage.removeItem('github_oauth_state');
+            
+            // 使用 api.allorigins.win 代理服务
+            const proxyUrl = 'https://api.allorigins.win/raw?url=' + 
+                encodeURIComponent('https://github.com/login/oauth/access_token?' + 
+                    new URLSearchParams({
+                        client_id: 'Ov23lizlCDOmy2QtkeCZ',
+                        client_secret: '1366494916ef271a1162e59d984d99fc13118a96',
+                        code: code,
+                        redirect_uri: 'https://eternity-sky.github.io/OI/github-callback.html'
+                    }).toString()
+                );
+
+            debug('开始获取访问令牌...');
+            fetch(proxyUrl, {
                 headers: {
-                    'Authorization': `token ${accessToken}`,
                     'Accept': 'application/json'
                 }
+            })
+            .then(response => {
+                debug(`Token 响应状态: ${response.status}`);
+                return response.text().then(text => {
+                    debug(`原始响应: ${text}`);
+                    try {
+                        return JSON.parse(text);
+                    } catch (e) {
+                        const params = new URLSearchParams(text);
+                        return {
+                            access_token: params.get('access_token'),
+                            token_type: params.get('token_type'),
+                            scope: params.get('scope')
+                        };
+                    }
+                });
+            })
+            .then(data => {
+                if (!data.access_token) {
+                    throw new Error('获取访问令牌失败');
+                }
+                debug('获取访问令牌成功，开始获取用户信息...');
+                return fetch('https://api.github.com/user', {
+                    headers: {
+                        'Authorization': `token ${data.access_token}`,
+                        'Accept': 'application/json'
+                    }
+                });
             })
             .then(response => {
                 debug(`用户信息响应状态: ${response.status}`);
@@ -60,6 +100,10 @@
             })
             .then(data => {
                 debug(`用户信息: ${JSON.stringify(data)}`);
+                if (data.message) {
+                    throw new Error(data.message);
+                }
+
                 const currentUser = localStorage.getItem('currentUser');
                 if (!currentUser) {
                     throw new Error('未登录');
@@ -84,7 +128,7 @@
                 setTimeout(() => window.close(), 5000);
             });
         } else {
-            debug('未获取到访问令牌');
+            debug('验证失败');
             document.getElementById('loading').textContent = '授权失败，请重试';
             setTimeout(() => window.close(), 3000);
         }
