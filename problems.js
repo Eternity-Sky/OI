@@ -392,12 +392,12 @@ const problems = [
         timeLimit: "2.0秒",
         memoryLimit: "512 MiB"
     }
-]; 
+];
 
 const problemSets = {
     "CSP-J2 2024入门组": {
         description: "CSP-J/S 2024 第二轮认证 入门级",
-        problems: [32, 33, 34, 35],  // 修改为新的题号
+        problems: [32, 33, 34, 35],
         date: "2024-10-26",
         time: "08:30 ~ 12:00",
         details: {
@@ -421,5 +421,4 @@ const problemSets = {
             ]
         }
     }
-    // ... 其他题单
 }; 
