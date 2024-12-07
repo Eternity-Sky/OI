@@ -32,7 +32,7 @@ function handleGitHubBinding() {
     } else {
         // 使用 GitHub 的登录按钮
         window.open('https://github.com/login/oauth/authorize?' + 
-            'client_id=你获得的Client_ID' +
+            'client_id=Ov23lizlCDOmy2QtkeCZ' +
             '&scope=user:email' +
             '&redirect_uri=' + encodeURIComponent(window.location.origin + '/github-callback.html'),
             'github-login',
