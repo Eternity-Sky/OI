@@ -1540,3 +1540,36 @@ th {
 .delete-btn:hover {
     background-color: #c82333;
 }
+
+.draft-actions {
+    margin: 20px 0;
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.load-btn, .clear-btn {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.load-btn {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.load-btn:hover {
+    background-color: #45a049;
+}
+
+.clear-btn {
+    background-color: #f44336;
+    color: white;
+}
+
+.clear-btn:hover {
+    background-color: #da190b;
+}

@@ -51,12 +51,79 @@
             </div>
             <button type="submit" class="submit-btn">添加题目</button>
         </form>
+        <div class="draft-actions">
+            <button onclick="loadDraft()" class="load-btn">加载草稿</button>
+            <button onclick="clearDraft()" class="clear-btn">清除草稿</button>
+        </div>
         <div class="footer">
             <a href="index.html" class="back-button">返回首页</a>
         </div>
     </div>
 
     <script>
+        // 自动保存间隔（毫秒）
+        const AUTO_SAVE_INTERVAL = 5000;
+
+        // 自动保存表单内容
+        function autoSave() {
+            const formData = {
+                problemId: document.getElementById('problemId').value,
+                title: document.getElementById('title').value,
+                description: document.getElementById('description').value,
+                difficulty: document.getElementById('difficulty').value,
+                tags: document.getElementById('tags').value,
+                input: document.getElementById('input').value,
+                output: document.getElementById('output').value,
+                sample_input: document.getElementById('sampleInput').value,
+                sample_output: document.getElementById('sampleOutput').value
+            };
+            localStorage.setItem('problemDraft', JSON.stringify(formData));
+            console.log('草稿已自动保存');
+        }
+
+        // 加载草稿
+        function loadDraft() {
+            const draft = localStorage.getItem('problemDraft');
+            if (!draft) {
+                alert('没有找到草稿！');
+                return;
+            }
+
+            const formData = JSON.parse(draft);
+            document.getElementById('problemId').value = formData.problemId || '';
+            document.getElementById('title').value = formData.title || '';
+            document.getElementById('description').value = formData.description || '';
+            document.getElementById('difficulty').value = formData.difficulty || '简单';
+            document.getElementById('tags').value = formData.tags || '';
+            document.getElementById('input').value = formData.input || '';
+            document.getElementById('output').value = formData.output || '';
+            document.getElementById('sampleInput').value = formData.sample_input || '';
+            document.getElementById('sampleOutput').value = formData.sample_output || '';
+            
+            alert('草稿已加载！');
+        }
+
+        // 清除草稿
+        function clearDraft() {
+            if (confirm('确定要清除草稿吗？')) {
+                localStorage.removeItem('problemDraft');
+                alert('草稿已清除！');
+            }
+        }
+
+        // 设置自动保存定时器
+        setInterval(autoSave, AUTO_SAVE_INTERVAL);
+
+        // 页面加载时检查是否有草稿
+        document.addEventListener('DOMContentLoaded', () => {
+            const draft = localStorage.getItem('problemDraft');
+            if (draft) {
+                if (confirm('发现未保存的草稿，是否加载？')) {
+                    loadDraft();
+                }
+            }
+        });
+
         document.getElementById('addProblemForm').onsubmit = (e) => {
             e.preventDefault();
             
@@ -98,6 +165,8 @@
             problems.sort((a, b) => a.id - b.id);
             localStorage.setItem('problems', JSON.stringify(problems));
 
+            // 提交成功后清除草稿
+            localStorage.removeItem('problemDraft');
             alert('题目添加成功！');
             window.location.href = 'index.html';
         };
