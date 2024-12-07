@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>GitHub 绑定</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <div id="loading">处理 GitHub 绑定中...</div>
+    </div>
+    <script>
+        // 从 URL 获取授权码
+        const urlParams = new URLSearchParams(window.location.search);
+        const code = urlParams.get('code');
+        
+        if (code) {
+            // 这里需要发送到你的后端服务器进行处理
+            // 因为 GitHub OAuth 需要在服务器端完成
+            fetch('你的后端API地址/github/callback', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ code })
+            })
+            .then(response => response.json())
+            .then(data => {
+                const currentUser = localStorage.getItem('currentUser');
+                const userData = JSON.parse(localStorage.getItem(currentUser));
+                
+                // 保存 GitHub ID
+                userData.githubId = data.githubId;
+                localStorage.setItem(currentUser, JSON.stringify(userData));
+                
+                // 跳转回设置页面
+                window.location.href = 'userCenter.html';
+            })
+            .catch(error => {
+                alert('GitHub 绑定失败，请重试');
+                window.location.href = 'userCenter.html';
+            });
+        } else {
+            alert('授权失败，请重试');
+            window.location.href = 'userCenter.html';
+        }
+    </script>
+</body>
+</html> 

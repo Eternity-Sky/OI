@@ -31,8 +31,7 @@ function handleGitHubBinding() {
         }
     } else {
         // 如果未绑定，则进行 GitHub OAuth 授权
-        // 替换为你的 GitHub OAuth App 客户端 ID
-        const clientId = 'your_github_client_id';
+        const clientId = '你的GitHub客户端ID';  // 替换为你的 GitHub OAuth App 客户端 ID
         const redirectUri = encodeURIComponent(`${window.location.origin}/github-callback.html`);
         const scope = 'read:user';
         
