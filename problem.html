@@ -81,17 +81,29 @@
         function showSubmitModal() {
             document.getElementById('submitModal').style.display = 'block';
             
-            // 设置用户名和题号
-            const username = localStorage.getItem('currentUser') || '';
+            // 检查登录状态和自动登录
+            const username = localStorage.getItem('currentUser');
+            if (!username) {
+                // 尝试自动登录
+                const lastUser = localStorage.getItem('lastUser');
+                const lastLoginTime = localStorage.getItem('lastLoginTime');
+                const autoLoginPeriod = 7 * 24 * 60 * 60 * 1000; // 7天自动登录期限
+                
+                if (lastUser && lastLoginTime && (Date.now() - parseInt(lastLoginTime) < autoLoginPeriod)) {
+                    // 自动登录
+                    localStorage.setItem('currentUser', lastUser);
+                    showSubmitModal(); // 重新调用本函数
+                    return;
+                } else {
+                    alert('请先登录！');
+                    window.location.href = 'login.html';
+                    return;
+                }
+            }
+            
             const problemId = new URLSearchParams(window.location.search).get('id') || '';
             document.getElementById('submitUsername').value = username;
             document.getElementById('submitProblemId').value = problemId;
-
-            if (!username) {
-                alert('请先登录！');
-                closeSubmitModal();
-                return;
-            }
 
             // 如果代码编辑器是空的，设置默认代码
             if (!document.getElementById('codeEditor').value.trim()) {
