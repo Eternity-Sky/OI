@@ -145,9 +145,11 @@
             if (type === 'login') {
                 document.getElementById('loginForm').style.display = 'block';
                 document.getElementById('registerForm').style.display = 'none';
+                window.location.hash = 'login';
             } else {
                 document.getElementById('loginForm').style.display = 'none';
                 document.getElementById('registerForm').style.display = 'block';
+                window.location.hash = 'register';
             }
             // 清除所有错误信息
             document.querySelectorAll('.error-message').forEach(el => {
@@ -155,6 +157,15 @@
                 el.textContent = '';
             });
         }
+
+        // 页面加载时检查 hash
+        window.addEventListener('load', function() {
+            if (window.location.hash === '#register') {
+                toggleForm('register');
+            } else {
+                toggleForm('login');
+            }
+        });
 
         function showError(elementId, message) {
             const errorElement = document.getElementById(elementId);

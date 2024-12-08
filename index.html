@@ -19,17 +19,18 @@
 <body>
     <div class="container">
         <div class="header">
-            <a href="userlist.html" class="mail-icon">
-                <i class="fas fa-envelope"></i>
-            </a>
-            <div class="nav-links">
-                <a href="problemSets.html" class="nav-button">
-                    <i class="fas fa-list-alt"></i> 题单
-                </a>
-                <a href="leaderboard.html" class="nav-button">
-                    <i class="fas fa-trophy"></i> 排行榜
-                </a>
+            <div class="auth-buttons" id="authButtons">
+                <button class="auth-btn" onclick="window.location.href='login.html'">登录</button>
+                <button class="auth-btn" onclick="window.location.href='login.html#register'">注册</button>
             </div>
+        </div>
+        <div class="nav-links">
+            <a href="problemSets.html" class="nav-button">
+                <i class="fas fa-list-alt"></i> 题单
+            </a>
+            <a href="leaderboard.html" class="nav-button">
+                <i class="fas fa-trophy"></i> 排行榜
+            </a>
         </div>
         <div class="calendar-welcome">
             <div class="welcome-text">欢迎回来，<span id="username">游客</span></div>

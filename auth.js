@@ -201,19 +201,31 @@ function getNextLevel(completedCount) {
 // 检查登录状态
 function checkLoginStatus() {
     const username = localStorage.getItem('currentUser');
-    const userInfo = document.getElementById('userInfo');
-    if (!userInfo) {
-        console.error('找不到用户信息容器');
-        return;
-    }
+    const authButtons = document.getElementById('authButtons');
+    const avatarContainer = document.getElementById('avatarContainer');
     
     if (username) {
-        userInfo.innerHTML = `
-            <span style="color: #333;">欢迎, ${username}</span>
-            <button class="nav-btn" onclick="logout()">退出</button>
-        `;
+        // 隐藏登录注册按钮
+        if (authButtons) {
+            authButtons.style.display = 'none';
+        }
+        
+        // 显示头像和退出按钮
+        if (avatarContainer) {
+            const userData = JSON.parse(localStorage.getItem(username));
+            avatarContainer.innerHTML = `
+                <div class="user-info">
+                    <img src="${userData.avatar}" alt="用户头像" class="user-avatar" onclick="window.location.href='userCenter.html'">
+                    <button class="logout-btn" onclick="logout()">退出</button>
+                </div>
+            `;
+            avatarContainer.style.display = 'flex';
+        }
     } else {
-        window.location.href = 'login.html';
+        // 如果在题目页面，重定向到登录页面
+        if (window.location.pathname.includes('problem.html')) {
+            window.location.href = 'login.html';
+        }
     }
 }
 
