@@ -50,18 +50,20 @@
             <button onclick="showLogin()">登录</button>
             <button onclick="showRegister()">注册</button>
         </div>
-        <div id="loginForm" style="display:none;">
-            <h3>登录</h3>
+        <div id="loginForm" style="display: none;">
+            <h2>登录</h2>
             <input type="text" id="loginUsername" placeholder="用户名">
             <input type="password" id="loginPassword" placeholder="密码">
             <button onclick="login()">登录</button>
+            <p>还没有账号？<a href="#" onclick="showRegister()">注册</a></p>
         </div>
-        <div id="registerForm" style="display:none;">
-            <h3>注册</h3>
+        <div id="registerForm" style="display: none;">
+            <h2>注册</h2>
             <input type="text" id="registerUsername" placeholder="用户名">
             <input type="password" id="registerPassword" placeholder="密码">
             <input type="file" id="registerAvatar" accept="image/*">
             <button onclick="register()">注册</button>
+            <p>已有账号？<a href="#" onclick="showLogin()">登录</a></p>
         </div>
         <div id="avatarContainer" class="avatar-container"></div>
         <div class="search-section">

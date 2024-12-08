@@ -1,9 +1,11 @@
 function showLogin() {
+    document.getElementById('auth').style.display = 'none';
     document.getElementById('loginForm').style.display = 'block';
     document.getElementById('registerForm').style.display = 'none';
 }
 
 function showRegister() {
+    document.getElementById('auth').style.display = 'none';
     document.getElementById('registerForm').style.display = 'block';
     document.getElementById('loginForm').style.display = 'none';
 }
@@ -196,74 +198,33 @@ function getNextLevel(completedCount) {
     return { level: "新手", required: 5 };
 }
 
-// 添加检查登录状态的函数
+// 检查登录状态
 function checkLoginStatus() {
-    const isLoggedIn = localStorage.getItem('isLoggedIn');
-    const loginTimestamp = localStorage.getItem('loginTimestamp');
-    const currentUser = localStorage.getItem('currentUser');
-    
-    // 如果登录状态存在且未过期（这里设置7天过期）
-    if (isLoggedIn === 'true' && loginTimestamp && currentUser) {
-        const now = Date.now();
-        const sevenDays = 7 * 24 * 60 * 60 * 1000;
-        
-        if (now - parseInt(loginTimestamp) < sevenDays) {
-            // 恢复登录状态
-            const userData = JSON.parse(localStorage.getItem(currentUser));
-            if (userData) {
-                document.getElementById('loginForm').style.display = 'none';
-                document.getElementById('auth').style.display = 'none';
-                
-                const avatarContainer = document.getElementById('avatarContainer');
-                avatarContainer.innerHTML = '';
-                const avatarImg = document.createElement('img');
-                avatarImg.src = userData.avatar;
-                avatarImg.alt = '用户头像';
-                avatarImg.className = 'user-avatar';
-                avatarImg.onclick = () => window.location.href = 'userCenter.html';
-                avatarContainer.appendChild(avatarImg);
-                
-                return true;
-            }
-        }
+    const username = localStorage.getItem('currentUser');
+    const userInfo = document.getElementById('userInfo');
+    if (!userInfo) {
+        console.error('找不到用户信息容器');
+        return;
     }
     
-    // 如果登录已过期，清除登录状态
-    localStorage.removeItem('isLoggedIn');
-    localStorage.removeItem('loginTimestamp');
-    localStorage.removeItem('currentUser');
-    return false;
+    if (username) {
+        userInfo.innerHTML = `
+            <span style="color: #333;">欢迎, ${username}</span>
+            <button class="nav-btn" onclick="logout()">退出</button>
+        `;
+    } else {
+        window.location.href = 'login.html';
+    }
 }
 
-// 修改登出函数
+// 登出函数
 function logout() {
-    // 清除当前用户信息
     localStorage.removeItem('currentUser');
-    
-    // 更新欢迎文本
-    document.getElementById('welcomeUsername').textContent = '游客';
-    
-    // 隐藏用户中心
-    closeUserCenter();
-    
-    // 显示登录注册按钮
-    document.getElementById('auth').style.display = 'block';
-    
-    // 隐藏头像容器
-    document.getElementById('avatarContainer').style.display = 'none';
-    
-    // 刷新页面
-    location.reload();
+    window.location.href = 'index.html';
 }
 
 // 在页面加载时检查登录状态
-document.addEventListener('DOMContentLoaded', () => {
-    checkLoginStatus();
-    updateWelcomeInfo();
-    updateCalendar();
-    updateDailyQuote();
-    updateDailyStats();
-});
+document.addEventListener('DOMContentLoaded', checkLoginStatus);
 
 document.addEventListener('DOMContentLoaded', function() {
     // 登录表单提交事件
@@ -324,4 +285,13 @@ function updateDailyQuote() {
 
 function updateDailyStats() {
     // 可以先留空，或者添加每日统计更新逻辑
-} 
+}
+
+// 在页面加载时检查 URL hash
+window.addEventListener('load', function() {
+    if (window.location.hash === '#login') {
+        showLogin();
+    } else if (window.location.hash === '#register') {
+        showRegister();
+    }
+}); 

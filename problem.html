@@ -4,18 +4,18 @@
     <meta charset="UTF-8">
     <title>题目详情</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <script src="problems.js"></script>
     <script src="auth.js"></script>
 </head>
 <body>
-    <!-- 导航栏 -->
-    <div class="nav-bar">
-        <div class="nav-left">
-            <a href="index.html" style="color: #333; text-decoration: none; font-weight: bold;">OI在线评测系统</a>
-        </div>
-        <div class="nav-right">
-            <button class="nav-btn" onclick="showLoginForm()">登录</button>
-            <button class="nav-btn" onclick="showRegisterForm()">注册</button>
+    <!-- 顶部导航 -->
+    <div class="top-nav">
+        <div class="top-buttons">
+            <a href="index.html" class="back-btn">返回首页</a>
+            <div class="user-info" id="userInfo">
+                <!-- 用户信息将由 JavaScript 动态更新 -->
+            </div>
         </div>
     </div>
 
