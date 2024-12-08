@@ -373,7 +373,7 @@ const problems = [
         difficulty: "中等",
         tags: ["贪心", "数字构造"],
         input: "从文件 sticks.in 中读入数据。第一行包含一个正整数 T，表示数据组数。接下来包含 T 组数据，每组数据一行包含一个整数 n。",
-        output: "输出到文件 sticks.out 中。对于每组数据输出一行，如果存在满足题意的正整数，输出这个数；否则输出 -1。",
+        output: "输出到文件 sticks.out 中。对于每组��据输出一行，如果存在满足题意的正整数，输出这个数；否则输出 -1。",
         sample_input: "5\n1\n2\n3\n6\n18",
         sample_output: "-1\n1\n7\n6\n208",
         timeLimit: "1.0秒",
