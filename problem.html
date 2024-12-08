@@ -266,13 +266,11 @@ int main() {
             }));
 
             try {
-                const response = await fetch('https://apioi-production.up.railway.app/api/submissions', {
+                const response = await fetch('https://apioi-production.up.railway.app/api/v1/submissions', {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json'
+                        'Content-Type': 'application/json'
                     },
-                    mode: 'cors',
                     body: JSON.stringify({
                         code: code.trim(),
                         testcases: testcases,
@@ -280,17 +278,13 @@ int main() {
                     })
                 });
 
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-
                 const result = await response.json();
-                if (result.error) {
-                    throw new Error(result.error);
+                if (!result.success) {
+                    throw new Error(result.error || '提交失败');
                 }
 
                 // 开始轮询获取结果
-                pollResult(result.id);
+                pollResult(result.data.id);
             } catch (error) {
                 resultSection.innerHTML = `
                     <div class="result-error">
@@ -305,25 +299,25 @@ int main() {
         // 轮询获取评测结果
         async function pollResult(submissionId) {
             let attempts = 0;
-            const maxAttempts = 10; // 最多尝试10次
+            const maxAttempts = 10;
             
             const poll = async () => {
                 try {
-                    const response = await fetch(`https://apioi-production.up.railway.app/api/submissions/${submissionId}`, {
-                        headers: {
-                            'Accept': 'application/json'
-                        },
-                        mode: 'cors'
-                    });
-
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! status: ${response.status}`);
+                    const response = await fetch('https://apioi-production.up.railway.app/api/v1/submissions');
+                    const { success, data, error } = await response.json();
+  
+                    if (!success) {
+                        throw new Error(error || '获取结果失败');
                     }
-
-                    const result = await response.json();
-                    
-                    if (result.status && result.status !== 'Pending') {
-                        displayResults(result);
+  
+                    const submission = data.find(s => s.id === submissionId);
+                    if (submission) {
+                        if (submission.status !== 'Pending') {
+                            displayResults(submission);
+                        } else if (attempts < maxAttempts) {
+                            attempts++;
+                            setTimeout(poll, 1000);
+                        }
                     } else if (attempts < maxAttempts) {
                         attempts++;
                         setTimeout(poll, 1000);
