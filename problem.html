@@ -70,6 +70,21 @@
         // 显示提交代码的模态窗口
         function showSubmitModal() {
             document.getElementById('submitModal').style.display = 'block';
+            // 如果代码编辑器是空的，设置默认代码
+            if (!document.getElementById('codeEditor').value.trim()) {
+                document.getElementById('codeEditor').value = 
+`#include <iostream>
+using namespace std;
+
+int main() {
+    int a, b;
+    cin >> a >> b;
+    cout << a + b;
+    return 0;
+}
+`;
+            }
+
             // 如果还没有测试用例，添加样例测试用例
             if (!document.querySelector('.testcase-item')) {
                 const problem = problems.find(p => p.id == new URLSearchParams(window.location.search).get('id'));
@@ -218,7 +233,7 @@
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
-                        code: code.trim(),  // 去除多余的空白字符
+                        code: `${code.trim()}\n`,  // 确保代码末尾有换行符
                         testcases: testcases
                     })
                 });
