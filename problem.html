@@ -27,10 +27,9 @@
                         <span>提交代码</span>
                     </div>
                     <div class="editor-controls">
-                        <label>用户名: <input type="text" id="username" readonly></label>
-                        <label>题号: <input type="text" id="problemId" readonly></label>
+                        <label>用户名: <input type="text" id="submitUsername" readonly></label>
+                        <label>题号: <input type="text" id="submitProblemId" readonly></label>
                         <label>语言: <select id="language"><option value="G++14">G++14</option></select></label>
-                        <label><input type="checkbox" id="tempSubmit"> 临时提交</label>
                     </div>
                 </div>
                 
@@ -70,9 +69,18 @@
         // 显示提交代码的模态窗口
         function showSubmitModal() {
             document.getElementById('submitModal').style.display = 'block';
+            
             // 设置用户名和题号
-            document.getElementById('username').value = localStorage.getItem('currentUser') || '';
-            document.getElementById('problemId').value = new URLSearchParams(window.location.search).get('id');
+            const username = localStorage.getItem('currentUser') || '';
+            const problemId = new URLSearchParams(window.location.search).get('id') || '';
+            document.getElementById('submitUsername').value = username;
+            document.getElementById('submitProblemId').value = problemId;
+
+            if (!username) {
+                alert('请先登录！');
+                closeSubmitModal();
+                return;
+            }
 
             // 如果代码编辑器是空的，设置默认代码
             if (!document.getElementById('codeEditor').value.trim()) {
@@ -225,6 +233,18 @@ int main() {
                 </div>`;
 
             const code = document.getElementById('codeEditor').value;
+            // 处理代码格式
+            const formattedCode = code.trim().replace(/\r\n/g, '\n');
+            if (!formattedCode) {
+                resultSection.innerHTML = `
+                    <div class="result-error">
+                        <h4>提交失败</h4>
+                        <p>代码不能为空</p>
+                    </div>
+                `;
+                return;
+            }
+
             const testcases = Array.from(document.getElementsByClassName('testcase-item')).map(item => ({
                 input: item.querySelector('.testcase-input').value,
                 output: item.querySelector('.testcase-output').value
@@ -237,7 +257,7 @@ int main() {
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
-                        code: code.trim().replace(/\r\n/g, '\n'),  // 统一换行符为 \n
+                        code: formattedCode,
                         testcases: testcases
                     })
                 });
@@ -403,7 +423,7 @@ int main() {
             if (!userData.completedProblems.includes(problemId)) {
                 userData.completedProblems.push(problemId);
                 localStorage.setItem(username, JSON.stringify(userData));
-                alert('题���已标记为完成！');
+                alert('题目已标记为完成！');
             } else {
                 alert('您已经完成了这个题目！');
             }
