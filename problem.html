@@ -189,7 +189,11 @@ int main() {
         async function submitCode() {
             const resultSection = document.getElementById('resultSection');
             resultSection.style.display = 'block';
-            resultSection.innerHTML = '<div class="status-running">评测中...</div>';
+            resultSection.innerHTML = `
+                <div class="status-running">
+                    <div class="spinner"></div>
+                    <span>正在评测中，请稍候...</span>
+                </div>`;
 
             const code = document.getElementById('codeEditor').value;
             const testcases = Array.from(document.getElementsByClassName('testcase-item')).map(item => ({
@@ -210,7 +214,12 @@ int main() {
                 });
 
                 const result = await response.json();
-                displayResults(result);
+                // 等待一段时间后再次获取结果
+                setTimeout(async () => {
+                    const finalResponse = await fetch(`https://apioi-production.up.railway.app/api/submissions/${result.id}`);
+                    const finalResult = await finalResponse.json();
+                    displayResults(finalResult);
+                }, 2000);
             } catch (error) {
                 resultSection.innerHTML = `
                     <div class="result-error">
