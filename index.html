@@ -179,14 +179,6 @@
                 </div>
             </div>
         </div>
-        <div id="adminPanel" style="display: none;">
-            <button onclick="window.location.href='addProblem.html'" class="admin-btn">
-                <i class="fas fa-plus"></i> 添加新题
-            </button>
-            <button onclick="window.location.href='manageProblemSets.html'" class="admin-btn">
-                <i class="fas fa-tasks"></i> 管理题单
-            </button>
-        </div>
     </div>
 
     <script>
@@ -200,11 +192,6 @@
                 usernameSpan.textContent = currentUser;
             } else {
                 usernameSpan.textContent = '游客';
-            }
-
-            // 检查是否是管理员
-            if (currentUser === 'kkks403') {
-                document.getElementById('adminPanel').style.display = 'block';
             }
         });
 
