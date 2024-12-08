@@ -2120,3 +2120,20 @@ th {
     align-items: center;
     padding: 0 20px;
 }
+
+.skip-login {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}
+
+.skip-login a {
+    color: #666;
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.3s;
+}
+
+.skip-login a:hover {
+    color: #2196F3;
+}

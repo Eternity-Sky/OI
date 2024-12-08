@@ -91,6 +91,9 @@
 </head>
 <body>
     <div class="login-container">
+        <div class="skip-login">
+            <a href="javascript:void(0)" onclick="skipLogin()">跳过登录 &gt;</a>
+        </div>
         <!-- 登录表单 -->
         <div id="loginForm">
             <h2 style="text-align: center; margin-bottom: 30px;">登录</h2>
@@ -239,6 +242,17 @@
                 register();
             }
         });
+
+        function skipLogin() {
+            // 如果是从题目页面跳转来的，返回题目页面
+            const referrer = document.referrer;
+            if (referrer && referrer.includes('problem.html')) {
+                window.history.back();
+            } else {
+                // 否则返回首页
+                window.location.href = 'index.html';
+            }
+        }
     </script>
 </body>
 </html> 
