@@ -261,7 +261,7 @@ img {
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
-    padding: 20px;
+    padding: 0;
     box-sizing: border-box;
     overflow-y: auto;
 }
@@ -1577,44 +1577,71 @@ th {
 }
 
 .code-editor-container {
-    margin: 20px auto;
+    margin: 0 auto;
     max-width: 1200px;
     width: 100%;
-    border-radius: 8px;
+    height: 100vh;
     overflow: hidden;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     background-color: white;
 }
 
 .editor-header {
-    background-color: #f5f5f5;
-    padding: 10px 15px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    background-color: #f8f9fa;
+    padding: 10px;
     border-bottom: 1px solid #ddd;
 }
 
 .editor-title {
-    font-size: 16px;
-    color: #333;
-    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
 }
 
 .editor-controls {
     display: flex;
-    gap: 10px;
+    gap: 20px;
+    align-items: center;
+}
+
+.editor-controls label {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.editor-controls input[type="text"] {
+    width: 100px;
+    padding: 4px 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #f8f9fa;
+}
+
+.editor-controls select {
+    padding: 4px 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
 }
 
 .editor-main {
-    display: flex;
-    gap: 20px;
-    padding: 20px;
+    height: calc(100vh - 150px);
     background-color: #fff;
 }
 
 .code-section {
-    flex: 3;
+    height: 100%;
+}
+
+.code-textarea {
+    width: 100%;
+    height: 100%;
+    font-family: 'Consolas', monospace;
+    font-size: 14px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    box-sizing: border-box;
+    resize: vertical;
 }
 
 .testcase-section {

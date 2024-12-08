@@ -15,31 +15,29 @@
 
         <!-- 提交按钮 -->
         <button class="submit-btn" onclick="showSubmitModal()">
-            <i class="fas fa-paper-plane"></i> 提交代码
+            提交
         </button>
 
         <!-- 提交代码的模态窗口 -->
         <div id="submitModal" class="modal">
             <div class="code-editor-container">
                 <div class="editor-header">
-                    <div class="editor-title">提交代码</div>
+                    <div class="editor-title">
+                        <span class="close" onclick="closeSubmitModal()">&times;</span>
+                        <span>提交代码</span>
+                    </div>
                     <div class="editor-controls">
-                        <button class="code-template-btn" onclick="loadTemplate()">加载模板</button>
-                        <button class="close" onclick="closeSubmitModal()">&times;</button>
+                        <label>用户名: <input type="text" id="username" value="${localStorage.getItem('currentUser') || ''}" readonly></label>
+                        <label>题号: <input type="text" id="problemId" value="${new URLSearchParams(window.location.search).get('id')}" readonly></label>
+                        <label>语言: <select id="language"><option value="G++14">G++14</option></select></label>
+                        <label><input type="checkbox" id="tempSubmit"> 临时提交</label>
                     </div>
                 </div>
                 
                 <div class="editor-main">
                     <div class="code-section">
                         <textarea id="codeEditor" class="code-textarea" spellcheck="false" 
-                            placeholder="在这里编写你的C++代码">#include <iostream>
-using namespace std;
-
-int main() {
-    // 在这里编写你的代码
-    
-    return 0;
-}</textarea>
+                            placeholder="在这里编写你的C++代码"></textarea>
                     </div>
                     
                     <div class="testcase-section">
@@ -52,9 +50,7 @@ int main() {
                 </div>
 
                 <div class="editor-footer">
-                    <button class="toolbar-btn" onclick="submitCode()">
-                        <i class="fas fa-paper-plane"></i> 提交评测
-                    </button>
+                    <button class="submit-btn" onclick="submitCode()">提交</button>
                 </div>
 
                 <div id="resultSection" class="result-section" style="display: none;">
