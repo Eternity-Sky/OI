@@ -233,44 +233,7 @@ int main() {
             return testcasesMap[problemId] || [];
         }
 
-        // 提交代码到评测系统
-        async function submitToJudge(code, testcases) {
-            try {
-                const response = await fetch('https://apioi-production.up.railway.app/api/submissions', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json'
-                    },
-                    mode: 'cors',  // 明确指定CORS模式
-                    credentials: 'include',  // 包含凭证
-                    body: JSON.stringify({
-                        code,
-                        testcases
-                    })
-                });
-
-                // 检查Content-Type
-                const contentType = response.headers.get('content-type');
-                if (!contentType || !contentType.includes('application/json')) {
-                    throw new Error('服务器返回格式错误');
-                }
-
-                const data = await response.json();
-                if (!response.ok) {
-                    throw new Error(data.error?.message || '评测失败');
-                }
-
-                return data;
-            } catch (error) {
-                if (error.message.includes('Unexpected token')) {
-                    throw new Error('评测系统暂时不可用，请稍后再试');
-                }
-                throw error;
-            }
-        }
-
-        // 处理提交代码
+        // 提交代码进行评测
         async function submitCode() {
             const resultSection = document.getElementById('resultSection');
             resultSection.style.display = 'block';
@@ -281,32 +244,43 @@ int main() {
                 </div>`;
 
             const code = document.getElementById('codeEditor').value;
-            // 处理代码格式
-            const formattedCode = code.trim().replace(/\r\n/g, '\n');
-            if (!formattedCode) {
-                resultSection.innerHTML = `
-                    <div class="result-error">
-                        <h4>提交失败</h4>
-                        <p>代码不能为空</p>
-                    </div>
-                `;
-                return;
-            }
-
             const testcases = Array.from(document.getElementsByClassName('testcase-item')).map(item => ({
                 input: item.querySelector('.testcase-input').value,
                 output: item.querySelector('.testcase-output').value
             }));
 
             try {
-                const result = await submitToJudge(formattedCode, testcases);
+                const response = await fetch('https://apioi-production.up.railway.app/api/submissions', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    mode: 'cors',
+                    body: JSON.stringify({
+                        code: code.trim(),
+                        testcases: testcases,
+                        language: 'cpp'  // 指定语言
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const result = await response.json();
+                if (result.error) {
+                    throw new Error(result.error);
+                }
+
                 // 开始轮询获取结果
                 pollResult(result.id);
             } catch (error) {
                 resultSection.innerHTML = `
                     <div class="result-error">
                         <h4>评测系统出错</h4>
-                        <pre class="result-detail">${error.message}</pre>
+                        <p>${error.message || '请稍后重试'}</p>
+                        <p>如果问题持续存在，请联系管理员。</p>
                     </div>
                 `;
             }
@@ -319,18 +293,25 @@ int main() {
             
             const poll = async () => {
                 try {
-                    const response = await fetch(`https://apioi-production.up.railway.app/api/submissions/${submissionId}`);
+                    const response = await fetch(`https://apioi-production.up.railway.app/api/submissions/${submissionId}`, {
+                        headers: {
+                            'Accept': 'application/json'
+                        },
+                        mode: 'cors'
+                    });
+
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+
                     const result = await response.json();
                     
                     if (result.status && result.status !== 'Pending') {
-                        // 如果有确定的状态，显示结果
                         displayResults(result);
                     } else if (attempts < maxAttempts) {
-                        // 如果还在等待中且未超过最大尝试次数，继续轮询
                         attempts++;
-                        setTimeout(poll, 1000); // 每秒轮询一次
+                        setTimeout(poll, 1000);
                     } else {
-                        // 超过最大尝试次数，显示超时信息
                         const resultSection = document.getElementById('resultSection');
                         resultSection.innerHTML = `
                             <div class="result-error">
@@ -343,13 +324,13 @@ int main() {
                     const resultSection = document.getElementById('resultSection');
                     resultSection.innerHTML = `
                         <div class="result-error">
-                            评测系统出错：${error.message}
+                            <h4>评测系统出错</h4>
+                            <p>${error.message || '请稍后重试'}</p>
                         </div>
                     `;
                 }
             };
             
-            // 开始第一次轮询
             poll();
         }
 
