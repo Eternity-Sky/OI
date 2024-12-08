@@ -1573,3 +1573,278 @@ th {
 .clear-btn:hover {
     background-color: #da190b;
 }
+
+.code-editor-container {
+    margin: 20px 0;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.editor-header {
+    background-color: #f5f5f5;
+    padding: 10px 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #ddd;
+}
+
+.editor-title {
+    font-size: 16px;
+    color: #333;
+    font-weight: bold;
+}
+
+.editor-controls {
+    display: flex;
+    gap: 10px;
+}
+
+.editor-main {
+    display: flex;
+    gap: 20px;
+    padding: 20px;
+    background-color: #fff;
+}
+
+.code-section {
+    flex: 3;
+}
+
+.testcase-section {
+    flex: 1;
+    min-width: 250px;
+}
+
+.code-textarea {
+    width: 100%;
+    height: 400px;
+    font-family: 'Consolas', monospace;
+    font-size: 14px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    resize: vertical;
+}
+
+.testcase-input {
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.testcase-output {
+    width: 100%;
+    margin-bottom: 15px;
+}
+
+.result-section {
+    margin-top: 20px;
+    padding: 15px;
+    border-radius: 4px;
+}
+
+.result-success {
+    background-color: #e8f5e9;
+    border: 1px solid #a5d6a7;
+    color: #2e7d32;
+}
+
+.result-error {
+    background-color: #ffebee;
+    border: 1px solid #ef9a9a;
+    color: #c62828;
+}
+
+.result-detail {
+    margin-top: 10px;
+    font-family: 'Consolas', monospace;
+    font-size: 14px;
+    white-space: pre-wrap;
+}
+
+.submit-btn {
+    background-color: #2196F3;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s;
+}
+
+.submit-btn:hover {
+    background-color: #1976D2;
+}
+
+.submit-btn:disabled {
+    background-color: #bdbdbd;
+    cursor: not-allowed;
+}
+
+.testcase-list {
+    margin-top: 15px;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.testcase-item {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    background-color: #f8f9fa;
+}
+
+.testcase-controls {
+    display: flex;
+    justify-content: flex-end;
+    gap: 5px;
+    margin-top: 5px;
+}
+
+.testcase-btn {
+    padding: 5px 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: background-color 0.3s;
+}
+
+.add-testcase {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.add-testcase:hover {
+    background-color: #45a049;
+}
+
+.remove-testcase {
+    background-color: #f44336;
+    color: white;
+}
+
+.remove-testcase:hover {
+    background-color: #e53935;
+}
+
+.code-editor-toolbar {
+    background-color: #f8f9fa;
+    padding: 8px;
+    border-bottom: 1px solid #ddd;
+    display: flex;
+    gap: 10px;
+}
+
+.toolbar-btn {
+    padding: 6px 12px;
+    background: none;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    color: #666;
+    cursor: pointer;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: all 0.2s ease;
+}
+
+.toolbar-btn:hover {
+    background-color: #e9ecef;
+    color: #333;
+}
+
+.toolbar-btn i {
+    font-size: 14px;
+}
+
+.code-execution-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.status-running {
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+.status-memory {
+    color: #666;
+    font-size: 13px;
+    margin-left: auto;
+}
+
+.testcase-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.testcase-passed {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+}
+
+.testcase-failed {
+    background-color: #ffebee;
+    color: #c62828;
+}
+
+.code-hints {
+    margin-top: 8px;
+    padding: 8px;
+    background-color: #e3f2fd;
+    border-radius: 4px;
+    font-size: 13px;
+    color: #1976d2;
+}
+
+.error-line-highlight {
+    background-color: #ffebee;
+    position: relative;
+}
+
+.error-line-highlight::before {
+    content: '!';
+    position: absolute;
+    left: -20px;
+    color: #c62828;
+    font-weight: bold;
+}
+
+.code-template-btn {
+    color: #2196F3;
+    text-decoration: underline;
+    cursor: pointer;
+    margin-left: 10px;
+    font-size: 13px;
+}
+
+.code-template-btn:hover {
+    color: #1976D2;
+}
+
+@media (max-width: 768px) {
+    .editor-main {
+        flex-direction: column;
+    }
+    
+    .testcase-section {
+        min-width: 100%;
+    }
+    
+    .code-textarea {
+        height: 300px;
+    }
+}

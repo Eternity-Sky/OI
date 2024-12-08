@@ -6,12 +6,52 @@
     <link rel="stylesheet" href="styles.css">
     <script src="problems.js"></script>
     <script src="auth.js"></script>
+    <!-- 添加 Monaco Editor 依赖 -->
+    <script src="https://cdn.jsdelivr.net/npm/monaco-editor@0.34.0/min/vs/loader.js"></script>
 </head>
 <body>
     <div class="container">
         <div id="problemDetails">
             <!-- 题目详情内容 -->
         </div>
+
+        <!-- 代码编辑器容器 -->
+        <div class="code-editor-container">
+            <div class="editor-header">
+                <div class="editor-title">代码编辑器</div>
+                <div class="editor-controls">
+                    <button class="code-template-btn" onclick="loadTemplate()">加载模板</button>
+                </div>
+            </div>
+            
+            <div class="code-editor-toolbar">
+                <button class="toolbar-btn" onclick="runCode()">
+                    <i class="fas fa-play"></i> 运行代码
+                </button>
+                <button class="toolbar-btn" onclick="submitCode()">
+                    <i class="fas fa-paper-plane"></i> 提交评测
+                </button>
+            </div>
+
+            <div class="editor-main">
+                <div class="code-section">
+                    <div id="monaco-editor" style="height: 400px;"></div>
+                </div>
+                
+                <div class="testcase-section">
+                    <h4>测试用例</h4>
+                    <div class="testcase-list" id="testcaseList">
+                        <!-- 测试用例将在这里动态添加 -->
+                    </div>
+                    <button class="add-testcase" onclick="addTestCase()">添加测试用例</button>
+                </div>
+            </div>
+
+            <div id="resultSection" class="result-section" style="display: none;">
+                <!-- 评测结果将在这里显示 -->
+            </div>
+        </div>
+
         <button id="markDoneButton" onclick="markAsDone()">做完了！</button>
         <p id="timerMessage" style="display:none;">请等待10分钟后再尝试。</p>
         <div class="footer">
@@ -20,6 +60,20 @@
     </div>
 
     <script>
+        // 初始化 Monaco Editor
+        require.config({ paths: { 'vs': 'https://cdn.jsdelivr.net/npm/monaco-editor@0.34.0/min/vs' }});
+        require(['vs/editor/editor.main'], function() {
+            window.editor = monaco.editor.create(document.getElementById('monaco-editor'), {
+                value: '// 在这里编写你的C++代码\n#include <iostream>\n\nint main() {\n    \n    return 0;\n}',
+                language: 'cpp',
+                theme: 'vs-light',
+                minimap: { enabled: false },
+                fontSize: 14,
+                automaticLayout: true
+            });
+        });
+
+        // 加载题目详情
         document.addEventListener('DOMContentLoaded', () => {
             const problemId = new URLSearchParams(window.location.search).get('id');
             if (!problemId) {
@@ -29,7 +83,6 @@
             }
 
             const problem = problems.find(p => p.id == problemId);
-
             if (problem) {
                 document.getElementById('problemDetails').innerHTML = `
                     <h2>${problem.title}</h2>
@@ -60,12 +113,159 @@
                         <p><strong>标签：</strong>${problem.tags.join(', ')}</p>
                     </div>
                 `;
+
+                // 添加样例测试用例
+                addSampleTestCase(problem.sample_input, problem.sample_output);
             } else {
                 document.getElementById('problemDetails').innerHTML = '<p>题目未找到。</p>';
                 document.getElementById('markDoneButton').style.display = 'none';
             }
         });
 
+        // 添加样例测试用例
+        function addSampleTestCase(input, output) {
+            const testcaseList = document.getElementById('testcaseList');
+            const testcaseHtml = `
+                <div class="testcase-item">
+                    <div>
+                        <label>输入：</label>
+                        <textarea class="testcase-input" readonly>${input}</textarea>
+                    </div>
+                    <div>
+                        <label>期望输出：</label>
+                        <textarea class="testcase-output" readonly>${output}</textarea>
+                    </div>
+                </div>
+            `;
+            testcaseList.innerHTML = testcaseHtml;
+        }
+
+        // 添加新的测试用例
+        function addTestCase() {
+            const testcaseList = document.getElementById('testcaseList');
+            const testcaseHtml = `
+                <div class="testcase-item">
+                    <div>
+                        <label>输入：</label>
+                        <textarea class="testcase-input"></textarea>
+                    </div>
+                    <div>
+                        <label>期望输出：</label>
+                        <textarea class="testcase-output"></textarea>
+                    </div>
+                    <div class="testcase-controls">
+                        <button class="testcase-btn remove-testcase" onclick="this.parentElement.parentElement.remove()">删除</button>
+                    </div>
+                </div>
+            `;
+            testcaseList.insertAdjacentHTML('beforeend', testcaseHtml);
+        }
+
+        // 提交代码进行评测
+        async function submitCode() {
+            const resultSection = document.getElementById('resultSection');
+            resultSection.style.display = 'block';
+            resultSection.innerHTML = '<div class="status-running">评测中...</div>';
+
+            const code = window.editor.getValue();
+            const testcases = Array.from(document.getElementsByClassName('testcase-item')).map(item => ({
+                input: item.querySelector('.testcase-input').value,
+                output: item.querySelector('.testcase-output').value
+            }));
+
+            try {
+                const response = await fetch('https://apioi-production.up.railway.app/api/submissions', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        code: code,
+                        testcases: testcases
+                    })
+                });
+
+                const result = await response.json();
+                displayResults(result);
+            } catch (error) {
+                resultSection.innerHTML = `
+                    <div class="result-error">
+                        评测系统出错：${error.message}
+                    </div>
+                `;
+            }
+        }
+
+        // 显示评测结果
+        function displayResults(result) {
+            const resultSection = document.getElementById('resultSection');
+            const statusClass = result.status === 'AC' ? 'result-success' : 'result-error';
+            
+            let html = `
+                <div class="${statusClass}">
+                    <h4>评测结果：${getStatusText(result.status)}</h4>
+                    <p>执行时间：${result.executionTime}ms</p>
+                `;
+
+            if (result.error) {
+                html += `<pre class="result-detail">${result.error}</pre>`;
+            }
+
+            if (result.testResults) {
+                html += '<div class="testcase-results">';
+                result.testResults.forEach((test, index) => {
+                    const testStatus = test.status === 'AC' ? 'testcase-passed' : 'testcase-failed';
+                    html += `
+                        <div class="testcase-item">
+                            <span class="testcase-badge ${testStatus}">测试点 ${index + 1}</span>
+                            <p>状态：${getStatusText(test.status)}</p>
+                            <p>时间：${test.time}ms</p>
+                            ${test.status !== 'AC' ? `
+                                <div>
+                                    <p>输入：</p>
+                                    <pre>${test.input}</pre>
+                                    <p>期望输出：</p>
+                                    <pre>${test.expectedOutput}</pre>
+                                    <p>实际输出：</p>
+                                    <pre>${test.actualOutput}</pre>
+                                </div>
+                            ` : ''}
+                        </div>
+                    `;
+                });
+                html += '</div>';
+            }
+
+            html += '</div>';
+            resultSection.innerHTML = html;
+        }
+
+        // 获取状态文本
+        function getStatusText(status) {
+            const statusMap = {
+                'AC': '通过',
+                'WA': '答案错误',
+                'TLE': '超时',
+                'RE': '运行错误',
+                'CE': '编译错误'
+            };
+            return statusMap[status] || status;
+        }
+
+        // 加载代码模板
+        function loadTemplate() {
+            const template = `#include <iostream>
+using namespace std;
+
+int main() {
+    // 在这里编写你的代码
+    
+    return 0;
+}`;
+            window.editor.setValue(template);
+        }
+
+        // 保留原有的markAsDone函数
         function markAsDone() {
             const username = localStorage.getItem('currentUser');
             if (!username) {
