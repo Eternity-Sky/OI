@@ -222,7 +222,44 @@ int main() {
             return testcasesMap[problemId] || [];
         }
 
-        // 提交代码进行评测
+        // 提交代码到评测系统
+        async function submitToJudge(code, testcases) {
+            try {
+                const response = await fetch('https://apioi-production.up.railway.app/api/submissions', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    mode: 'cors',  // 明确指定CORS模式
+                    credentials: 'include',  // 包含凭证
+                    body: JSON.stringify({
+                        code,
+                        testcases
+                    })
+                });
+
+                // 检查Content-Type
+                const contentType = response.headers.get('content-type');
+                if (!contentType || !contentType.includes('application/json')) {
+                    throw new Error('服务器返回格式错误');
+                }
+
+                const data = await response.json();
+                if (!response.ok) {
+                    throw new Error(data.error?.message || '评测失败');
+                }
+
+                return data;
+            } catch (error) {
+                if (error.message.includes('Unexpected token')) {
+                    throw new Error('评测系统暂时不可用，请稍后再试');
+                }
+                throw error;
+            }
+        }
+
+        // 处理提交代码
         async function submitCode() {
             const resultSection = document.getElementById('resultSection');
             resultSection.style.display = 'block';
@@ -251,21 +288,7 @@ int main() {
             }));
 
             try {
-                const response = await fetch('https://apioi-production.up.railway.app/api/submissions', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        code: formattedCode,
-                        testcases: testcases
-                    })
-                });
-
-                const result = await response.json();
-                if (result.error) {
-                    throw new Error(result.error);
-                }
+                const result = await submitToJudge(formattedCode, testcases);
                 // 开始轮询获取结果
                 pollResult(result.id);
             } catch (error) {
