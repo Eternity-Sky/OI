@@ -39,35 +39,27 @@ function register() {
 }
 
 function login() {
+    clearErrors();
     const username = document.getElementById('loginUsername').value;
     const password = document.getElementById('loginPassword').value;
 
+    if (!username) {
+        showError('loginUsernameError', '请输入用户名');
+        return;
+    }
+    if (!password) {
+        showError('loginPasswordError', '请输入密码');
+        return;
+    }
+
     const userData = JSON.parse(localStorage.getItem(username));
     if (userData && userData.password === password) {
-        alert('登录成功！');
-        
-        // 隐藏登录表单
-        document.getElementById('loginForm').style.display = 'none';
-        document.getElementById('auth').style.display = 'none';
-
-        // 显示用户头像在右上角
-        const avatarContainer = document.getElementById('avatarContainer');
-        avatarContainer.innerHTML = '';
-        const avatarImg = document.createElement('img');
-        avatarImg.src = userData.avatar;
-        avatarImg.alt = '用户头像';
-        avatarImg.className = 'user-avatar';
-        avatarImg.onclick = () => window.location.href = 'userCenter.html';
-        avatarContainer.appendChild(avatarImg);
-
-        // 存储当前登录的用户名
         localStorage.setItem('currentUser', username);
-        // 设置登录状态
-        localStorage.setItem('isLoggedIn', 'true');
-        // 设置登录时间戳
-        localStorage.setItem('loginTimestamp', Date.now());
+        localStorage.setItem('lastUser', username);
+        localStorage.setItem('lastLoginTime', Date.now().toString());
+        window.location.href = 'index.html';
     } else {
-        alert('用户名或密码错误。');
+        showError('loginPasswordError', '用户名或密码错误');
     }
 }
 
@@ -210,28 +202,85 @@ function checkLoginStatus() {
             authButtons.style.display = 'none';
         }
         
-        // 显示头像和退出按钮
+        // 显示头像
         if (avatarContainer) {
             const userData = JSON.parse(localStorage.getItem(username));
-            avatarContainer.innerHTML = `
-                <div class="user-info">
-                    <img src="${userData.avatar}" alt="用户头像" class="user-avatar" onclick="window.location.href='userCenter.html'">
-                    <button class="logout-btn" onclick="logout()">退出</button>
-                </div>
-            `;
+            avatarContainer.innerHTML = '';
+            const avatarImg = document.createElement('img');
+            avatarImg.src = userData.avatar;
+            avatarImg.alt = '用户头像';
+            avatarImg.className = 'user-avatar';
+            avatarImg.onclick = () => window.location.href = 'userCenter.html';
+            avatarContainer.appendChild(avatarImg);
             avatarContainer.style.display = 'flex';
         }
+        
+        // 更新欢迎信息
+        const welcomeUsername = document.getElementById('username');
+        if (welcomeUsername) {
+            welcomeUsername.textContent = username;
+        }
     } else {
-        // 如果在题目页面，重定向到登录页面
-        if (window.location.pathname.includes('problem.html')) {
-            window.location.href = 'login.html';
+        // 尝试自动登录
+        const lastUser = localStorage.getItem('lastUser');
+        const lastLoginTime = localStorage.getItem('lastLoginTime');
+        const autoLoginPeriod = 7 * 24 * 60 * 60 * 1000; // 7天自动登录期限
+        
+        if (lastUser && lastLoginTime && (Date.now() - parseInt(lastLoginTime) < autoLoginPeriod)) {
+            // 自动登录
+            localStorage.setItem('currentUser', lastUser);
+            checkLoginStatus(); // 重新检查登录状态
+        } else {
+            // 显示登录注册按钮
+            if (authButtons) {
+                authButtons.style.display = 'flex';
+            }
+            
+            // 隐藏头像
+            if (avatarContainer) {
+                avatarContainer.style.display = 'none';
+            }
+            
+            // 更新欢迎信息为游客
+            const welcomeUsername = document.getElementById('username');
+            if (welcomeUsername) {
+                welcomeUsername.textContent = '游客';
+            }
         }
     }
 }
 
-// 登出函数
+// 修改登录函数
+function login() {
+    clearErrors();
+    const username = document.getElementById('loginUsername').value;
+    const password = document.getElementById('loginPassword').value;
+
+    if (!username) {
+        showError('loginUsernameError', '请输入用户名');
+        return;
+    }
+    if (!password) {
+        showError('loginPasswordError', '请输入密码');
+        return;
+    }
+
+    const userData = JSON.parse(localStorage.getItem(username));
+    if (userData && userData.password === password) {
+        localStorage.setItem('currentUser', username);
+        localStorage.setItem('lastUser', username);
+        localStorage.setItem('lastLoginTime', Date.now().toString());
+        window.location.href = 'index.html';
+    } else {
+        showError('loginPasswordError', '用户名或密码错误');
+    }
+}
+
+// 修改登出函数
 function logout() {
     localStorage.removeItem('currentUser');
+    localStorage.removeItem('lastUser');
+    localStorage.removeItem('lastLoginTime');
     window.location.href = 'index.html';
 }
 
