@@ -299,4 +299,29 @@ document.addEventListener('DOMContentLoaded', function() {
             showRegister();
         });
     }
-}); 
+});
+
+function updateWelcomeInfo() {
+    const welcomeUsername = document.getElementById('welcomeUsername');
+    if (!welcomeUsername) return; // 如果元素不存在则直接返回
+    
+    const currentUser = localStorage.getItem('currentUser');
+    if (currentUser) {
+        welcomeUsername.textContent = currentUser;
+    } else {
+        welcomeUsername.textContent = '游客';
+    }
+}
+
+// 同时我们需要添加这些相关函数
+function updateCalendar() {
+    // 可以先留空，或者添加日历更新逻辑
+}
+
+function updateDailyQuote() {
+    // 可以先留空，或者添加每日名言更新逻辑
+}
+
+function updateDailyStats() {
+    // 可以先留空，或者添加每日统计更新逻辑
+} 

@@ -81,3 +81,33 @@ const problemSets = [
         author: "系统"
     }
 ]; 
+
+function displayProblemSets(problemSets) {
+    const container = document.getElementById('problemSets');
+    if (!container) return; // 如果元素不存在则直接返回
+    
+    let html = '';
+    problemSets.forEach(set => {
+        html += `
+            <div class="problem-set">
+                <h2>${set.title}</h2>
+                <p class="description">${set.description}</p>
+                <div class="problems-list">
+                    <ul>
+                        ${set.problems.map(problem => `
+                            <li>
+                                <span>${problem.title}</span>
+                                <span class="difficulty-${problem.difficulty.toLowerCase()}">${problem.difficulty}</span>
+                            </li>
+                        `).join('')}
+                    </ul>
+                </div>
+                <button class="practice-button" onclick="window.location.href='problems.html?set=${set.id}'">
+                    开始练习
+                </button>
+            </div>
+        `;
+    });
+    
+    container.innerHTML = html;
+} 
