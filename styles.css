@@ -56,7 +56,7 @@ body::after {
     border-radius: 8px;
     box-shadow: 0 4px 12px rgba(33, 150, 243, 0.15);
     position: relative;
-    overflow: hidden;
+    z-index: 1;
 }
 
 .container::before,
@@ -1306,6 +1306,8 @@ th {
 .nav-auth {
     display: inline-flex;
     gap: 10px;
+    position: relative;
+    z-index: 1000;
 }
 
 .nav-auth button {
@@ -1318,6 +1320,8 @@ th {
     display: flex;
     align-items: center;
     gap: 5px;
+    position: relative;
+    z-index: 1001;
 }
 
 .nav-auth button:hover {
@@ -1328,6 +1332,8 @@ th {
     display: flex;
     align-items: center;
     gap: 15px;
+    position: relative;
+    z-index: 999;
 }
 
 .logout-section {
