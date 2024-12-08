@@ -6,8 +6,6 @@
     <link rel="stylesheet" href="styles.css">
     <script src="problems.js"></script>
     <script src="auth.js"></script>
-    <!-- 添加 Monaco Editor 依赖 -->
-    <script src="https://cdn.jsdelivr.net/npm/monaco-editor@0.34.0/min/vs/loader.js"></script>
 </head>
 <body>
     <div class="container">
@@ -25,9 +23,6 @@
             </div>
             
             <div class="code-editor-toolbar">
-                <button class="toolbar-btn" onclick="runCode()">
-                    <i class="fas fa-play"></i> 运行代码
-                </button>
                 <button class="toolbar-btn" onclick="submitCode()">
                     <i class="fas fa-paper-plane"></i> 提交评测
                 </button>
@@ -35,7 +30,14 @@
 
             <div class="editor-main">
                 <div class="code-section">
-                    <div id="monaco-editor" style="height: 400px;"></div>
+                    <textarea id="codeEditor" class="code-textarea" spellcheck="false" placeholder="在这里编写你的C++代码">#include <iostream>
+using namespace std;
+
+int main() {
+    // 在这里编写你的代码
+    
+    return 0;
+}</textarea>
                 </div>
                 
                 <div class="testcase-section">
@@ -60,19 +62,6 @@
     </div>
 
     <script>
-        // 初始化 Monaco Editor
-        require.config({ paths: { 'vs': 'https://cdn.jsdelivr.net/npm/monaco-editor@0.34.0/min/vs' }});
-        require(['vs/editor/editor.main'], function() {
-            window.editor = monaco.editor.create(document.getElementById('monaco-editor'), {
-                value: '// 在这里编写你的C++代码\n#include <iostream>\n\nint main() {\n    \n    return 0;\n}',
-                language: 'cpp',
-                theme: 'vs-light',
-                minimap: { enabled: false },
-                fontSize: 14,
-                automaticLayout: true
-            });
-        });
-
         // 加载题目详情
         document.addEventListener('DOMContentLoaded', () => {
             const problemId = new URLSearchParams(window.location.search).get('id');
@@ -167,7 +156,7 @@
             resultSection.style.display = 'block';
             resultSection.innerHTML = '<div class="status-running">评测中...</div>';
 
-            const code = window.editor.getValue();
+            const code = document.getElementById('codeEditor').value;
             const testcases = Array.from(document.getElementsByClassName('testcase-item')).map(item => ({
                 input: item.querySelector('.testcase-input').value,
                 output: item.querySelector('.testcase-output').value
@@ -262,7 +251,7 @@ int main() {
     
     return 0;
 }`;
-            window.editor.setValue(template);
+            document.getElementById('codeEditor').value = template;
         }
 
         // 保留原有的markAsDone函数
