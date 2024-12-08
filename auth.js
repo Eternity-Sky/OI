@@ -263,4 +263,40 @@ document.addEventListener('DOMContentLoaded', () => {
     updateCalendar();
     updateDailyQuote();
     updateDailyStats();
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    // 登录表单提交事件
+    const loginForm = document.getElementById('loginForm');
+    if (loginForm) {
+        loginForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            login();
+        });
+    }
+
+    // 注册表单提交事件
+    const registerForm = document.getElementById('registerForm');
+    if (registerForm) {
+        registerForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            register();
+        });
+    }
+
+    // 切换到登录表单按钮
+    const showLoginBtn = document.querySelector('.show-login');
+    if (showLoginBtn) {
+        showLoginBtn.addEventListener('click', function() {
+            showLogin();
+        });
+    }
+
+    // 切换到注册表单按钮
+    const showRegisterBtn = document.querySelector('.show-register');
+    if (showRegisterBtn) {
+        showRegisterBtn.addEventListener('click', function() {
+            showRegister();
+        });
+    }
 }); 
