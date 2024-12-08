@@ -27,8 +27,8 @@
                         <span>提交代码</span>
                     </div>
                     <div class="editor-controls">
-                        <label>用户名: <input type="text" id="username" value="${localStorage.getItem('currentUser') || ''}" readonly></label>
-                        <label>题号: <input type="text" id="problemId" value="${new URLSearchParams(window.location.search).get('id')}" readonly></label>
+                        <label>用户名: <input type="text" id="username" readonly></label>
+                        <label>题号: <input type="text" id="problemId" readonly></label>
                         <label>语言: <select id="language"><option value="G++14">G++14</option></select></label>
                         <label><input type="checkbox" id="tempSubmit"> 临时提交</label>
                     </div>
@@ -70,6 +70,10 @@
         // 显示提交代码的模态窗口
         function showSubmitModal() {
             document.getElementById('submitModal').style.display = 'block';
+            // 设置用户名和题号
+            document.getElementById('username').value = localStorage.getItem('currentUser') || '';
+            document.getElementById('problemId').value = new URLSearchParams(window.location.search).get('id');
+
             // 如果代码编辑器是空的，设置默认代码
             if (!document.getElementById('codeEditor').value.trim()) {
                 document.getElementById('codeEditor').value = 
@@ -233,7 +237,7 @@ int main() {
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
-                        code: `${code.trim()}\n`,  // 确保代码末尾有换行符
+                        code: code.trim().replace(/\r\n/g, '\n'),  // 统一换行符为 \n
                         testcases: testcases
                     })
                 });
@@ -399,7 +403,7 @@ int main() {
             if (!userData.completedProblems.includes(problemId)) {
                 userData.completedProblems.push(problemId);
                 localStorage.setItem(username, JSON.stringify(userData));
-                alert('题目已标记为完成！');
+                alert('题���已标记为完成！');
             } else {
                 alert('您已经完成了这个题目！');
             }
