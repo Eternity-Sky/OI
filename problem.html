@@ -77,11 +77,8 @@
     </div>
 
     <script>
-        // 显示提交代码的模态窗口
-        function showSubmitModal() {
-            document.getElementById('submitModal').style.display = 'block';
-            
-            // 检查登录状态和自动登录
+        // 页面加载时检查登录状态
+        document.addEventListener('DOMContentLoaded', () => {
             const username = localStorage.getItem('currentUser');
             if (!username) {
                 // 尝试自动登录
@@ -92,15 +89,24 @@
                 if (lastUser && lastLoginTime && (Date.now() - parseInt(lastLoginTime) < autoLoginPeriod)) {
                     // 自动登录
                     localStorage.setItem('currentUser', lastUser);
-                    showSubmitModal(); // 重新调用本函数
-                    return;
-                } else {
-                    alert('请先登录！');
-                    window.location.href = 'login.html';
-                    return;
                 }
             }
+        });
+
+        // 显示提交代码的模态窗口
+        function showSubmitModal() {
+            document.getElementById('submitModal').style.display = 'block';
             
+            // 设置用户名和题号
+            const username = localStorage.getItem('currentUser');
+            if (!username) {
+                // 保存当前页面URL
+                localStorage.setItem('redirectAfterLogin', window.location.href);
+                alert('请先登录！');
+                window.location.href = 'login.html';
+                return;
+            }
+
             const problemId = new URLSearchParams(window.location.search).get('id') || '';
             document.getElementById('submitUsername').value = username;
             document.getElementById('submitProblemId').value = problemId;

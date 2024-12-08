@@ -197,7 +197,16 @@
             const userData = JSON.parse(localStorage.getItem(username));
             if (userData && userData.password === password) {
                 localStorage.setItem('currentUser', username);
-                window.location.href = 'index.html';
+                localStorage.setItem('lastUser', username);
+                localStorage.setItem('lastLoginTime', Date.now().toString());
+                // 检查是否有需要返回的页面
+                const redirectUrl = localStorage.getItem('redirectAfterLogin');
+                if (redirectUrl) {
+                    localStorage.removeItem('redirectAfterLogin');  // 清除保存的URL
+                    window.location.href = redirectUrl;
+                } else {
+                    window.location.href = 'index.html';
+                }
             } else {
                 showError('loginPasswordError', '用户名或密码错误');
             }
