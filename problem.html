@@ -13,24 +13,26 @@
             <!-- 题目详情内容 -->
         </div>
 
-        <!-- 代码编辑器容器 -->
-        <div class="code-editor-container">
-            <div class="editor-header">
-                <div class="editor-title">代码编辑器</div>
-                <div class="editor-controls">
-                    <button class="code-template-btn" onclick="loadTemplate()">加载模板</button>
-                </div>
-            </div>
-            
-            <div class="code-editor-toolbar">
-                <button class="toolbar-btn" onclick="submitCode()">
-                    <i class="fas fa-paper-plane"></i> 提交评测
-                </button>
-            </div>
+        <!-- 提交按钮 -->
+        <button class="submit-btn" onclick="showSubmitModal()">
+            <i class="fas fa-paper-plane"></i> 提交代码
+        </button>
 
-            <div class="editor-main">
-                <div class="code-section">
-                    <textarea id="codeEditor" class="code-textarea" spellcheck="false" placeholder="在这里编写你的C++代码">#include <iostream>
+        <!-- 提交代码的模态窗口 -->
+        <div id="submitModal" class="modal">
+            <div class="code-editor-container">
+                <div class="editor-header">
+                    <div class="editor-title">提交代码</div>
+                    <div class="editor-controls">
+                        <button class="code-template-btn" onclick="loadTemplate()">加载模板</button>
+                        <button class="close" onclick="closeSubmitModal()">&times;</button>
+                    </div>
+                </div>
+                
+                <div class="editor-main">
+                    <div class="code-section">
+                        <textarea id="codeEditor" class="code-textarea" spellcheck="false" 
+                            placeholder="在这里编写你的C++代码">#include <iostream>
 using namespace std;
 
 int main() {
@@ -38,19 +40,26 @@ int main() {
     
     return 0;
 }</textarea>
-                </div>
-                
-                <div class="testcase-section">
-                    <h4>测试用例</h4>
-                    <div class="testcase-list" id="testcaseList">
-                        <!-- 测试用例将在这里动态添加 -->
                     </div>
-                    <button class="add-testcase" onclick="addTestCase()">添加测试用例</button>
+                    
+                    <div class="testcase-section">
+                        <h4>测试用例</h4>
+                        <div class="testcase-list" id="testcaseList">
+                            <!-- 测试用例将在这里动态添加 -->
+                        </div>
+                        <button class="add-testcase" onclick="addTestCase()">添加测试用例</button>
+                    </div>
                 </div>
-            </div>
 
-            <div id="resultSection" class="result-section" style="display: none;">
-                <!-- 评测结果将在这里显示 -->
+                <div class="editor-footer">
+                    <button class="toolbar-btn" onclick="submitCode()">
+                        <i class="fas fa-paper-plane"></i> 提交评测
+                    </button>
+                </div>
+
+                <div id="resultSection" class="result-section" style="display: none;">
+                    <!-- 评测结果将在这里显示 -->
+                </div>
             </div>
         </div>
 
@@ -62,6 +71,32 @@ int main() {
     </div>
 
     <script>
+        // 显示提交代码的模态窗口
+        function showSubmitModal() {
+            document.getElementById('submitModal').style.display = 'block';
+            // 如果还没有测试用例，添加样例测试用例
+            if (!document.querySelector('.testcase-item')) {
+                const problem = problems.find(p => p.id == new URLSearchParams(window.location.search).get('id'));
+                if (problem) {
+                    addSampleTestCase(problem.sample_input, problem.sample_output);
+                }
+            }
+        }
+
+        // 关闭提交代码的模态窗口
+        function closeSubmitModal() {
+            document.getElementById('submitModal').style.display = 'none';
+            // 清空评测结果
+            document.getElementById('resultSection').style.display = 'none';
+        }
+
+        // 点击模态窗口外部时关闭
+        window.onclick = function(event) {
+            if (event.target == document.getElementById('submitModal')) {
+                closeSubmitModal();
+            }
+        }
+
         // 加载题目详情
         document.addEventListener('DOMContentLoaded', () => {
             const problemId = new URLSearchParams(window.location.search).get('id');
