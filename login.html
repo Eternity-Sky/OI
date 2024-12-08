@@ -264,10 +264,11 @@
         });
 
         function skipLogin() {
-            // 如果是从题目页面跳转来的，返回题目页面
-            const referrer = document.referrer;
-            if (referrer && referrer.includes('problem.html')) {
-                window.history.back();
+            // 检查是否有需要返回的页面
+            const redirectUrl = localStorage.getItem('redirectAfterLogin');
+            if (redirectUrl) {
+                localStorage.removeItem('redirectAfterLogin');  // 清除保存的URL
+                window.location.href = redirectUrl;
             } else {
                 // 否则返回首页
                 window.location.href = 'index.html';

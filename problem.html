@@ -100,8 +100,6 @@
             // 设置用户名和题号
             const username = localStorage.getItem('currentUser');
             if (!username) {
-                // 保存当前页面URL
-                localStorage.setItem('redirectAfterLogin', window.location.href);
                 alert('请先登录！');
                 window.location.href = 'login.html';
                 return;
