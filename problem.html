@@ -218,18 +218,22 @@
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
-                        code: code,
+                        code: code.trim(),  // 去除多余的空白字符
                         testcases: testcases
                     })
                 });
 
                 const result = await response.json();
+                if (result.error) {
+                    throw new Error(result.error);
+                }
                 // 开始轮询获取结果
                 pollResult(result.id);
             } catch (error) {
                 resultSection.innerHTML = `
                     <div class="result-error">
-                        评测系统出错：${error.message}
+                        <h4>评测系统出错</h4>
+                        <pre class="result-detail">${error.message}</pre>
                     </div>
                 `;
             }

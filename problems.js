@@ -2,13 +2,15 @@ const problems = [
     {
         id: 1,
         title: "A + B Problem",
-        description: "给定两个整数A和B，输出它们的和。",
-        input: "输入包含两个整数A和B。",
-        output: "输出A和B的和。",
+        description: "给定两个整数A和B，输出A+B的和。",
+        input: "输入包含两个整数A和B，用空格分隔。",
+        output: "输出一个整数，表示A+B的和。",
         sample_input: "1 2",
         sample_output: "3",
+        timeLimit: "1000ms",
+        memoryLimit: "256MB",
         difficulty: "简单",
-        tags: ["数学", "基础"]
+        tags: ["数学", "入门"]
     },
     {
         id: 2,
@@ -373,7 +375,7 @@ const problems = [
         difficulty: "中等",
         tags: ["贪心", "数字构造"],
         input: "从文件 sticks.in 中读入数据。第一行包含一个正整数 T，表示数据组数。接下来包含 T 组数据，每组数据一行包含一个整数 n。",
-        output: "输出到文件 sticks.out 中。对于每组��据输出一行，如果存在满足题意的正整数，输出这个数；否则输出 -1。",
+        output: "输出到文件 sticks.out 中。对于每组数据输出一行，如果存在满足题意的正整数，输出这个数；否则输出 -1。",
         sample_input: "5\n1\n2\n3\n6\n18",
         sample_output: "-1\n1\n7\n6\n208",
         timeLimit: "1.0秒",
