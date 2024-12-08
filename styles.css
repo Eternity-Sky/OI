@@ -50,7 +50,7 @@ body::after {
 
 .container {
     max-width: 800px;
-    margin: 0 auto;
+    margin: 60px auto 0;
     padding: 20px;
     background-color: rgba(255, 255, 255, 0.95);
     border-radius: 8px;
@@ -219,6 +219,7 @@ img {
     display: flex;
     align-items: center;
     z-index: 3;
+    margin-top: 50px;
 }
 
 .user-avatar {
@@ -1308,6 +1309,9 @@ th {
     gap: 10px;
     position: relative;
     z-index: 1000;
+    position: fixed;
+    top: 20px;
+    right: 20px;
 }
 
 .nav-auth button {
@@ -1322,10 +1326,14 @@ th {
     gap: 5px;
     position: relative;
     z-index: 1001;
+    background-color: transparent;
+    border-radius: 4px;
+    transition: all 0.3s ease;
 }
 
 .nav-auth button:hover {
-    color: #007bff;
+    color: #2196F3;
+    transform: translateY(-2px);
 }
 
 .nav-links {
@@ -1975,4 +1983,47 @@ th {
 .testcase-output[readonly] {
     background-color: #f8f9fa;
     cursor: default;
+}
+
+.nav-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 50px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    z-index: 1000;
+}
+
+.nav-left {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.nav-btn {
+    padding: 6px 16px;
+    border: none;
+    border-radius: 4px;
+    background-color: #2196F3;
+    color: white;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.nav-btn:hover {
+    background-color: #1976D2;
+    transform: translateY(-1px);
 }
