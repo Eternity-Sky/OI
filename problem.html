@@ -149,40 +149,54 @@ int main() {
         // 添加样例测试用例
         function addSampleTestCase(input, output) {
             const testcaseList = document.getElementById('testcaseList');
-            const testcaseHtml = `
-                <div class="testcase-item">
-                    <div>
-                        <label>输入：</label>
-                        <textarea class="testcase-input" readonly>${input}</textarea>
-                    </div>
-                    <div>
-                        <label>期望输出：</label>
-                        <textarea class="testcase-output" readonly>${output}</textarea>
-                    </div>
-                </div>
-            `;
-            testcaseList.innerHTML = testcaseHtml;
+            testcaseList.innerHTML = '';  // 清空现有测试用例
+            
+            // 添加样例测试用例
+            addTestCaseHtml(input, output, '样例', true);
+            
+            // 添加额外的测试用例
+            const problemId = new URLSearchParams(window.location.search).get('id');
+            const extraTestcases = getExtraTestcases(problemId);
+            extraTestcases.forEach((testcase, index) => {
+                addTestCaseHtml(testcase.input, testcase.output, `测试点 ${index + 1}`, true);
+            });
         }
 
-        // 添加新的测试用例
-        function addTestCase() {
+        // 添加单个测试用例的HTML
+        function addTestCaseHtml(input, output, label, readonly = false) {
             const testcaseList = document.getElementById('testcaseList');
             const testcaseHtml = `
                 <div class="testcase-item">
+                    <div class="testcase-header">
+                        <span class="testcase-label">${label}</span>
+                    </div>
                     <div>
                         <label>输入：</label>
-                        <textarea class="testcase-input"></textarea>
+                        <textarea class="testcase-input" ${readonly ? 'readonly' : ''}>${input}</textarea>
                     </div>
                     <div>
                         <label>期望输出：</label>
-                        <textarea class="testcase-output"></textarea>
-                    </div>
-                    <div class="testcase-controls">
-                        <button class="testcase-btn remove-testcase" onclick="this.parentElement.parentElement.remove()">删除</button>
+                        <textarea class="testcase-output" ${readonly ? 'readonly' : ''}>${output}</textarea>
                     </div>
                 </div>
             `;
             testcaseList.insertAdjacentHTML('beforeend', testcaseHtml);
+        }
+
+        // 获取额外的测试用例
+        function getExtraTestcases(problemId) {
+            // 这里可以根据题目ID返回不同的测试用例
+            const testcasesMap = {
+                '1': [ // A+B Problem
+                    { input: '5 7', output: '12' },
+                    { input: '-3 8', output: '5' },
+                    { input: '0 0', output: '0' },
+                ],
+                '2': [ // 其他题目的测试用例
+                    // ...
+                ]
+            };
+            return testcasesMap[problemId] || [];
         }
 
         // 提交代码进行评测
