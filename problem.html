@@ -192,37 +192,45 @@ int main() {
             
             let html = `
                 <div class="${statusClass}">
-                    <h4>评测结果：${getStatusText(result.status)}</h4>
-                    <p>执行时间：${result.executionTime}ms</p>
-                `;
+                    <h4>评测结果：${getStatusText(result.status || 'Pending')}</h4>
+            `;
 
+            // 只有当执行时间存在且不是undefined时才显示
+            if (result.executionTime !== undefined) {
+                html += `<p>执行时间：${result.executionTime}ms</p>`;
+            }
+
+            // 如果有错误信息则显示
             if (result.error) {
                 html += `<pre class="result-detail">${result.error}</pre>`;
             }
 
-            if (result.testResults) {
+            // 如果有测试结果则显示
+            if (result.testResults && result.testResults.length > 0) {
                 html += '<div class="testcase-results">';
                 result.testResults.forEach((test, index) => {
                     const testStatus = test.status === 'AC' ? 'testcase-passed' : 'testcase-failed';
                     html += `
                         <div class="testcase-item">
                             <span class="testcase-badge ${testStatus}">测试点 ${index + 1}</span>
-                            <p>状态：${getStatusText(test.status)}</p>
-                            <p>时间：${test.time}ms</p>
+                            <p>状态：${getStatusText(test.status || 'Pending')}</p>
+                            ${test.time !== undefined ? `<p>时间：${test.time}ms</p>` : ''}
                             ${test.status !== 'AC' ? `
                                 <div>
                                     <p>输入：</p>
-                                    <pre>${test.input}</pre>
+                                    <pre>${test.input || ''}</pre>
                                     <p>期望输出：</p>
-                                    <pre>${test.expectedOutput}</pre>
+                                    <pre>${test.expectedOutput || ''}</pre>
                                     <p>实际输出：</p>
-                                    <pre>${test.actualOutput}</pre>
+                                    <pre>${test.actualOutput || ''}</pre>
                                 </div>
                             ` : ''}
                         </div>
                     `;
                 });
                 html += '</div>';
+            } else {
+                html += '<p>评测中，请稍候...</p>';
             }
 
             html += '</div>';
@@ -236,7 +244,8 @@ int main() {
                 'WA': '答案错误',
                 'TLE': '超时',
                 'RE': '运行错误',
-                'CE': '编译错误'
+                'CE': '编译错误',
+                'Pending': '评测中'
             };
             return statusMap[status] || status;
         }
