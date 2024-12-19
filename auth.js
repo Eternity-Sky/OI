@@ -1,3 +1,6 @@
+// API 基础URL
+const API_BASE_URL = 'http://localhost:3000/api';
+
 function showLogin() {
     document.getElementById('auth').style.display = 'none';
     document.getElementById('loginForm').style.display = 'block';
@@ -10,56 +13,81 @@ function showRegister() {
     document.getElementById('loginForm').style.display = 'none';
 }
 
-function register() {
+async function register() {
     const username = document.getElementById('registerUsername').value;
     const password = document.getElementById('registerPassword').value;
     const avatar = document.getElementById('registerAvatar').files[0];
 
-    if (localStorage.getItem(username)) {
-        alert('用户名已存在，请选择其他用户名。');
+    if (!username || !password || !avatar) {
+        alert('请输入用户名、密码并上传头像。');
         return;
     }
 
-    if (username && password && avatar) {
-        const reader = new FileReader();
-        reader.onload = function(event) {
-            const userData = {
-                password: password,
-                avatar: event.target.result,
-                completedProblems: []
-            };
-            localStorage.setItem(username, JSON.stringify(userData));
+    try {
+        // 将头像转换为base64
+        const base64Avatar = await new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = e => resolve(e.target.result);
+            reader.onerror = reject;
+            reader.readAsDataURL(avatar);
+        });
+
+        const response = await fetch(`${API_BASE_URL}/register`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                username,
+                password,
+                avatar: base64Avatar
+            }),
+            credentials: 'include'
+        });
+
+        const data = await response.json();
+        if (response.ok) {
             alert('注册成功！');
             showLogin();
-        };
-        reader.readAsDataURL(avatar);
-    } else {
-        alert('请输入用户名、密码并上传头像。');
+        } else {
+            alert(data.error || '注册失败');
+        }
+    } catch (error) {
+        console.error('注册错误:', error);
+        alert('注册失败，请重试');
     }
 }
 
-function login() {
+async function login() {
     clearErrors();
     const username = document.getElementById('loginUsername').value;
     const password = document.getElementById('loginPassword').value;
 
-    if (!username) {
-        showError('loginUsernameError', '请输入用户名');
-        return;
-    }
-    if (!password) {
-        showError('loginPasswordError', '请输入密码');
+    if (!username || !password) {
+        !username && showError('loginUsernameError', '请输入用户名');
+        !password && showError('loginPasswordError', '请输入密码');
         return;
     }
 
-    const userData = JSON.parse(localStorage.getItem(username));
-    if (userData && userData.password === password) {
-        localStorage.setItem('currentUser', username);
-        localStorage.setItem('lastUser', username);
-        localStorage.setItem('lastLoginTime', Date.now().toString());
-        window.location.href = 'index.html';
-    } else {
-        showError('loginPasswordError', '用户名或密码错误');
+    try {
+        const response = await fetch(`${API_BASE_URL}/login`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ username, password }),
+            credentials: 'include'
+        });
+
+        const data = await response.json();
+        if (response.ok) {
+            window.location.href = 'index.html';
+        } else {
+            showError('loginPasswordError', data.error || '登录失败');
+        }
+    } catch (error) {
+        console.error('登录错误:', error);
+        showError('loginPasswordError', '登录失败，请重试');
     }
 }
 
@@ -190,53 +218,50 @@ function getNextLevel(completedCount) {
     return { level: "新手", required: 5 };
 }
 
-// 检查登录状态
-function checkLoginStatus() {
-    const username = localStorage.getItem('currentUser');
-    const authButtons = document.getElementById('authButtons');
-    const avatarContainer = document.getElementById('avatarContainer');
-    
-    if (username) {
-        // 隐藏登录注册按钮
-        if (authButtons) {
-            authButtons.style.display = 'none';
-        }
-        
-        // 显示头像
-        if (avatarContainer) {
-            const userData = JSON.parse(localStorage.getItem(username));
-            avatarContainer.innerHTML = '';
-            const avatarImg = document.createElement('img');
-            avatarImg.src = userData.avatar;
-            avatarImg.alt = '用户头像';
-            avatarImg.className = 'user-avatar';
-            avatarImg.onclick = () => window.location.href = 'userCenter.html';
-            avatarContainer.appendChild(avatarImg);
-            avatarContainer.style.display = 'flex';
-        }
-        
-        // 更新欢迎信息
-        const welcomeUsername = document.getElementById('username');
-        if (welcomeUsername) {
-            welcomeUsername.textContent = username;
-        }
-    } else {
-        // 尝试自动登录
-        const lastUser = localStorage.getItem('lastUser');
-        const lastLoginTime = localStorage.getItem('lastLoginTime');
-        const autoLoginPeriod = 7 * 24 * 60 * 60 * 1000; // 7天自动登录期限
-        
-        if (lastUser && lastLoginTime && (Date.now() - parseInt(lastLoginTime) < autoLoginPeriod)) {
-            // 自动登录
-            localStorage.setItem('currentUser', lastUser);
-            checkLoginStatus(); // 重新检查登录状态
+async function checkLoginStatus() {
+    try {
+        const response = await fetch(`${API_BASE_URL}/user`, {
+            credentials: 'include'
+        });
+
+        if (response.ok) {
+            const userData = await response.json();
+            const authButtons = document.getElementById('authButtons');
+            const avatarContainer = document.getElementById('avatarContainer');
+            
+            // 隐藏登录注册按钮
+            if (authButtons) {
+                authButtons.style.display = 'none';
+            }
+            
+            // 显示头像
+            if (avatarContainer) {
+                avatarContainer.innerHTML = '';
+                const avatarImg = document.createElement('img');
+                avatarImg.src = userData.avatar;
+                avatarImg.alt = '用户头像';
+                avatarImg.className = 'user-avatar';
+                avatarImg.onclick = () => window.location.href = 'userCenter.html';
+                avatarContainer.appendChild(avatarImg);
+                avatarContainer.style.display = 'flex';
+            }
+            
+            // 更新欢迎信息
+            const welcomeUsername = document.getElementById('username');
+            if (welcomeUsername) {
+                welcomeUsername.textContent = userData.username;
+            }
+
+            return userData;
         } else {
             // 显示登录注册按钮
+            const authButtons = document.getElementById('authButtons');
             if (authButtons) {
                 authButtons.style.display = 'flex';
             }
             
             // 隐藏头像
+            const avatarContainer = document.getElementById('avatarContainer');
             if (avatarContainer) {
                 avatarContainer.style.display = 'none';
             }
@@ -246,42 +271,26 @@ function checkLoginStatus() {
             if (welcomeUsername) {
                 welcomeUsername.textContent = '游客';
             }
+
+            return null;
         }
+    } catch (error) {
+        console.error('检查登录状态错误:', error);
+        return null;
     }
 }
 
-// 修改登录函数
-function login() {
-    clearErrors();
-    const username = document.getElementById('loginUsername').value;
-    const password = document.getElementById('loginPassword').value;
-
-    if (!username) {
-        showError('loginUsernameError', '请输入用户名');
-        return;
-    }
-    if (!password) {
-        showError('loginPasswordError', '请输入密码');
-        return;
-    }
-
-    const userData = JSON.parse(localStorage.getItem(username));
-    if (userData && userData.password === password) {
-        localStorage.setItem('currentUser', username);
-        localStorage.setItem('lastUser', username);
-        localStorage.setItem('lastLoginTime', Date.now().toString());
+async function logout() {
+    try {
+        await fetch(`${API_BASE_URL}/logout`, {
+            method: 'POST',
+            credentials: 'include'
+        });
         window.location.href = 'index.html';
-    } else {
-        showError('loginPasswordError', '用户名或密码错误');
+    } catch (error) {
+        console.error('退出登录错误:', error);
+        alert('退出登录失败，请重试');
     }
-}
-
-// 修改登出函数
-function logout() {
-    localStorage.removeItem('currentUser');
-    localStorage.removeItem('lastUser');
-    localStorage.removeItem('lastLoginTime');
-    window.location.href = 'index.html';
 }
 
 // 在页面加载时检查登录状态
@@ -355,4 +364,4 @@ window.addEventListener('load', function() {
     } else if (window.location.hash === '#register') {
         showRegister();
     }
-}); 
+});
